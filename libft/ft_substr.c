@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:47:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 14:54:00 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 11:39:17 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t	size;
 	size_t	length;
 
+	if (!s)
+		return (NULL);
 	size = ft_strlen(s);
 	if (start > size || (len <= 0 && start != 0))
 	{

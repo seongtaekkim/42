@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/04 17:45:39 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 12:02:52 by seongtki         ###   ########.fr       */
+/*   Created: 2022/07/08 11:01:54 by seongtki          #+#    #+#             */
+/*   Updated: 2022/07/08 16:34:25 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	char	*tmp_dst;
+	t_list	*new_list;
+	t_list	*old;
+	t_list	*new;
 
-	if (!dst && !src)
+	if (!lst || !f)
 		return (NULL);
-	tmp_dst = dst;
-	if (dst <= src)
+	new_list = ft_lstnew((*f)(lst->content));
+	new = new_list;
+	old = lst->next;
+	while (1)
 	{
-		while (len > 0)
+		if (old == NULL)
+			break ;
+		new->next = ft_lstnew((*f)(old->content));
+		if (!(new->next))
 		{
-			*tmp_dst++ = *(unsigned char *)src++;
-			len--;
+			ft_lstclear(&new_list, del);
+			return (NULL);
 		}
+		new = new->next;
+		old = old->next;
 	}
-	else
-	{
-		tmp_dst += len;
-		src += len;
-		while (len > 0)
-		{
-			*--tmp_dst = *(unsigned char *)--src;
-			len--;
-		}
-	}
-	return (dst);
+	return (new_list);
 }

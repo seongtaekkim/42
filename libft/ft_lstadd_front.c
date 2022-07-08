@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 19:14:36 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 19:21:35 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 10:09:14 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,10 @@
 
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	t_list	*head;
-	t_list	*node;
-
-	node = lst[0];
-	head = ft_lstnew(new);
-	if (node == NULL)
-		*lst = head;
-	else
-	{
-		head->next = node;
-		*lst = head;
-	}
+	if (!lst)
+		return ;
+	if (!new)
+		return ;
+	new->next = *lst;
+	*lst = new;
 }

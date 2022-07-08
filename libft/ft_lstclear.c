@@ -1,41 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/04 17:45:39 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 12:02:52 by seongtki         ###   ########.fr       */
+/*   Created: 2022/07/08 09:13:13 by seongtki          #+#    #+#             */
+/*   Updated: 2022/07/08 10:54:01 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	char	*tmp_dst;
+	t_list	*tmp;
 
-	if (!dst && !src)
-		return (NULL);
-	tmp_dst = dst;
-	if (dst <= src)
+	tmp = *lst;
+	while (*lst)
 	{
-		while (len > 0)
-		{
-			*tmp_dst++ = *(unsigned char *)src++;
-			len--;
-		}
+		tmp = (*lst)->next;
+		(*del)((*lst)->content);
+		free(*lst);
+		*lst = tmp;
 	}
-	else
-	{
-		tmp_dst += len;
-		src += len;
-		while (len > 0)
-		{
-			*--tmp_dst = *(unsigned char *)--src;
-			len--;
-		}
-	}
-	return (dst);
 }

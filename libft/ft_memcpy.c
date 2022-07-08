@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 17:45:39 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/06 16:52:42 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:26:29 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	index = 0;
 	while (index < n)
 	{
-		((unsigned char*)dst)[index] = ((unsigned char*)src)[index];
+		((unsigned char *)dst)[index] = ((unsigned char *)src)[index];
 		index++;
 	}
 	return (dst);

@@ -6,13 +6,13 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 18:24:45 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 13:42:51 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:27:28 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *haystack, const char *needle,  size_t len)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	const char	*do_find;
 

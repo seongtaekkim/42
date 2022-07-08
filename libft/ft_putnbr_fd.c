@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:43:14 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 17:31:37 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:30:52 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_putnbr(int nb, int fd)
 	}
 	else if (nb < 0)
 	{
-		ft_putchar('-', fd); 
+		ft_putchar('-', fd);
 		nb = nb * sign;
 		ft_putnbr(nb, fd);
 	}

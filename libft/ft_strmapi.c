@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:23:11 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 16:32:52 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:31:46 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,17 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	char	*arr;
 	size_t	size;
 
+	if (!s || !f)
+		return (NULL);
 	size = ft_strlen(s);
 	if (size == 0)
 	{
-		arr = (char*)malloc(sizeof(char));
+		arr = (char *)malloc(sizeof(char));
 		arr[0] = '\0';
 		return (arr);
 	}
 	arr = (char *)malloc(sizeof(char) * (size + 1));
-	if(!arr)
+	if (!arr)
 		return (NULL);
 	index = 0;
 	while (s[index])

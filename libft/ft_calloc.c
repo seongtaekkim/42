@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:07:10 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 13:35:45 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:24:17 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*obj;
+
 	if (((count * size) / size) != count)
 		return (NULL);
 	obj = malloc(count * size);

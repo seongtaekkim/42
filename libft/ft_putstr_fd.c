@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:43:14 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 17:11:40 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:31:10 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	size_t	size;
 
-	size = ft_strlen(s);
-	if (fd == -1)
+	if (!s || fd == -1)
 		return ;
-	else
-		write(fd, s, size);
+	size = ft_strlen(s);
+	write(fd, s, size);
 }

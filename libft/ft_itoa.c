@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 10:40:34 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/08 16:29:06 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,16 @@ size_t	number_size(long number)
 {
 	size_t	size;
 
-	size = (number < 0 ? 1 : 0);
+	if (number < 0)
+		size = 1;
+	else
+		size = 0;
 	while (1)
 	{
 		number /= 10;
 		size++;
-		if (number  == 0)
-			break;
+		if (number == 0)
+			break ;
 	}
 	return (size);
 }
@@ -36,6 +39,8 @@ char	*ft_itoa(int n)
 	number = n;
 	size = number_size(n);
 	array = malloc(sizeof(char) * (size + 1));
+	if (!array)
+		return (NULL);
 	if (number < 0)
 	{
 		array[0] = '-';
@@ -47,7 +52,7 @@ char	*ft_itoa(int n)
 		array[size - 1] = (number % 10) + '0';
 		number /= 10;
 		size--;
-		if (number ==0)
+		if (number == 0)
 			break ;
 	}
 	return (array);

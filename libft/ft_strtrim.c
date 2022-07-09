@@ -6,17 +6,17 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 14:59:06 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 17:39:55 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 19:33:24 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	check_left(char const *s1, char const *set)
+size_t	check_left(char const *s1, char const *set)
 {
-	int	index;
-	int	count;
-	int	flag;
+	size_t	index;
+	size_t	count;
+	int		flag;
 
 	count = 0;
 	index = 0;
@@ -39,27 +39,29 @@ int	check_left(char const *s1, char const *set)
 	return (count);
 }
 
-int	check_right(char const *s1, char const *set, int set_len)
+size_t	check_right(char const *s1, char const *set)
 {
-	int	set_idx;
-	int	s1_idx;
-	int	count;
-	int	flag;
+	size_t		s1_idx;
+	size_t		set_idx;
+	size_t		count;
+	int			flag;
 
 	count = 0;
-	set_idx = set_len;
+	set_idx = 0;
 	s1_idx = ft_strlen(s1) -1;
 	while (s1_idx >= 0)
 	{
 		flag = 0;
-		set_idx = set_len;
-		while (set_idx > 0)
+		set_idx = 0;
+		while (set[set_idx])
 		{
-			if (set[--set_idx] == s1[s1_idx])
+			if (set[set_idx++] == s1[s1_idx])
 			{
-				s1_idx--;
 				count++;
+				if (s1_idx == 0)
+					break ;
 				flag = 1;
+				s1_idx--;
 			}
 		}
 		if (flag == 0)
@@ -68,27 +70,38 @@ int	check_right(char const *s1, char const *set, int set_len)
 	return (count);
 }
 
+size_t	set_total(size_t length, size_t left, size_t right)
+{
+	if (length * 2 <= (left + right))
+		return (0);
+	else
+		return (length - left - right);
+}
+
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	int		left;
-	int		right;
-	int		index;
-	int		total;
+	size_t	left;
+	size_t	right;
+	size_t	index;
+	size_t	total;
 	char	*ret;
 
 	if (!s1)
 		return (NULL);
 	index = 0;
 	left = check_left(s1, set);
-	right = check_right(s1, set, ft_strlen(set));
-	total = ft_strlen(s1) - left - right;
+	right = check_right(s1, set);
+	total = set_total(ft_strlen(s1), left, right);
 	if (total <= 0)
 		return (ft_strdup(""));
 	ret = (char *)malloc(sizeof(char) * (total + 1));
 	if (!ret)
 		return (NULL);
 	while (index < total)
-		ret[index++] = s1[left++];
+	{
+		ret[index++] = s1[left];
+		left++;
+	}
 	ret[index] = '\0';
 	return (ret);
 }

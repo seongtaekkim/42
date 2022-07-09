@@ -6,9 +6,11 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 12:29:45 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/06 12:30:04 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 10:03:24 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_tolower(int c)
 {

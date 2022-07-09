@@ -6,15 +6,15 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:26:41 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 15:20:51 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 17:46:26 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stdlib.h"
+#include "libft.h"
 
-int	count_word(char *str, char c)
+size_t	count_word(char const *str, char c)
 {
-	int	count;
+	size_t	count;
 
 	count = 0;
 	while (*str)
@@ -30,7 +30,7 @@ int	count_word(char *str, char c)
 	return (count);
 }
 
-char	*ft_strndup(char *str, unsigned int n)
+char	*ft_strndup(char const *str, unsigned int n)
 {
 	unsigned int	index;
 	unsigned int	length;
@@ -64,10 +64,10 @@ void	free_list(char	**array)
 	free(array);
 }
 
-char	**do_split(char **array, char *str, char c)
+char	**do_split(char **array, char const *str, char c)
 {
-	char	*word_start;
-	int		index;
+	char const	*word_start;
+	size_t		index;
 
 	index = 0;
 	while (*str)
@@ -81,7 +81,7 @@ char	**do_split(char **array, char *str, char c)
 			str++;
 		if (str - word_start > 0)
 		{
-			array[index] = ft_strndup(word_start, str - word_start);
+			array[index] = ft_strndup(word_start, (size_t)(str - word_start));
 			if (!array[index++])
 			{
 				free_list(array);
@@ -93,17 +93,17 @@ char	**do_split(char **array, char *str, char c)
 	return (array);
 }
 
-char	**ft_split(char *str, char c)
+char	**ft_split(char const *s, char c)
 {
-	int		word_count;
+	size_t	word_count;
 	char	**array;
 
-	if (!str)
+	if (!s)
 		return (NULL);
-	word_count = count_word(str, c);
+	word_count = count_word(s, c);
 	array = (char **)malloc(sizeof(char *) * (word_count + 1));
 	if (!array)
 		return (NULL);
-	array = do_split(array, str, c);
+	array = do_split(array, s, c);
 	return (array);
 }

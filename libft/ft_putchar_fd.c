@@ -6,11 +6,10 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:43:14 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/07 17:11:56 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 10:02:24 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "libft.h"
 
 void	ft_putchar_fd(char c, int fd)

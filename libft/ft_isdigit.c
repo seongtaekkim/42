@@ -6,9 +6,11 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 13:59:43 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 16:25:29 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 10:03:44 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_isdigit(int c)
 {

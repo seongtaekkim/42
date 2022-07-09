@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 17:45:39 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 12:02:52 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 17:19:20 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	char	*tmp_dst;
+	unsigned char	*tmp_dst;
 
 	if (!dst && !src)
 		return (NULL);

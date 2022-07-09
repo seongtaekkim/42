@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 19:12:19 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 11:28:45 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 17:47:06 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*result;
-	int		index;
+	size_t	index;
 	size_t	s1_len;
 	size_t	s2_len;
 

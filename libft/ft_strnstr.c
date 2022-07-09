@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 18:24:45 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 16:27:28 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 12:16:17 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,28 @@
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	const char	*do_find;
+	size_t	index;
+	size_t	jndex;
 
-	do_find = needle;
-	if (*do_find == '\0')
+	if (*needle == '\0')
 		return ((char *)haystack);
-	while (*haystack != '\0' && len-- > 0)
+	if (len == 0)
+		return (NULL);
+	index = 0;
+	jndex = 0;
+	while (1)
 	{
-		if (*do_find == *haystack)
-			do_find++;
+		if (needle[jndex] == '\0')
+			return ((char *)(haystack + (index - jndex)));
+		if (index > len - 1 || haystack[index] == '\0')
+			return (NULL);
+		if (haystack[index] == needle[jndex])
+			jndex++;
 		else
-			do_find = needle;
-		haystack++;
-		if (*do_find == '\0')
-			break ;
+		{
+			index -= jndex;
+			jndex = 0;
+		}
+		index++;
 	}
-	if (len == 0 && *do_find != '\0')
-		return (NULL);
-	if (ft_strlen(needle) != (size_t)(do_find - needle))
-		return (NULL);
-	while ((do_find - needle) > 0)
-	{
-		haystack--;
-		do_find--;
-	}
-	return ((char *)haystack);
 }

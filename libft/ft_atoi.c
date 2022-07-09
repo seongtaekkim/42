@@ -6,12 +6,11 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 18:19:55 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 16:46:14 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 17:53:20 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <limits.h>
 
 int	is_space(char c)
 {
@@ -24,9 +23,9 @@ int	is_space(char c)
 
 int	check_and_result(unsigned long long sum, int sign)
 {
-	if (sum > LLONG_MAX - 1 && sign == -1)
+	if (sum > LLONG_MAX && sign == -1)
 		return (0);
-	if (sum > LLONG_MAX && sign == 1)
+	if (sum >= LLONG_MAX && sign == 1)
 		return (-1);
 	return (sum * sign);
 }

@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 18:15:32 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/06 17:42:58 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 17:19:05 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	unsigned int		index;
-	unsigned int		dest_size;
-	unsigned int		src_size;
+	size_t		index;
+	size_t		dest_size;
+	size_t		src_size;
 
 	index = 0;
 	dest_size = ft_strlen(dst);

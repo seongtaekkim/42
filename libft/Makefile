@@ -33,11 +33,11 @@ SRCS	=	ft_atoi.c \
 			ft_toupper.c	\
 			ft_strtrim.c	\
 			ft_split.c
-SRCS_B	=   ft_lstnew.c \
+SRCS_B	=   ft_lstnew.c	\
 			ft_lstadd_front.c	\
+			ft_lstadd_back.c	\
 			ft_lstsize.c	\
 			ft_lstlast.c	\
-			ft_lstadd_back.c	\
 			ft_lstdelone.c	\
 			ft_lstclear.c	\
 			ft_lstiter.c	\
@@ -46,26 +46,32 @@ OBJS	= $(SRCS:.c=.o)
 OBJS_B	= $(SRCS_B:.c=.o)
 RM		= rm -f
 LIBC	= ar -rcs
-FLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror
 INCS	= .
 
-.c.o :
-	${CC} ${FLAGS} -c $< -o ${<:.c=.o} -I${INCS}
+ifdef WITH_BONUS
+	OBJ_FILES = $(OBJS) $(OBJS_B)
+else
+	OBJ_FILES = $(OBJS)
+endif
 
-$(NAME): ${OBJS}
-	${LIBC} $(NAME) $(OBJS)
+.c.o :
+	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I${INCS}
 
 all: $(NAME)
 
-bonus: $(NAME) $(OBJS_B)
-	${LIBC} $(NAME) $(OBJS_B)
-    
+bonus:
+	make WITH_BONUS=1 all
+
+$(NAME): ${OBJ_FILES}
+	${LIBC} $(NAME) $(OBJ_FILES)
+
 fclean: clean
-	$(RM) $(NAME) $(bonus)
+	$(RM) $(NAME)
 
 clean:
 	$(RM) -f $(OBJS) $(OBJS_B)
     
 re: fclean all
 
-.PHONY: all bonus clean fclean re .c.o
+.PHONY: all bonus clean fclean re 

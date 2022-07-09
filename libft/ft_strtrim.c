@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 14:59:06 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/09 19:33:24 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/09 19:39:22 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,13 @@ size_t	check_left(char const *s1, char const *set)
 	return (count);
 }
 
-size_t	check_right(char const *s1, char const *set)
+size_t	check_right(char const *s1, char const *set
+		, size_t set_idx, size_t s1_idx)
 {
-	size_t		s1_idx;
-	size_t		set_idx;
 	size_t		count;
 	int			flag;
 
 	count = 0;
-	set_idx = 0;
-	s1_idx = ft_strlen(s1) -1;
 	while (s1_idx >= 0)
 	{
 		flag = 0;
@@ -90,7 +87,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (NULL);
 	index = 0;
 	left = check_left(s1, set);
-	right = check_right(s1, set);
+	right = check_right(s1, set, 0, ft_strlen(s1) - 1);
 	total = set_total(ft_strlen(s1), left, right);
 	if (total <= 0)
 		return (ft_strdup(""));

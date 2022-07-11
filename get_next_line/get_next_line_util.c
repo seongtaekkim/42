@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:04:52 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/10 15:53:49 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 17:03:17 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,29 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strnjoin(char *s1, char *s2, ssize_t n)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	index;
+
+	if (dst == NULL && src == NULL)
+		return (NULL);
+	index = 0;
+	while (index < n)
+	{
+		((unsigned char *)dst)[index] = ((unsigned char *)src)[index];
+		index++;
+	}
+	return (dst);
+}
+
+char	*ft_strnjoin(char *s1, char *s2, size_t n)
 {
 	char	*result;
 	size_t	index;
 	size_t	s1_len;
 	size_t	s2_len;
-	
-	if (!s1 || !s2 || n < 0)
+
+	if (!s1 || !s2 || n == 0)
 		return (NULL);
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
@@ -72,14 +87,12 @@ char	*ft_strnjoin(char *s1, char *s2, ssize_t n)
 		result[0] = '\0';
 		return (result);
 	}
-	index = 0;
+		index = 0;
 	result = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
 	if (!result)
 		return (NULL);
-	while (*s1)
-		result[index++] = *s1++;
-	while (*s2)
-		result[index++] = *s2++;
-	result[index] = '\0';
+	ft_memcpy(result, s1, s1_len);
+	ft_memcpy(result + s1_len, s2, n);
+	result[s1_len + s2_len] = '\0';
 	return (result);
 }

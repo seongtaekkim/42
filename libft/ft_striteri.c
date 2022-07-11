@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:23:11 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 11:23:12 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 08:59:53 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	size_t	index;
+	unsigned int	index;
 
 	if (!s)
 		return ;

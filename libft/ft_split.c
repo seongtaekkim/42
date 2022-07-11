@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:26:41 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/09 17:46:26 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 08:54:18 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,16 @@ size_t	count_word(char const *str, char c)
 	return (count);
 }
 
-char	*ft_strndup(char const *str, unsigned int n)
+char	*ft_strndup(char const *str, size_t n)
 {
-	unsigned int	index;
-	unsigned int	length;
-	char			*dup;
+	size_t	index;
+	char	*dup;
 
-	length = 0;
-	while (str[length])
-		length++;
-	if (length > n)
-		length = n;
-	dup = (char *)malloc(sizeof(char) * length + 1);
+	dup = (char *)malloc(sizeof(char) * n + 1);
 	if (!dup)
 		return (NULL);
 	index = 0;
-	while (index < length)
+	while (index < n)
 	{
 		dup[index] = str[index];
 		index++;
@@ -66,8 +60,8 @@ void	free_list(char	**array)
 
 char	**do_split(char **array, char const *str, char c)
 {
-	char const	*word_start;
-	size_t		index;
+	char	*word_start;
+	size_t	index;
 
 	index = 0;
 	while (*str)
@@ -76,7 +70,7 @@ char	**do_split(char **array, char const *str, char c)
 			str++;
 		if (*str == '\0')
 			break ;
-		word_start = str;
+		word_start = (char *)str;
 		while ((*str != c) && *str != '\0')
 			str++;
 		if (str - word_start > 0)

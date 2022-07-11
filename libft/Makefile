@@ -61,6 +61,7 @@ endif
 all: $(NAME)
 
 bonus:
+	sleep 1
 	make WITH_BONUS=1 all
 
 $(NAME): ${OBJ_FILES}

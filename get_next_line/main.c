@@ -11,15 +11,17 @@ int st_read_map(const char *filename)
 
     i = -1;
     fd = open(filename, O_RDONLY);
-    //printf("fd : %d\n",fd);
-	while (1)
+    printf("fd : %d\n",fd);
+	
+	while (fd)
 	{
 		line = get_next_line(fd);
 		if (line == 0)
 			break ;
-		printf("%s\n", line);
+		printf("%s", line);
 		free(line);
-		//break ;
+		if (!line)
+			break ;
 	}
     return (fd);
 }

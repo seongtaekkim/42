@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:03:54 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 19:07:05 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/12 19:47:15 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,27 @@ char    *read_file(int fd, char *line)
         n = read(fd, buf, BUFFER_SIZE);
 		if (n <= 0)
             break ;
-		line = ft_strnjoin(line, buf, n);
+		line = ft_strjoin(line, buf);
+		//buf = buf - BUFFER_SIZE;
 		if (n < BUFFER_SIZE)
-            break ;
-   	}
+           break ;
+	}	
     free(buf);
-    /*if (n < 0)
+    if (n < 0)
 	{
+		printf("nullnull\n");
         free(line);
         return (NULL);
-    }*/
+    }
     return (line);
 }
 
-char    *get_line(t_gnl *node, char *line)
+char    *get_line(t_holder *node, char *line)
 {
     char    *find;
     char    *temp;
 
-    /*if (!line || !*line)
+    if (!line || !*line)
     {
         free(line);
         (node->prev)->next = node->next;
@@ -51,12 +53,14 @@ char    *get_line(t_gnl *node, char *line)
             (node->next)->prev = node->prev;
         free(node);
         return (NULL);
-    }*/
+    }
     find = ft_strchr(line, '\n');
     if (find)
     {
         node->line = ft_strndup(find + 1, ft_strlen(find + 1));
-        temp = ft_strndup(line, find - line + 1);
+        //printf("node->line : %s\n", node->line);
+		temp = ft_strndup(line, find - line + 1);
+		//printf("temp : %s, find-line+1 : %ld\n", temp, find-line+1);
         free(line);
         return (temp);
     }
@@ -65,10 +69,11 @@ char    *get_line(t_gnl *node, char *line)
 
 
 /*
- * 1. fd가같지 않을 경우만 링크리스트 생성
+ * 1. fd가같지 않을 경우만 링크리스트 생성 (front create)
  */
 t_holder	*create_node(t_holder *head, int fd)
 {
+	
 	t_holder	*node;
 
 	node = head->next;
@@ -80,10 +85,17 @@ t_holder	*create_node(t_holder *head, int fd)
 	}
 	node = (t_holder *)malloc(sizeof(t_holder));
 	node->fd = fd;
-	node->line = ft_strdup("");
+	node->line = ft_strndup("", 0);
 	node->next = head;
 	head->prev = node;
-	return (node);
+	
+/*	if (head->fd == fd)
+		return (head);
+	head = (t_holder *)malloc(sizeof(t_holder));
+	head->fd = fd;
+	head->line = ft_strndup("", 0);
+	*/
+	return (head);
 }
 
 char	*get_next_line(int fd)
@@ -91,15 +103,23 @@ char	*get_next_line(int fd)
 	static t_holder	head;
     t_holder		*now;
     char            *line;
-	
-    if (fd < 0 || BUFFER_SIZE < 1)
+    
+	if (fd < 0 || BUFFER_SIZE < 1)
         return ((void *)0);
+	printf("1");
 	now = create_node(&head,fd);
+	printf("2");
+	if (now->line == NULL)
+		return NULL;
+	printf("3");	
 	line = now->line;
-	printf("line : %s\n", line);
-	//now->line = (void *)0;
-    line = read_file(fd, line);
-    printf("retline : %s, %lu\n", line, ft_strlen(line));
-	//line = get_line(now, line);
+	now->line = (void *)0;
+    //printf("@storline : %s@\n", line);
+	line = read_file(fd, line);
+	//printf("$%s*",line);
+	line = get_line(now, line);
+	//printf("^%s&",line);
+	head = *now;
+	//printf("$now : %s$, $head : %s$\n", now->line, head.line);
     return (line);
 }

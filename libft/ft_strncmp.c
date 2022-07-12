@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 18:16:48 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 16:27:03 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 14:32:02 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,5 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		s2++;
 		n--;
 	}
-	if (*(unsigned char *)s1 - *(unsigned char *)s2 > 0)
-		return (1);
-	else if (*(unsigned char *)s1 - *(unsigned char *)s2 < 0)
-		return (-1);
-	else
-		return (0);
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

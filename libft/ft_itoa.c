@@ -6,13 +6,13 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/08 16:29:06 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	number_size(long number)
+static size_t	number_size(long number)
 {
 	size_t	size;
 

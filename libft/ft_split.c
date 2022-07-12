@@ -6,13 +6,13 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:26:41 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 08:54:18 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 14:36:32 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	count_word(char const *str, char c)
+static size_t	count_word(char const *str, char c)
 {
 	size_t	count;
 
@@ -30,7 +30,7 @@ size_t	count_word(char const *str, char c)
 	return (count);
 }
 
-char	*ft_strndup(char const *str, size_t n)
+static char	*ft_strndup(char const *str, size_t n)
 {
 	size_t	index;
 	char	*dup;
@@ -48,7 +48,7 @@ char	*ft_strndup(char const *str, size_t n)
 	return (dup);
 }
 
-void	free_list(char	**array)
+static void	free_list(char	**array)
 {
 	int	index;
 
@@ -58,7 +58,7 @@ void	free_list(char	**array)
 	free(array);
 }
 
-char	**do_split(char **array, char const *str, char c)
+static char	**do_split(char **array, char const *str, char c)
 {
 	char	*word_start;
 	size_t	index;

@@ -6,18 +6,18 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:43:14 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/09 10:02:42 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 14:37:32 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar(char c, int fd)
+static void	ft_putchar(char c, int fd)
 {
 	write(fd, &c, 1);
 }
 
-void	ft_putnbr(int nb, int fd)
+static void	ft_putnbr(int nb, int fd)
 {
 	int	sign;
 

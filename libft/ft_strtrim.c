@@ -6,13 +6,13 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 14:59:06 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/09 19:39:22 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 14:38:56 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	check_left(char const *s1, char const *set)
+static size_t	check_left(char const *s1, char const *set)
 {
 	size_t	index;
 	size_t	count;
@@ -31,6 +31,7 @@ size_t	check_left(char const *s1, char const *set)
 				s1++;
 				count++;
 				flag = 1;
+				break ;
 			}
 		}
 		if (flag == 0)
@@ -39,7 +40,7 @@ size_t	check_left(char const *s1, char const *set)
 	return (count);
 }
 
-size_t	check_right(char const *s1, char const *set
+static size_t	check_right(char const *s1, char const *set
 		, size_t set_idx, size_t s1_idx)
 {
 	size_t		count;
@@ -59,6 +60,7 @@ size_t	check_right(char const *s1, char const *set
 					break ;
 				flag = 1;
 				s1_idx--;
+				break ;
 			}
 		}
 		if (flag == 0)
@@ -67,7 +69,7 @@ size_t	check_right(char const *s1, char const *set
 	return (count);
 }
 
-size_t	set_total(size_t length, size_t left, size_t right)
+static size_t	set_total(size_t length, size_t left, size_t right)
 {
 	if (length * 2 <= (left + right))
 		return (0);

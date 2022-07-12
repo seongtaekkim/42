@@ -6,13 +6,13 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 18:19:55 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/09 17:53:20 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/11 14:37:53 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	is_space(char c)
+static int	is_space(char c)
 {
 	int	flag;
 
@@ -21,19 +21,10 @@ int	is_space(char c)
 	return (flag);
 }
 
-int	check_and_result(unsigned long long sum, int sign)
-{
-	if (sum > LLONG_MAX && sign == -1)
-		return (0);
-	if (sum >= LLONG_MAX && sign == 1)
-		return (-1);
-	return (sum * sign);
-}
-
 int	ft_atoi(const char *str)
 {
-	unsigned long long	result;
-	int					sign;
+	long	result;
+	int		sign;
 
 	result = 0;
 	sign = 1;
@@ -51,5 +42,5 @@ int	ft_atoi(const char *str)
 		result = result + *str - '0';
 		str++;
 	}
-	return (check_and_result(result, sign));
+	return (result * sign);
 }

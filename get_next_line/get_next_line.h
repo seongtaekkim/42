@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:05:03 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/12 10:08:45 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/13 08:43:42 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ char	*get_next_line(int fd);
 char	*ft_strchr(const char *x, int c);
 char	*ft_strndup(const char *s1, size_t n);
 size_t	ft_strlen(const char *s);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strnjoin(char *s1, char *s2, ssize_t n);
 #endif

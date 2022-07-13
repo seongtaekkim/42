@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:04:52 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/12 18:35:27 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/13 08:43:04 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,17 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strnjoin(char *s1, char *s2, ssize_t n)
 {
 	char	*result;
 	size_t	index;
 	size_t	s1_len;
 	size_t	s2_len;
 
-	if (!s1 || !s2)
+	if (!s1 || !s2 || n <= 0)
 		return (NULL);
 	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	printf("s2len : %zu\n", s2_len);
+	s2_len = n;
 	if (s1_len == 0 && s2_len == 0)
 	{
 		result = (char *)malloc(sizeof(char));

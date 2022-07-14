@@ -6,17 +6,17 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:06:37 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/14 15:18:17 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/13 15:50:30 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
-#include <stdio.h>
+
 typedef struct s_holder
 {
 	int				fd;

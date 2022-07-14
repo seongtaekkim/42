@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:06:00 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/14 15:11:35 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/14 17:17:40 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ char	*read_file(int fd, char *line)
 	buf = malloc(sizeof(char) * BUFFER_SIZE);
 	if (!buf)
 		return (NULL);
-	while (line)
+	while (1)
 	{
 		n = read(fd, buf, BUFFER_SIZE);
 		if (n <= 0)
 			break ;
 		line = ft_strnjoin(line, buf, n);
-		if (n < BUFFER_SIZE)
+		if (n < BUFFER_SIZE || ft_strchr(line, '\n'))
 			break ;
 	}
 	free(buf);

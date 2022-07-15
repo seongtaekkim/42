@@ -6,13 +6,13 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:06:00 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/14 17:17:40 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/07/15 19:25:16 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*read_file(int fd, char *line)
+static char	*read_file(int fd, char *line)
 {
 	char	*buf;
 	ssize_t	n;
@@ -38,7 +38,7 @@ char	*read_file(int fd, char *line)
 	return (line);
 }
 
-void	free_node(t_holder *node)
+static void	free_node(t_holder *node)
 {
 	(node->prev)->next = node->next;
 	if (node->next)
@@ -47,29 +47,23 @@ void	free_node(t_holder *node)
 	node = NULL;
 }
 
-char	*get_line_one(t_holder *node, char *line)
+static char	*get_line_one(t_holder *node, char *line)
 {
-	char	*find;
-	char	*temp;
+	char	*sp;
+	char	*ret_line;
 
-	if (!line || !(*line))
+	sp = ft_strchr(line, '\n');
+	if (sp)
 	{
+		node->line = ft_strndup(sp + 1, ft_strlen(sp + 1));
+		ret_line = ft_strndup(line, sp - line + 1);
 		free(line);
-		free_node(node);
-		return (NULL);
-	}
-	find = ft_strchr(line, '\n');
-	if (find)
-	{
-		node->line = ft_strndup(find + 1, ft_strlen(find + 1));
-		temp = ft_strndup(line, find - line + 1);
-		free(line);
-		return (temp);
+		return (ret_line);
 	}
 	return (line);
 }
 
-t_holder	*create_node(t_holder *head, int fd)
+static t_holder	*create_node(t_holder *head, int fd)
 {
 	t_holder	*node;
 
@@ -82,7 +76,7 @@ t_holder	*create_node(t_holder *head, int fd)
 	}
 	node = (t_holder *)malloc(sizeof(t_holder));
 	if (!node)
-		return ((void *)0);
+		return (NULL);
 	node->fd = fd;
 	node->line = ft_strndup("", 0);
 	node->next = head->next;
@@ -100,12 +94,17 @@ char	*get_next_line(int fd)
 	char			*line;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
-		return ((void *)0);
+		return (NULL);
 	curr_node = create_node(&head, fd);
 	line = curr_node->line;
 	curr_node->line = NULL;
 	line = read_file(fd, line);
+	if (!line || !(*line))
+	{
+		free(line);
+		free_node(curr_node);
+		return (NULL);
+	}
 	line = get_line_one(curr_node, line);
-
 	return (line);
 }

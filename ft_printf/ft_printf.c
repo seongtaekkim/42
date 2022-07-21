@@ -113,7 +113,6 @@ int	set_option(t_options *options, const char *target)
 char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 {
 	int	space;
-	(void)ap;
 	space = 0;
 
 	// 1. format 생성
@@ -260,6 +259,6 @@ int	main(void)
 	//sumAll(2, 10, 20);
 	const char	a = 'a';
 	//const char	*str = "abcde";	
-	ft_printf("test%+-0151.0105c", a);
+	ft_printf("test%+-1.04c", a);
 	return (0);
 }

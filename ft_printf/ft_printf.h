@@ -15,7 +15,8 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-
+# include <stdarg.h>
+#include <stdio.h>
 /*typedef enum s_type
 {
 	c;
@@ -45,26 +46,34 @@ typedef struct s_options
 	t_bool	zero;
 	t_bool	hash;
 	t_bool	precision;
-	char	type;
+	int		type;
 }	t_options;
 
 typedef struct s_format
 {
-	int		tot_len;
+	size_t	tot_len;
 	t_bool	zero;
-	int		zero_size;
+	size_t	zero_size;
 	t_bool	left_align;
 	char	hash_val[3];
 	t_bool	is_show_sign;
+	t_bool	is_print;
+	char	sign;
 }	t_format;
 
-typedef struct s_holder
-{
-	int				fd;
-	char			*line;
-	struct s_holder	*prev;
-	struct s_holder	*next;
-}	t_holder;
-
 int	ft_printf(const char *data, ...);
+void	init(t_options *o, t_format *f);
+int	set_option(t_options *o, const char *target);
+void	set_format(t_options *o, t_format *f);
+
+size_t	ft_strlen(char *str);
+char	*ft_strndup(const char *s1, size_t n);
+char	*c_proc(va_list *ap, t_options *o, t_format *f);
+char	*s_proc(va_list *ap, t_options *o, t_format *f);
+char	*di_proc(va_list *ap, t_options *o, t_format *f);
+char	*u_proc(va_list *ap, t_options *o, t_format *f);
+char	*p_proc(va_list *ap, t_options *o, t_format *f);
+char	*x_proc(va_list *ap, t_options *o, t_format *f);
+
+char	*ft_itou(int n);
 #endif

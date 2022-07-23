@@ -41,6 +41,8 @@ typedef struct s_options
 	t_bool	space;
 	t_bool	plus;
 	t_bool	minus;
+	t_bool	p_minus;
+	t_bool	p_plus;
 	int		width;
 	int		p_width;
 	t_bool	zero;
@@ -54,6 +56,8 @@ typedef struct s_format
 	size_t	tot_len;
 	t_bool	zero;
 	size_t	zero_size;
+	size_t	empty_size;
+	size_t	type_size;
 	t_bool	left_align;
 	char	hash_val[3];
 	t_bool	is_show_sign;
@@ -68,12 +72,15 @@ void	set_format(t_options *o, t_format *f);
 
 size_t	ft_strlen(char *str);
 char	*ft_strndup(const char *s1, size_t n);
+
 char	*c_proc(va_list *ap, t_options *o, t_format *f);
 char	*s_proc(va_list *ap, t_options *o, t_format *f);
 char	*di_proc(va_list *ap, t_options *o, t_format *f);
 char	*u_proc(va_list *ap, t_options *o, t_format *f);
 char	*p_proc(va_list *ap, t_options *o, t_format *f);
 char	*x_proc(va_list *ap, t_options *o, t_format *f);
+char	*x2_proc(va_list *ap, t_options *o, t_format *f);
 
 char	*ft_itou(int n);
+char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash);
 #endif

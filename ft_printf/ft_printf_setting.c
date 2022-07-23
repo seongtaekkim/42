@@ -5,7 +5,6 @@ t_bool	is_number(char c)
 	return (c >= '0' && c <= '9');
 }
 
-
 int	get_type(char data)
 {
 	const char	*type = "csdiuxXp%";
@@ -26,6 +25,8 @@ void	init(t_options *o, t_format *f)
 	o->space = false;
 	o->plus = false;
 	o->minus = false;
+	o->p_plus = false;
+	o->p_minus = false;
 	o->width = 0;
 	o->p_width = 0;
 	o->zero = false;
@@ -35,6 +36,8 @@ void	init(t_options *o, t_format *f)
 	f->tot_len = 0;
 	f->zero = false;
 	f->zero_size = 0;
+	f->empty_size = 0;
+	f->type_size = 0;
 	f->left_align = false;
 	f->hash_val[0] = '\0';
 	f->is_show_sign = false;
@@ -56,6 +59,10 @@ int	set_option(t_options *o, const char *target)
 			o->p_width = o->p_width * 10 + data - '0';
 		if ('.' == data)
 			o->precision = true;
+		if (o->precision == true && '-' == data)
+			o->p_minus = true;
+		if (o->precision == true && '+' == data)
+			o->p_plus = true;
 		else if ('0' == data && !is_number(target[index - 1]))
 			o->zero = true;
 		else if (' ' == data)
@@ -91,17 +98,17 @@ void	set_format(t_options *o, t_format *f)
 		if (o->zero && (o->precision && o->p_width > 0))
 		{
 			f->zero = true;
-			f->zero_size = o->p_width;
+			//f->zero_size = o->p_width;
 		}
 		else if (o->zero && !o->precision)
 		{
 			f->zero = true;
-			f->zero_size = o->width;
+			//f->zero_size = o->width;
 		}
 	}
-	// is show sign set
-	if (o->plus)
-		f->is_show_sign = true;
+	// is show sign set => d,i에서만 할것
+	//iif (o->plus)
+	//	f->is_show_sign = true;
 	//space += (o->plus || o->space);
 	if (o->width && (o->width > o->p_width))
 		space += o->width;

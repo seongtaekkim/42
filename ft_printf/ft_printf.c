@@ -18,7 +18,7 @@ char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 {
 	int	space;
 	char *(*fp[10])(va_list *, t_options *, t_format *) 
-		= {c_proc, s_proc, di_proc, u_proc, x_proc, x_proc, p_proc};
+		= {c_proc, s_proc, di_proc, di_proc, u_proc, x_proc, x2_proc, p_proc};
 	space = 0;
 
 	// 1. format 생성
@@ -43,39 +43,43 @@ char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 		data[0] = '\0';
 		return (data);
 	}
-	printf("type data : %s\n", type_data);
+	//printf("type data : %s\n", type_data);
 	size_t	str_size = ft_strlen(type_data);
 	//f->tot_len += str_size;
 	data = (char *)malloc(sizeof(char) * (f->tot_len + 1 + (o->plus || o->space)));
 	size_t index = 0;
 	size_t	jndex = 0;
-	printf("tot : %zu, sign : %c\n", f->tot_len, f->sign);
+	//printf("zero : %zu, type : %zu, sign : %c\n", f->zero_size,f->type_size,f->sign);
 	if (f->left_align)
 	{
 		if (f->sign)
 			data[index++] = f->sign;
-		while (type_data[jndex])
+		while (jndex < f->type_size)
 		{
 			data[index] = type_data[jndex++];
 			index++;
 		}
-		while (index < f->tot_len - f->is_show_sign)
+		jndex = 0;
+		while (jndex++ < f->empty_size)
 			data[index++] = ' ';
+		//printf("\n\ntot : %zu, empt: %zu, index : %zu, data : $%s$\n\n",f->tot_len,f->empty_size, index, data);
 	}
 	else
 	{
 		if (f->sign)
 			data[index++] = f->sign;
-		while (jndex++ < (f->tot_len - f->zero_size - str_size))
+		while (jndex++ < f->empty_size)
 			data[index++] = ' ';
 		jndex = 0;
-		while (f->zero && jndex++ < (f->zero_size - str_size)) 
+		//printf("\nzero_size : %zu\n", f->zero_size);
+		while ( jndex++ < f->zero_size) 
 			data[index++] = '0';
-		while (*type_data)
+		jndex = 0;
+		while (jndex < f->type_size)
 		{
-			data[index] = *type_data;
+			data[index] = type_data[jndex];
 			index++;
-			type_data++;
+			jndex++;
 		}
 	}
 	return (data);
@@ -134,73 +138,3 @@ int	ft_printf(const char *data, ...)
 	va_end(ap);
 	return (0);
 }
-
-int	main(void)
-{
-	//const char	a = 'a';
-	//const char	*str = "abcde";	
-	//ft_printf("test%5c$\n", a);
-	//printf("test%5c$\n", a);
-	//ft_printf("%010.s\n", str);
-	//printf("%10.s\n", str);
-	//ft_printf("%-10.s\n", str);
-	printf("%+04d$\n",  11);
-	printf("%+04d$\n",  1111);
-	printf("%+04d$\n\n",  11111);
-	
-	printf("%+04d$\n",  11);
-	printf("%+04d$\n",  1111);
-	printf("%+04d$\n\n",  11111);
-
-	printf("%-04d$\n",  111);
-	printf("%-04d$\n",  1111);
-	printf("%-04d$\n\n",  11111);
-
-	printf("====== . ======\n");
-	printf("%04.d$\n",  111);
-	printf("%04.d$\n",  1111);
-	printf("%04.d$\n\n",  11111);
-
-	printf("%+04.d$\n",  11);
-	printf("%+04.d$\n",  1111);
-	printf("%+04.d$\n\n",  11111);
-	
-	printf("%-04.d$\n",  11);
-	printf("%-04.d$\n",  1111);
-	printf("%-04.d$\n\n",  11111);
-
-
-	printf("===== .M =====\n");
-	printf("%4.01d$\n",  111);
-	printf("%4.04d$\n",  111);
-	printf("%4.05d$\n\n",  111);
-
-	printf("%+4.01d$\n",  111);
-	printf("%+4.04d$\n",  111);
-	printf("%+4.05d$\n\n",  111);
-
-	printf("%-+4.01d$\n",  111);
-	printf("%-+4.04d$\n",  111);
-	printf("%-+4.05d$\n",  111);
-
-	
-	printf("===== .M =====\n");
-	printf("%4.01s$\n",  "111");
-	printf("%4.01s$\n",  "1111");
-	printf("%4.01s$\n",  "11111");
-	
-	//ft_printf("%+-4.5d$\n",111);
-	return (0);
-}
-
-
-
-
-
-
-
-
-
-
-
-

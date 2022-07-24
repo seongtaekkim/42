@@ -16,6 +16,7 @@ static size_t	number_size(int number)
 {
 	int	size;
 
+	size = 0;
 	while (1)
 	{
 		number /= 10;
@@ -32,6 +33,8 @@ char	*ft_itou(int n)
 	char	*array;
 	int		size;
 
+	if (n < 0)
+		n *= -1;
 	number = n;
 	size = number_size(n);
 	array = malloc(sizeof(char) * (size + 1));

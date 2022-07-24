@@ -71,41 +71,87 @@ char	*s_proc(va_list *ap, t_options *o, t_format *f)
 
 char	*di_proc(va_list *ap, t_options *o, t_format *f)
 {
-	int		data;
+	int		ret;
 	size_t	size;
-	char	*c_data;
-	data = va_arg(*ap, int);
-	c_data = ft_itou(data);
-	/*
-	size = ft_strlen(c_data);
-	if (!o->procision)
+	char	*data;
+	ret = va_arg(*ap, int);
+	data = ft_itou(ret);
+	size = ft_strlen(data);
+
+	if (ret < 0)
+		f->sign = '-';	
+	if (o->plus || o->p_plus)
 	{
-		if (f->is_show_sign)
-		{
-			if (data >= 0)
+		if (ret >= 0)
 				f->sign = '+';
-			else
-				f->sign = '-';
+	}
+	else if (o->space)
+		if (ret >= 0)
+			f->sign = ' ';
+
+	//printf("\nutoa : %s, ret : %u\n",data, ret);
+/*	if (o->width > size && !o->p_minus)
+	{
+		if (o->precision)
+		{
+			if (o->p_width >= size)
+				f->zero_size = o->p_width - size;
 		}
-		else if (o->space)
-			if (data >= 0)
-				f->sign = ' ';
-		if (o->width > (f->is_show_sign + size))
-			
-
+		else if (o->zero && (!o->minus && !o->p_minus))
+			f->zero_size = o->width - size - !(!f->sign);
+		f->empty_size = o->width - size - f->zero_size - !(!f->sign);
+		//printf("\nenmpty : %zu, zero : %zu\n", f->empty_size, f->zero_size);
 	}
-	else if (o->precision && !o->p_width)
+	else if (o->p_width >= size)
 	{
-
+		if (o->p_width > o->width)
+			o->width = o->p_width;
+		if (o->p_minus)
+		{
+			f->empty_size = o->p_width - size;
+		}
+		else
+		{
+			f->zero_size = o->width - size;
+			f->empty_size = o->width - size - f->zero_size;
+		}
 	}
-	else
+*/
+	if (!o->precision && o->minus)
 	{
+		if (o->width > (size - !(!f->sign)))
+			f->empty_size = o->width - size - !(!f->sign);
+	}	
+	if (o->p_minus && !o->p_width)
+	{
+		if (o->width > size)
+			f->empty_size = o->width - size - !(!f->sign);
 	}
-	*/		
+
+	if (o->precision && !o->p_minus && o->width && o->p_width)
+	{
+		if (o->p_width > size)
+			f->zero_size = o->p_width - size;
+		if (o->width > o->p_width && o->width > size)
+			f->empty_size = o->width - o->p_width;
+		if (o->plus && f->empty_size)
+			f->empty_size -= 1;
+		if (f->sign == '-' && !o->plus)
+			f->tot_len += 1;	
+	}
+
+	if (o->precision && o->p_minus &&  o->p_width)
+	{
+		if (o->p_width > size)
+			f->empty_size = o->p_width - size - !(!o->p_minus);
+	}
 
 
+	f->type_size = size;
+	f->tot_len +=  size + f->zero_size + f->empty_size + (o->plus || o->space);
+	//printf("\nenmpty : %zu, zero : %zu, tot : %zu\n", f->empty_size, f->zero_size, f->tot_len);
 
-	if (f->is_show_sign)
+	/*if (f->is_show_sign)
 	{
 		if (data >= 0)
 			f->sign = '+';
@@ -118,24 +164,79 @@ char	*di_proc(va_list *ap, t_options *o, t_format *f)
 		f->zero = true;
 		f->zero_size = o->p_width;
 		f->left_align = false;
-	}
-	return (c_data);
+	}*/
+	return (data);
 }
 
 char	*u_proc(va_list *ap, t_options *o, t_format *f)
 {
-	(void)ap;
-	(void)o;
-	(void)f;
-	return (NULL);
+	char			*data;
+	unsigned int	ret;
+	size_t			size;
+
+	ret = va_arg(*ap, unsigned int);
+	data = ft_utoa(ret);
+	//printf("\nutoa : %s, ret : %u\n",data, ret);
+	size = ft_strlen(data);
+	//if (o->p_minus && o->p_width)
+	//	o->width = o->p_width;
+	if (o->width > size && !o->p_minus)
+	{
+		if (o->precision)
+		{
+			if (o->p_width >= size)
+				f->zero_size = o->p_width - size;
+		}
+		else if (o->zero && (!o->minus && !o->p_minus))
+			f->zero_size = o->width - size;
+		f->empty_size = o->width - size - f->zero_size;
+		//printf("\nenmpty : %zu, zero : %zu\n", f->empty_size, f->zero_size);
+	}
+	else if (o->p_width >= size)
+	{
+		if (o->p_width > o->width)
+			o->width = o->p_width;
+		if (o->p_minus)
+		{
+			f->empty_size = o->p_width - size;
+		}
+		else
+		{
+			f->zero_size = o->width - size;
+			f->empty_size = o->width - size - f->zero_size;
+		}
+	}
+
+	if (o->p_minus && !o->p_width)
+	{
+		if (o->width > size)
+			f->empty_size = o->width - size;
+	}
+	//printf("\nenmpty : %zu, zero : %zu\n", f->empty_size, f->zero_size);
+
+	f->type_size = size;
+	f->tot_len = size + f->zero_size + f->empty_size;
+	return (data);
 }
 
 char	*p_proc(va_list *ap, t_options *o, t_format *f)
 {
-	(void)ap;
-	(void)o;
-	(void)f;
-	return (NULL);
+	char			*data;
+	unsigned long long	ret;
+	size_t			size;
+	
+	ret = va_arg(*ap, unsigned long long);
+	data = ft_p_base(ret);
+	size = ft_strlen(data);
+	if (o->width > size)
+	{
+		if (o->zero && (!o->minus && !o->p_minus))
+			f->zero_size = o->width - size;
+		f->empty_size = o->width - size - f->zero_size;
+	}
+	f->type_size = size;
+	f->tot_len = size + f->zero_size + f->empty_size;
+	return (data);
 }
 
 char	*x_proc(va_list *ap, t_options *o, t_format *f)
@@ -143,7 +244,7 @@ char	*x_proc(va_list *ap, t_options *o, t_format *f)
 	char			*data;
 	unsigned int	ret;
 	size_t			size;
-	int				negetive;
+
 	ret = va_arg(*ap, unsigned int);
 	data = ft_nbr_base(ret, o->hash, 'x');
 	size = ft_strlen(data);
@@ -164,7 +265,7 @@ char	*x2_proc(va_list *ap, t_options *o, t_format *f)
 	char			*data;
 	unsigned int	ret;
 	size_t			size;
-	int				negetive;
+	
 	ret = va_arg(*ap, unsigned int);
 	data = ft_nbr_base(ret, o->hash, 'X');
 	size = ft_strlen(data);

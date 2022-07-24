@@ -90,7 +90,8 @@ void	set_format(t_options *o, t_format *f)
 
 	// 1. format 생성
 	// left_align set
-	if (o->minus)
+	
+	if (o->minus || o->p_minus)
 		f->left_align = true;
 	else
 	{
@@ -110,11 +111,6 @@ void	set_format(t_options *o, t_format *f)
 	//iif (o->plus)
 	//	f->is_show_sign = true;
 	//space += (o->plus || o->space);
-	if (o->width && (o->width > o->p_width))
-		space += o->width;
-	else
-		space += o->p_width;
-	f->tot_len = space;
 }
 
 

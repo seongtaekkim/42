@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static int	compute_number_length(unsigned int number, int radix, int hsize)
+static int	compute_number_length(unsigned long long number, int radix, int hsize)
 {
 	unsigned int	length;
 
@@ -55,6 +55,31 @@ char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash)
 			string[length + 1 - index++] = base[number % 16];
 		else
 			string[length - 1 - index++] = base[number % 16];
+		number /= 16;
+	}
+	string[length] = '\0';
+	return (string);
+}
+
+char	*ft_p_base(unsigned long long number)
+{
+	int			index;
+	int			length;
+	char		*string;
+	const char	base[17] = "0123456789abcdef";
+	int			hsize;
+
+	hsize = 2;
+	length = compute_number_length(number, 16, hsize);
+	string = (char *)malloc((length + 1) * sizeof(char));
+	index = hsize;
+	if (!string)
+		return (0);
+	string[0] = '0';
+	string[1] = 'x';
+	while (index < length)
+	{
+		string[length + 1 - index++] = base[number % 16];
 		number /= 16;
 	}
 	string[length] = '\0';

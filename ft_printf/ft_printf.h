@@ -43,8 +43,8 @@ typedef struct s_options
 	t_bool	minus;
 	t_bool	p_minus;
 	t_bool	p_plus;
-	int		width;
-	int		p_width;
+	size_t	width;
+	size_t	p_width;
 	t_bool	zero;
 	t_bool	hash;
 	t_bool	precision;
@@ -82,5 +82,7 @@ char	*x_proc(va_list *ap, t_options *o, t_format *f);
 char	*x2_proc(va_list *ap, t_options *o, t_format *f);
 
 char	*ft_itou(int n);
+char	*ft_utoa(unsigned int n);
 char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash);
+char	*ft_p_base(unsigned long long number);
 #endif

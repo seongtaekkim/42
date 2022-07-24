@@ -44,16 +44,19 @@ char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 		return (data);
 	}
 	//printf("type data : %s\n", type_data);
-	size_t	str_size = ft_strlen(type_data);
 	//f->tot_len += str_size;
 	data = (char *)malloc(sizeof(char) * (f->tot_len + 1 + (o->plus || o->space)));
 	size_t index = 0;
 	size_t	jndex = 0;
 	//printf("zero : %zu, type : %zu, sign : %c\n", f->zero_size,f->type_size,f->sign);
+	//	printf("\n\ntot : %zu, empt: %zu, index : %zu, data : $%s$\n\n",f->tot_len,f->empty_size, index, data);
 	if (f->left_align)
 	{
 		if (f->sign)
 			data[index++] = f->sign;
+		while ( jndex++ < f->zero_size) 
+			data[index++] = '0';
+		jndex = 0;
 		while (jndex < f->type_size)
 		{
 			data[index] = type_data[jndex++];
@@ -66,10 +69,10 @@ char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 	}
 	else
 	{
-		if (f->sign)
-			data[index++] = f->sign;
 		while (jndex++ < f->empty_size)
 			data[index++] = ' ';
+		if (f->sign)
+			data[index++] = f->sign;
 		jndex = 0;
 		//printf("\nzero_size : %zu\n", f->zero_size);
 		while ( jndex++ < f->zero_size) 
@@ -128,11 +131,22 @@ int	ft_printf(const char *data, ...)
 	{
 		if (*data == '%')
 		{
+			if ((data + 1) == NULL)
+				return (0);
+			if (*(data + 1) == '%')
+			{
+				write(1, &(*data), 1);
+				data += 2;
+				continue;
+			}
 			format_len = do_printf(&ap, ++data);
 			data = data + format_len;
 		}
 		else
-			write(1, &(*data), 1);
+		{
+			//printf("data : $%c$\n", *data);
+			write(1, &(*data), 2);
+		}
 		data++;
 	}
 	va_end(ap);

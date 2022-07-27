@@ -73,7 +73,7 @@ void	set_format(t_options *o, t_format *f);
 size_t	ft_strlen(char *str);
 char	*ft_strndup(const char *s1, size_t n);
 
-char	*c_proc(va_list *ap, t_options *o, t_format *f);
+int	c_proc(va_list *ap, t_options *o, t_format *f);
 char	*s_proc(va_list *ap, t_options *o, t_format *f);
 char	*di_proc(va_list *ap, t_options *o, t_format *f);
 char	*u_proc(va_list *ap, t_options *o, t_format *f);

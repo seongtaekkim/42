@@ -14,32 +14,37 @@
 #include "ft_printf.h"
 
 
-char	*set_print_data(t_format *f, t_options *o, va_list *ap)
+int set_print_data(t_format *f, t_options *o, va_list *ap)
 {
 	int	space;
-	char *(*fp[10])(va_list *, t_options *, t_format *) 
-		= {c_proc, s_proc, di_proc, di_proc, u_proc, x_proc, x2_proc, p_proc};
+	//int	(*fp[10])(va_list *, t_options *, t_format *) 
+	//	= {c_proc, s_proc, di_proc, di_proc, u_proc, x_proc, x2_proc, p_proc};
+	int	(*fp[10])(va_list *, t_options *, t_format *) = {c_proc};
 	space = 0;
 
 	// 1. format 생성
 	set_format(o, f);
 	
-	char	*data;
-	char	*type_data;
-	type_data = (*fp[o->type])(ap, o, f);
+	//char	*data;
+	//char	*type_data;
+	int		ret_code;
+	ret_code = (*fp[o->type])(ap, o, f);
+	/*
 	if (!f->is_print)
 	{
 		data = (char *)malloc(sizeof(char));
 		data[0] = '\0';
 		return (data);
 	}
+*/
 	//printf("type data : %s\n", type_data);
 	//f->tot_len += str_size;
-	data = (char *)malloc(sizeof(char) * (f->tot_len + 1 + (o->plus || o->space)));
-	size_t index = 0;
-	size_t	jndex = 0;
+	//data = (char *)malloc(sizeof(char) * (f->tot_len + 1 + (o->plus || o->space)));
+	//size_t index = 0;
+	//size_t	jndex = 0;
 	//printf("zero : %zu, type : %zu, sign : %c\n", f->zero_size,f->type_size,f->sign);
 	//	printf("\n\ntot : %zu, empt: %zu, index : %zu, data : $%s$\n\n",f->tot_len,f->empty_size, index, data);
+	/*
 	if (f->left_align)
 	{
 		if (f->sign)
@@ -77,7 +82,8 @@ char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 		}
 		data[index] = '\0';
 	}
-	return (data);
+	*/
+	return (0);
 }
 
 int	show(char *str)
@@ -95,15 +101,16 @@ int	show(char *str)
 
 int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
 {
-	char		*data;
+	(void) prt_cnt;
+	//char		*data;
 	t_options	options;
 	t_format	format;
 	int			format_len;
-
+	int			ret_code;
 	init(&options, &format);
 	format_len = set_option(&options, format_syntax);
-	data = set_print_data(&format, &options, ap);
-	*prt_cnt = show(data);
+	ret_code = set_print_data(&format, &options, ap);
+	//*prt_cnt = show(data);
 	return (format_len);
 }
 

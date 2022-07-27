@@ -23,17 +23,7 @@ char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 
 	// 1. format 생성
 	set_format(o, f);
-
-/*	
-	printf("format : ==========\n");
-	printf("format.tot_len : %zu\n",f->tot_len);
-	printf("format.zero : %d\n",f->zero);
-	printf("format.zero_size : %zu\n",f->zero_size);
-	printf("format.left_align : %d\n",f->left_align);
-	printf("format.hash_val : %s\n",f->hash_val);
-	printf("format.is_show_sign : %d\n",f->is_show_sign);
-	printf("format : ==========\n");
-*/
+	
 	char	*data;
 	char	*type_data;
 	type_data = (*fp[o->type])(ap, o, f);
@@ -65,6 +55,7 @@ char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 		jndex = 0;
 		while (jndex++ < f->empty_size)
 			data[index++] = ' ';
+		data[index] = '\0';
 		//printf("\n\ntot : %zu, empt: %zu, index : %zu, data : $%s$\n\n",f->tot_len,f->empty_size, index, data);
 	}
 	else
@@ -84,17 +75,25 @@ char	*set_print_data(t_format *f, t_options *o, va_list *ap)
 			index++;
 			jndex++;
 		}
+		data[index] = '\0';
 	}
 	return (data);
 }
 
-void	show(char *str)
+int	show(char *str)
 {
-	while (*str)
-		write(1, str++, 1);
+	int	index;
+
+	index = 0;
+	while (str[index])
+	{
+		write(1, &(str[index]), 1);
+		index++;
+	}
+	return (index);
 }
 
-int	do_printf(va_list *ap, const char *format_syntax)
+int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
 {
 	char		*data;
 	t_options	options;
@@ -103,21 +102,8 @@ int	do_printf(va_list *ap, const char *format_syntax)
 
 	init(&options, &format);
 	format_len = set_option(&options, format_syntax);
-	/*
-	printf("=================\n");
-	printf("options.space : %d\n", options.space);
-	printf("options.plus : %d\n", options.plus);
-	printf("options.minus : %d\n", options.minus);
-	printf("options.width : %d\n", options.width);
-	printf("options.p_width : %d\n", options.p_width);
-	printf("options.zero : %d\n", options.zero);
-	printf("options.hash : %d\n", options.hash);
-	printf("options.precision : %d\n", options.precision);
-	printf("options.type: %c\n", options.type);
-	printf("=================\n");
-	*/
 	data = set_print_data(&format, &options, ap);
-	show(data);
+	*prt_cnt = show(data);
 	return (format_len);
 }
 
@@ -125,30 +111,39 @@ int	ft_printf(const char *data, ...)
 {
 	va_list ap;
 	int	format_len;
+	int	i;
+	int	prt_cnt;
+	int	prt_cnt_b;
 
+	i = 0;
+	prt_cnt = 0;
 	va_start(ap, data);
-	while (*data)
+	while (1)
 	{
-		if (*data == '%')
+		prt_cnt_b = prt_cnt;
+		if (data[i] == '%')
 		{
-			if ((data + 1) == NULL)
-				return (0);
-			if (*(data + 1) == '%')
+			//if ((&data[i + 1]) == NULL)
+			//	return (0);
+			if (data[i + 1] == '%')
 			{
-				write(1, &(*data), 1);
-				data += 2;
+				write(1, &(data[i]), 1);
+				i += 2;
 				continue;
 			}
-			format_len = do_printf(&ap, ++data);
-			data = data + format_len;
+			format_len = do_printf(&ap, &data[++i], &prt_cnt);
+			i = i + format_len; 
 		}
 		else
 		{
-			//printf("data : $%c$\n", *data);
-			write(1, &(*data), 2);
+			printf("p");
+			write(1, &(data[i]), 1);
+			prt_cnt += 1;
+			i++;
 		}
-		data++;
+		if (prt_cnt_b == prt_cnt)
+			break ;
 	}
 	va_end(ap);
-	return (0);
+	return (prt_cnt);
 }

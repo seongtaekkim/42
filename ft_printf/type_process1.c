@@ -8,20 +8,21 @@ char	*c_proc(va_list *ap, t_options *o, t_format *f)
 	size_t	size;
 
 	c = va_arg(*ap, unsigned int);
-	if (c == 0)
+	/*if (c == 0)
 	{
 		data = (char *)malloc(sizeof(char));
 		data[0] = '\0';
 		size = 0;
 	}
 	else
-	{
+	{*/
 		data = (char *)malloc(sizeof(char) + 1);
 		data[0] = c;
 		data[1] = '\0';
 		size = 1;
-	}
-	if (o->precision && o->p_width)
+	//}
+	printf("dddd : %d\n", printf("%s","\0\0"));
+		if (o->precision && o->p_width)
 		if (o->p_minus || o->p_plus)
 			o->width = o->p_width;
 	if (o->width > size)

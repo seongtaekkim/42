@@ -76,6 +76,7 @@ int	set_option(t_options *o, const char *target)
 		else if (!is_number(data) && get_type(data) > -1)
 		{
 			o->type = get_type(data);
+			index++;
 			break ;
 		}
 		index++;

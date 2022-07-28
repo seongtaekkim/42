@@ -5,7 +5,9 @@ int	p_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	char			*data;
 	long long	ret;
 	size_t			size;
+	ssize_t		prt;
 
+	prt = 0;
 	ret = va_arg(*ap, long long);
 	/*if (ret == NULL)
 	{
@@ -24,6 +26,12 @@ int	p_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	f->type_size = size;
 	f->tot_len = size + f->zero_size + f->empty_size;
 
+	while (o->width > size)
+	{
+		prt += write(1, " ", 1);
+		o->width += -1;
+	}
+	*prt_cnt += prt;
 	write(1, data, size);
 	*prt_cnt = *prt_cnt + size;
 	free(data);

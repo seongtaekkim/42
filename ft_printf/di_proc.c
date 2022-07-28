@@ -6,6 +6,9 @@ int	di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	int		ret;
 	size_t	size;
 	char	*data;
+	ssize_t	prt;
+
+	prt = 0;
 	ret = va_arg(*ap, int);
 	data = ft_itou(ret);
 	size = ft_strlen(data);
@@ -13,12 +16,7 @@ int	di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	if (ret < 0)
 	{
 		f->sign = '-';
-		write(1, "-", 1);
-		*prt_cnt += 1;
 	}
-	write(1, data, size);
-	*prt_cnt = *prt_cnt + size;
-	free(data);
 	if (o->plus || o->p_plus)
 	{
 		if (ret >= 0)
@@ -60,5 +58,18 @@ int	di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 
 	f->type_size = size;
 	f->tot_len +=  size + f->zero_size + f->empty_size + (o->plus || o->space);
+
+	while (o->width > (size + !(!f->sign)))
+	{
+		prt += write(1, " ", 1);
+		o->width += -1;
+	}
+	if (f->sign == '-')
+		prt += write(1, "-", 1);
+	*prt_cnt += prt;
+	write(1, data, size);
+	*prt_cnt += size;
+	free(data);
+
 	return (0);
 }

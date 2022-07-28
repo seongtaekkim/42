@@ -73,16 +73,16 @@ void	set_format(t_options *o, t_format *f);
 size_t	ft_strlen(char *str);
 char	*ft_strndup(const char *s1, size_t n);
 
-int	c_proc(va_list *ap, t_options *o, t_format *f);
-char	*s_proc(va_list *ap, t_options *o, t_format *f);
-char	*di_proc(va_list *ap, t_options *o, t_format *f);
-char	*u_proc(va_list *ap, t_options *o, t_format *f);
-char	*p_proc(va_list *ap, t_options *o, t_format *f);
-char	*x_proc(va_list *ap, t_options *o, t_format *f);
-char	*x2_proc(va_list *ap, t_options *o, t_format *f);
+int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int	p_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int	di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int	u_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int	x_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int	x2_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
 
 char	*ft_itou(int n);
 char	*ft_utoa(unsigned int n);
-char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash);
+char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash, int xindex);
 char	*ft_p_base(unsigned long long number);
 #endif

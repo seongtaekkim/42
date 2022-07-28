@@ -27,12 +27,12 @@ static int	compute_number_length(unsigned long long number, int radix, int hsize
 	return (length);
 }
 
-char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash)
+char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash, int xindex)
 {
 	int			index;
 	int			length;
 	char		*string;
-	const char	base[17] = "0123456789abcdef";
+	const char	base[2][17] = {"0123456789abcdef", "0123456789ABCDEF"};
 	int			hsize;
 
 	if (is_hash)
@@ -52,9 +52,9 @@ char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash)
 	while (index < length)
 	{
 		if (is_hash)
-			string[length + 1 - index++] = base[number % 16];
+			string[length + 1 - index++] = base[xindex][number % 16];
 		else
-			string[length - 1 - index++] = base[number % 16];
+			string[length - 1 - index++] = base[xindex][number % 16];
 		number /= 16;
 	}
 	string[length] = '\0';

@@ -14,12 +14,13 @@
 #include "ft_printf.h"
 
 
-int set_print_data(t_format *f, t_options *o, va_list *ap)
+int set_print_data(t_format *f, t_options *o, va_list *ap, int *prt_cnt)
 {
 	int	space;
 	//int	(*fp[10])(va_list *, t_options *, t_format *) 
 	//	= {c_proc, s_proc, di_proc, di_proc, u_proc, x_proc, x2_proc, p_proc};
-	int	(*fp[10])(va_list *, t_options *, t_format *) = {c_proc};
+	int	(*fp[8])(va_list *, t_options *, t_format *, int *) 
+		= {c_proc, s_proc, di_proc, di_proc, u_proc, x_proc, x2_proc, p_proc};
 	space = 0;
 
 	// 1. format 생성
@@ -28,7 +29,7 @@ int set_print_data(t_format *f, t_options *o, va_list *ap)
 	//char	*data;
 	//char	*type_data;
 	int		ret_code;
-	ret_code = (*fp[o->type])(ap, o, f);
+	ret_code = (*fp[o->type])(ap, o, f, prt_cnt);
 	/*
 	if (!f->is_print)
 	{
@@ -86,22 +87,8 @@ int set_print_data(t_format *f, t_options *o, va_list *ap)
 	return (0);
 }
 
-int	show(char *str)
-{
-	int	index;
-
-	index = 0;
-	while (str[index])
-	{
-		write(1, &(str[index]), 1);
-		index++;
-	}
-	return (index);
-}
-
 int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
 {
-	(void) prt_cnt;
 	//char		*data;
 	t_options	options;
 	t_format	format;
@@ -109,7 +96,7 @@ int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
 	int			ret_code;
 	init(&options, &format);
 	format_len = set_option(&options, format_syntax);
-	ret_code = set_print_data(&format, &options, ap);
+	ret_code = set_print_data(&format, &options, ap, prt_cnt);
 	//*prt_cnt = show(data);
 	return (format_len);
 }
@@ -125,17 +112,18 @@ int	ft_printf(const char *data, ...)
 	i = 0;
 	prt_cnt = 0;
 	va_start(ap, data);
-	while (1)
+	while (data[i])
 	{
 		prt_cnt_b = prt_cnt;
 		if (data[i] == '%')
 		{
-			//if ((&data[i + 1]) == NULL)
-			//	return (0);
+			if ((&data[i + 1]) == NULL)
+				return (0);
 			if (data[i + 1] == '%')
 			{
 				write(1, &(data[i]), 1);
 				i += 2;
+				prt_cnt += 1;
 				continue;
 			}
 			format_len = do_printf(&ap, &data[++i], &prt_cnt);
@@ -143,13 +131,12 @@ int	ft_printf(const char *data, ...)
 		}
 		else
 		{
-			printf("p");
 			write(1, &(data[i]), 1);
 			prt_cnt += 1;
 			i++;
 		}
-		if (prt_cnt_b == prt_cnt)
-			break ;
+		//if (prt_cnt_b == prt_cnt)
+		//	break ;
 	}
 	va_end(ap);
 	return (prt_cnt);

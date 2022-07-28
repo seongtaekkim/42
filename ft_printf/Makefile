@@ -5,7 +5,12 @@ SRCS	=	ft_printf.c \
 			ft_nbr_base.c	\
 			ft_utoa.c	\
 			util.c	\
-			c_proc.c
+			c_proc.c	\
+			s_proc.c	\
+			p_proc.c	\
+			di_proc.c	\
+			u_proc.c	\
+			x_proc.c
 OBJS	= $(SRCS:.c=.o)
 RM		= rm -f
 LIBC	= ar -rcs

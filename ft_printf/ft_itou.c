@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static size_t	number_size(int number)
+static size_t	number_size(long number)
 {
 	int	size;
 
@@ -29,14 +29,14 @@ static size_t	number_size(int number)
 
 char	*ft_itou(int n)
 {
-	int		number;
+	long	number;
 	char	*array;
 	int		size;
 
-	if (n < 0)
-		n *= -1;
 	number = n;
 	size = number_size(n);
+	if (number < 0)
+		number = number * -1;
 	array = malloc(sizeof(char) * (size + 1));
 	if (!array)
 		return (NULL);

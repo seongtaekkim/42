@@ -105,39 +105,82 @@ int	init(int argc, char **argv, char **envp, t_arg **arg)
 	return (0);
 }
 
-int	pipex(int pipe_fd[2], int *pid, t_arg *arg, char **envp)
+int	child_proc(int pipe_fd[2], t_arg *arg, char **envp, int i)
 {
 	int fd;
-	//printf("pid : %d\n", *pid);
-	if (*pid < 0)
-		return (1);
-	else if (!*pid)
+	int w_fd = 0;
+	printf("child start index : %d\n", i);
+	if (i % 2 == 0)
 	{
+		printf("1111\n");
 		close(pipe_fd[PIPE_R]);
-		int w_fd = dup2(pipe_fd[PIPE_W], STDOUT_FILENO);
+		printf("22222\n");
+		//w_fd = dup2(pipe_fd[PIPE_W], STDOUT_FILENO);
+		printf("33333\n");
 		close(pipe_fd[PIPE_W]);
-		if (w_fd == -1)
-			return (1);
+		printf("arh111111");
+	}
+	else
+	{
+		close(pipe_fd[PIPE_W]);
+		w_fd = dup2(pipe_fd[PIPE_R], STDIN_FILENO);
+		close(pipe_fd[PIPE_R]);
+		printf("2222222");
+	}
+	printf("aegaweg");
+	if (w_fd == -1)
+		return (1);
+	if (i == 0)
+	{
 		fd = open(arg->infile, O_RDONLY);
-		//printf("pipex infile : %s\n", arg->infile);
+		printf("pipex infile : %s\n", arg->infile);
 		if (fd == -1)
 			return (1);
-		int r_fd = dup2(fd, STDIN_FILENO);
+		int w_fd = dup2(fd, STDIN_FILENO);
 		close(fd);
-		if (r_fd == -1)
+		if (w_fd == -1)
 			return (1);
+	}
+	if (i == 0)
+	{
 		if (execve(arg->cmd1, arg->cmd_arg1, envp) == -1)
 			return (1);
 	}
-	else if(*pid > 0)
+	if (i == 1)
 	{
-		wait(NULL);
-		//waitpid(*pid, NULL, WNOHANG);
-		close(pipe_fd[PIPE_W]);
-		int r_fd = dup2(pipe_fd[PIPE_R], STDIN_FILENO);
-		close(pipe_fd[PIPE_R]);
-		if (r_fd == -1)
+		printf("last exec start\n");
+		if (execve(arg->cmd2, arg->cmd_arg2, envp) == -1)
 			return (1);
+	}
+	return (0);
+}
+
+int	parent_proc(int pipe_fd[2], t_arg *arg, int i, int *pid)
+{
+	int fd;
+	int	r_fd;
+	printf("parent start index : %d, pid : %d\n",i, *pid);
+	//wait(NULL);
+	printf("wait end\n");
+	waitpid(*pid, NULL, WNOHANG);
+	if (i % 2 == 0)
+	{
+		close(pipe_fd[PIPE_W]);
+		r_fd = dup2(pipe_fd[PIPE_R], STDIN_FILENO);
+		printf("parent rfd\n");
+		close(pipe_fd[PIPE_R]);
+	}
+	else
+	{	
+		close(pipe_fd[PIPE_R]);
+		r_fd = dup2(pipe_fd[PIPE_W], STDOUT_FILENO);
+		close(pipe_fd[PIPE_W]);
+	}
+	if (r_fd == -1)
+		return (1);
+	// 끝날때만 설정
+	if (i == 1)
+	{
 		fd = open(arg->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		//printf("pipex outfile : %s\n", arg->outfile);
 		if (fd == -1)
@@ -146,29 +189,60 @@ int	pipex(int pipe_fd[2], int *pid, t_arg *arg, char **envp)
 		close(fd);
 		if (w_fd == -1)
 			return (1);
-		if (execve(arg->cmd2, arg->cmd_arg2, envp) == -1)
-			return (1);
 	}
+	printf("program end\n");
 	return (0);
+	//if (execve(arg->cmd2, arg->cmd_arg2, envp) == -1)
+	//	return (1);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_arg *arg;
-	int		pipe_fd[2];
+	int		fd_odd[2];
+	int		fd_even[2];
 	pid_t	pid;
 	if (init(argc, argv, envp, &arg) == 1)
 		exit(1);
-	if (pipe(pipe_fd) == -1)
-		exit(1);
-	pid = fork();
-	if (pid == -1)
+
+	int i = -1;
+	int	num_pipe = 1;
+	while (++i < num_pipe + 1)
 	{
-		close(pipe_fd[PIPE_R]);
-		close(pipe_fd[PIPE_W]);
-		exit(1);
+		if (i % 2 == 0)
+			if (pipe(fd_even) == -1)
+				exit(1);
+		if (i % 2 != 0)
+			if (pipe(fd_odd) == -1)
+				exit(1);
+		pid = fork();
+		printf("pid%d : %d\n", i, pid);
+		if (pid == -1)
+		{
+			//close(pipe_fd[PIPE_R]);
+			//close(pipe_fd[PIPE_W]);
+			exit(1);
+		}
+		else if (pid > 0)
+		{
+			if (i % 2 == 0)
+				if (parent_proc(fd_even, arg, i, &pid) == 1)
+					exit(1);
+			if (i % 2 != 0)
+				if (parent_proc(fd_odd, arg, i, &pid) == 1)
+					exit(1);
+		}
+		else
+		{
+			if (i % 2 == 0)
+				if (child_proc(fd_even, arg, envp, i) == 1)
+					exit(1);
+			if (i % 2 != 0)
+				if (child_proc(fd_odd, arg, envp, i) == 1)
+					exit(1);
+		}
 	}
-	if (pipex(pipe_fd, &pid, arg, envp) == 1)
-		exit(1);
+	//if (pipex(pipe_fd, &pid, arg, envp) == 1)
+	//	exit(1);
 	return (0);
 }

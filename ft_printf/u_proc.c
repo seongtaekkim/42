@@ -23,7 +23,6 @@ int	u_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 		else if (o->zero && (!o->minus && !o->p_minus))
 			f->zero_size = o->width - size;
 		f->empty_size = o->width - size - f->zero_size;
-		//printf("\nenmpty : %zu, zero : %zu\n", f->empty_size, f->zero_size);
 	}
 	else if (o->p_width >= size)
 	{
@@ -45,17 +44,31 @@ int	u_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 		if (o->width > size)
 			f->empty_size = o->width - size;
 	}
-	//printf("\nenmpty : %zu, zero : %zu\n", f->empty_size, f->zero_size);
 
 	f->type_size = size;
 	f->tot_len = size + f->zero_size + f->empty_size;
-	
-	while (o->width > size)
+	if (f->left_align)
 	{
-		prt += write(1, " ", 1);
-		o->width += -1;
+		// 0 + type + ' '
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
+	}
+	else
+	{
+		// ' ' + 0 + type
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
 	}
 	*prt_cnt += prt;
+	if ( data[0] == '0' && size == 1 && o->precision && !o->width && !o->p_width)
+	{
+		free(data);
+		return (0);
+	}
 	write(1, data, size);
 	*prt_cnt += size;
 	free(data);	

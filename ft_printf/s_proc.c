@@ -12,7 +12,10 @@ int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	
 	
 	if (data == (void *)0)
-		size = 0;
+	{
+		size = 6;
+		data = "(null)";
+	}
 	else
 		size = ft_strlen(data);
 	if (o->precision && !o->p_width)
@@ -36,27 +39,34 @@ int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	}
 	f->type_size = size;
 	f->tot_len = size + f->zero_size + f->empty_size;
-	
-	if (data == (void *)0)
+
+
+	if (f->left_align)
 	{
-		while (o->width > 6)
-		{
+		// 0 + type + ' '
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		prt += write(1, data, size);
+		while (f->empty_size--)
 			prt += write(1, " ", 1);
-			o->width += -1;
-		}
-		*prt_cnt += prt;
-		write(1, "(null)", 6);
-		*prt_cnt = *prt_cnt + 6;
-		return (0);
 	}
+	else
+	{
+		// ' ' + 0 + type
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		prt += write(1, data, size);
+	}
+/*
 	while (o->width > size)
 	{
 		prt += write(1, " ", 1);
 		o->width += -1;
 	}
-
+*/
 	*prt_cnt += prt;
-	write(1, data, size);
-	*prt_cnt = *prt_cnt + size;
+///	write(1, data, size);
 	return (0);
 }

@@ -22,15 +22,32 @@ int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	}
 	f->type_size = size;
 	f->tot_len = size + f->zero_size + f->empty_size;
-	
+
+	if (f->left_align)
+	{
+		// 0 + type + ' '
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		prt += write(1, &c, 1);
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
+	}
+	else
+	{
+		// ' ' + 0 + type
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		prt += write(1, &c, 1);
+	}
+/*
 	while (o->width > size)
 	{
 		prt += write(1, " ", 1);
 		o->width += -1;
-	}
+	}*/
 	*prt_cnt += prt;
-	write(1, &c, 1);
-	*prt_cnt += 1;
 	return (0);
 }
 

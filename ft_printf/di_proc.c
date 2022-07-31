@@ -15,8 +15,8 @@ void	set_proc_format_p(t_options *o, t_format *f, size_t size)
 {
 	if (o->p_minus)
 	{
-		if (o->p_width)
-			f->empty_size = sub_or_zero(o->p_width, size + !(!o->p_minus));
+		//if (o->p_width)
+		//	f->empty_size = sub_or_zero(o->p_width, size + !(!o->p_minus));
 	}
 	else
 	{

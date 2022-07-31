@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_convert_base.c                                  :+:      :+:    :+:   */
+/*   ft_nbr_base.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,24 @@
 
 #include "ft_printf.h"
 
-static int	compute_number_length(unsigned long long number, int radix, int hsize)
+static int	num_x_len(unsigned long long number, int radix, int *i, t_bool hash)
+{
+	unsigned int	length;
+
+	if (hash)
+		*i = 2;
+	length = *i;
+	while (1)
+	{
+		length++;
+		if (number / radix == 0)
+			break ;
+		number /= radix;
+	}
+	return (length);
+}
+
+static int	num_length(unsigned long long number, int radix, int hsize)
 {
 	unsigned int	length;
 
@@ -33,18 +50,13 @@ char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash, int xindex)
 	int			length;
 	char		*string;
 	const char	base[2][17] = {"0123456789abcdef", "0123456789ABCDEF"};
-	int			hsize;
 
-	if (is_hash)
-		hsize = 2;
-	else
-		hsize = 0;
-	length = compute_number_length(number, 16, hsize);
+	index = 0;
+	length = num_x_len(number, 16, &index, is_hash);
 	string = (char *)malloc((length + 1) * sizeof(char));
-	index = hsize;
 	if (!string)
 		return (0);
-	if (hsize)
+	if (is_hash)
 	{
 		string[0] = '0';
 		string[1] = hash;
@@ -70,7 +82,7 @@ char	*ft_p_base(unsigned long long number)
 	int			hsize;
 
 	hsize = 2;
-	length = compute_number_length(number, 16, hsize);
+	length = num_length(number, 16, hsize);
 	string = (char *)malloc((length + 1) * sizeof(char));
 	index = hsize;
 	if (!string)

@@ -1,9 +1,16 @@
-#include "ft_printf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf_setting.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
+/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_bool	is_number(char c)
-{
-	return (c >= '0' && c <= '9');
-}
+#include "ft_printf.h"
 
 int	get_type(char data)
 {
@@ -33,47 +40,49 @@ void	init(t_options *o, t_format *f)
 	o->hash = false;
 	o->precision = false;
 	o->type = 0;
-	f->tot_len = 0;
 	f->zero = false;
 	f->zero_size = 0;
 	f->empty_size = 0;
 	f->type_size = 0;
 	f->left_align = false;
-	f->hash_val[0] = '\0';
-	f->is_show_sign = false;
-	f->is_print = true;
 	f->sign = 0;
+}
+
+static void	set_option2(t_options *o, char data)
+{
+	if (o->precision == false && is_number(data))
+		o->width = o->width * 10 + data - '0';
+	if (o->precision == true && is_number(data))
+		o->p_width = o->p_width * 10 + data - '0';
+	if ('.' == data)
+		o->precision = true;
+	if (o->precision == true && '-' == data)
+		o->p_minus = true;
+	if (o->precision == true && '+' == data)
+		o->p_plus = true;
+	if (' ' == data)
+		o->space = true;
+	if ('+' == data)
+		o->plus = true;
+	if ('-' == data)
+		o->minus = true;
+	if ('#' == data)
+		o->hash = true;
 }
 
 int	set_option(t_options *o, const char *target)
 {
 	int		index;
 	char	data;
+
 	index = 0;
 	while (target[index])
 	{
 		data = target[index];
-		if (o->precision == false && is_number(data))
-			o->width = o->width * 10 + data - '0';
-		if (o->precision == true && is_number(data))
-			o->p_width = o->p_width * 10 + data - '0';
-		if ('.' == data)
-			o->precision = true;
-		if (o->precision == true && '-' == data)
-			o->p_minus = true;
-		if (o->precision == true && '+' == data)
-			o->p_plus = true;
-		else if ('0' == data && !is_number(target[index - 1]))
+		set_option2(o, data);
+		if ('0' == data && !is_number(target[index - 1]))
 			o->zero = true;
-		else if (' ' == data)
-			o->space = true;
-		else if('+' == data)
-			o->plus = true;
-		else if('-' == data)
-			o->minus = true;
-		else if('#' == data)
-			o->hash = true;
-		else if (!is_number(data) && get_type(data) > -1)
+		if (!is_number(data) && get_type(data) > -1)
 		{
 			o->type = get_type(data);
 			index++;
@@ -86,35 +95,13 @@ int	set_option(t_options *o, const char *target)
 
 void	set_format(t_options *o, t_format *f)
 {
-	int	space;
-	space = 0;
-
-	// 1. format 생성
-	// left_align set
-	
 	if (o->minus || o->p_minus)
 		f->left_align = true;
 	else
 	{
-		// zero set
 		if (o->zero && (o->precision && o->p_width > 0))
-		{
 			f->zero = true;
-			//f->zero_size = o->p_width;
-		}
 		else if (o->zero && !o->precision)
-		{
 			f->zero = true;
-			//f->zero_size = o->width;
-		}
 	}
-	// is show sign set => d,i에서만 할것
-	//iif (o->plus)
-	//	f->is_show_sign = true;
-	//space += (o->plus || o->space);
 }
-
-
-
-
-

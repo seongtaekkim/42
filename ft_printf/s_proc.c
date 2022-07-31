@@ -1,23 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   s_proc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
+/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+static void	set_proc_format(t_options *o, t_format *f, size_t size)
 {
-	char	*data;
-	size_t	size;
-	ssize_t	prt;
-
-	
-	data = va_arg(*ap, char *);
-	prt = 0;
-	
-	
-	if (data == (void *)0)
-	{
-		size = 6;
-		data = "(null)";
-	}
-	else
-		size = ft_strlen(data);
 	if (o->precision && !o->p_width)
 		size = 0;
 	else if (o->precision && (o->p_plus || o->p_minus))
@@ -38,35 +34,22 @@ int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 		f->empty_size = o->width - size - f->zero_size;
 	}
 	f->type_size = size;
-	f->tot_len = size + f->zero_size + f->empty_size;
+}
 
+int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+{
+	char	*data;
+	size_t	size;
 
-	if (f->left_align)
+	data = va_arg(*ap, char *);
+	if (data == (void *)0)
 	{
-		// 0 + type + ' '
-		while (f->zero_size--)
-			prt += write(1, "0", 1);
-		prt += write(1, data, size);
-		while (f->empty_size--)
-			prt += write(1, " ", 1);
+		size = 6;
+		data = "(null)";
 	}
 	else
-	{
-		// ' ' + 0 + type
-		while (f->empty_size--)
-			prt += write(1, " ", 1);
-		while (f->zero_size--)
-			prt += write(1, "0", 1);
-		prt += write(1, data, size);
-	}
-/*
-	while (o->width > size)
-	{
-		prt += write(1, " ", 1);
-		o->width += -1;
-	}
-*/
-	*prt_cnt += prt;
-///	write(1, data, size);
+		size = ft_strlen(data);
+	set_proc_format(o, f, size);
+	*prt_cnt += do_write(data, f->type_size, f);
 	return (0);
 }

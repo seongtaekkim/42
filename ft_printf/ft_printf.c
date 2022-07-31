@@ -10,133 +10,115 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "ft_printf.h"
 
-
-int set_print_data(t_format *f, t_options *o, va_list *ap, int *prt_cnt)
+ssize_t	do_write_c(char data, size_t size, t_format *f)
 {
-	int	space;
-	//int	(*fp[10])(va_list *, t_options *, t_format *) 
-	//	= {c_proc, s_proc, di_proc, di_proc, u_proc, x_proc, x2_proc, p_proc};
-	int	(*fp[8])(va_list *, t_options *, t_format *, int *) 
-		= {c_proc, s_proc, di_proc, di_proc, u_proc, x_proc, x2_proc, p_proc};
-	space = 0;
+	ssize_t	prt;
 
-	// 1. format 생성
-	set_format(o, f);
-	
-	//char	*data;
-	//char	*type_data;
-	int		ret_code;
-	ret_code = (*fp[o->type])(ap, o, f, prt_cnt);
-	/*
-	if (!f->is_print)
-	{
-		data = (char *)malloc(sizeof(char));
-		data[0] = '\0';
-		return (data);
-	}
-*/
-	//printf("type data : %s\n", type_data);
-	//f->tot_len += str_size;
-	//data = (char *)malloc(sizeof(char) * (f->tot_len + 1 + (o->plus || o->space)));
-	//size_t index = 0;
-	//size_t	jndex = 0;
-	//printf("zero : %zu, type : %zu, sign : %c\n", f->zero_size,f->type_size,f->sign);
-	//	printf("\n\ntot : %zu, empt: %zu, index : %zu, data : $%s$\n\n",f->tot_len,f->empty_size, index, data);
-	/*
+	prt = 0;
 	if (f->left_align)
 	{
-		if (f->sign)
-			data[index++] = f->sign;
-		while ( jndex++ < f->zero_size) 
-			data[index++] = '0';
-		jndex = 0;
-		while (jndex < f->type_size)
-		{
-			data[index] = type_data[jndex++];
-			index++;
-		}
-		jndex = 0;
-		while (jndex++ < f->empty_size)
-			data[index++] = ' ';
-		data[index] = '\0';
-		//printf("\n\ntot : %zu, empt: %zu, index : %zu, data : $%s$\n\n",f->tot_len,f->empty_size, index, data);
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		prt += write(1, &data, size);
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
 	}
 	else
 	{
-		while (jndex++ < f->empty_size)
-			data[index++] = ' ';
-		if (f->sign)
-			data[index++] = f->sign;
-		jndex = 0;
-		//printf("\nzero_size : %zu\n", f->zero_size);
-		while ( jndex++ < f->zero_size) 
-			data[index++] = '0';
-		jndex = 0;
-		while (jndex < f->type_size)
-		{
-			data[index] = type_data[jndex];
-			index++;
-			jndex++;
-		}
-		data[index] = '\0';
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		prt += write(1, &data, size);
 	}
-	*/
+	return (prt);
+}
+
+ssize_t	do_write(char *data, size_t size, t_format *f)
+{
+	ssize_t	prt;
+
+	prt = 0;
+	if (f->left_align)
+	{
+		if (f->sign)
+			prt += write(1, &(f->sign), 1);
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		prt += write(1, data, size);
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
+	}
+	else
+	{
+		while (f->empty_size--)
+			prt += write(1, " ", 1);
+		if (f->sign)
+			prt += write(1, &(f->sign), 1);
+		while (f->zero_size--)
+			prt += write(1, "0", 1);
+		prt += write(1, data, size);
+	}
+	return (prt);
+}
+
+int	set_print_data(t_format *f, t_options *o, va_list *ap, int *prt_cnt)
+{
+	int	ret_code;
+	int	(*fp[8])(va_list *, t_options *, t_format *, int *);
+
+	fp[0] = &c_proc;
+	fp[1] = &s_proc;
+	fp[2] = &di_proc;
+	fp[3] = &di_proc;
+	fp[4] = &u_proc;
+	fp[5] = &x_proc;
+	fp[6] = &x2_proc;
+	fp[7] = &p_proc;
+	set_format(o, f);
+	ret_code = (*fp[o->type])(ap, o, f, prt_cnt);
 	return (0);
 }
 
 int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
 {
-	//char		*data;
 	t_options	options;
 	t_format	format;
 	int			format_len;
 	int			ret_code;
+
 	init(&options, &format);
 	format_len = set_option(&options, format_syntax);
 	ret_code = set_print_data(&format, &options, ap, prt_cnt);
-	//*prt_cnt = show(data);
 	return (format_len);
 }
 
 int	ft_printf(const char *data, ...)
 {
-	va_list ap;
-	int	format_len;
-	int	i;
-	int	prt_cnt;
-	int	prt_cnt_b;
+	va_list	ap;
+	int		i;
+	int		prt_cnt;
 
 	i = 0;
 	prt_cnt = 0;
 	va_start(ap, data);
 	while (data[i])
 	{
-		prt_cnt_b = prt_cnt;
 		if (data[i] == '%')
 		{
-			if ((&data[i + 1]) == NULL)
-				return (0);
 			if (data[i + 1] == '%')
 			{
-				write(1, &(data[i]), 1);
+				prt_cnt += write(1, &(data[i]), 1);
 				i += 2;
-				prt_cnt += 1;
-				continue;
+				continue ;
 			}
-			format_len = do_printf(&ap, &data[++i], &prt_cnt);
-			i = i + format_len; 
+			i++;
+			i += do_printf(&ap, &data[i], &prt_cnt);
 		}
 		else
-		{
-			write(1, &(data[i]), 1);
-			prt_cnt += 1;
-			i++;
-		}
-		//if (prt_cnt_b == prt_cnt)
-		//	break ;
+			prt_cnt += write(1, &(data[i++]), 1);
 	}
 	va_end(ap);
 	return (prt_cnt);

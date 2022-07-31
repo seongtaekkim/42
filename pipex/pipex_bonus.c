@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include "pipex.h"
 
@@ -110,30 +109,27 @@ int	child_proc(int pipe_fd[2], t_arg *arg, char **envp, int i)
 	int fd;
 	int w_fd = 0;
 	printf("child start index : %d\n", i);
+	printf("child pipe : %d, %d\n", pipe_fd[PIPE_R], pipe_fd[PIPE_W]);
 	if (i % 2 == 0)
 	{
-		printf("1111\n");
-		close(pipe_fd[PIPE_R]);
-		printf("22222\n");
-		//w_fd = dup2(pipe_fd[PIPE_W], STDOUT_FILENO);
-		printf("33333\n");
+		//close(pipe_fd[PIPE_R]);
+		w_fd = dup2(pipe_fd[PIPE_W], STDOUT_FILENO);
+		printf("child : pipe 1nd\n");
 		close(pipe_fd[PIPE_W]);
-		printf("arh111111");
 	}
 	else
 	{
 		close(pipe_fd[PIPE_W]);
 		w_fd = dup2(pipe_fd[PIPE_R], STDIN_FILENO);
+		printf("child : pipe 2nd\n");
 		close(pipe_fd[PIPE_R]);
-		printf("2222222");
 	}
-	printf("aegaweg");
 	if (w_fd == -1)
 		return (1);
 	if (i == 0)
 	{
 		fd = open(arg->infile, O_RDONLY);
-		printf("pipex infile : %s\n", arg->infile);
+		printf("child : pipex infile : %s\n", arg->infile);
 		if (fd == -1)
 			return (1);
 		int w_fd = dup2(fd, STDIN_FILENO);
@@ -143,12 +139,13 @@ int	child_proc(int pipe_fd[2], t_arg *arg, char **envp, int i)
 	}
 	if (i == 0)
 	{
+		printf("child :exec 1nd\n");
 		if (execve(arg->cmd1, arg->cmd_arg1, envp) == -1)
 			return (1);
 	}
 	if (i == 1)
 	{
-		printf("last exec start\n");
+		printf("child : exec 2nd\n");
 		if (execve(arg->cmd2, arg->cmd_arg2, envp) == -1)
 			return (1);
 	}
@@ -158,26 +155,28 @@ int	child_proc(int pipe_fd[2], t_arg *arg, char **envp, int i)
 int	parent_proc(int pipe_fd[2], t_arg *arg, int i, int *pid)
 {
 	int fd;
-	int	r_fd;
+	//int	r_fd;
 	printf("parent start index : %d, pid : %d\n",i, *pid);
-	//wait(NULL);
+	printf("parent pipe : %d, %d\n", pipe_fd[PIPE_R], pipe_fd[PIPE_W]);
+	wait(NULL);
 	printf("wait end\n");
-	waitpid(*pid, NULL, WNOHANG);
+	//waitpid(*pid, NULL, WNOHANG);
 	if (i % 2 == 0)
 	{
-		close(pipe_fd[PIPE_W]);
-		r_fd = dup2(pipe_fd[PIPE_R], STDIN_FILENO);
-		printf("parent rfd\n");
-		close(pipe_fd[PIPE_R]);
+		//close(pipe_fd[PIPE_W]);
+		//r_fd = dup2(pipe_fd[PIPE_R], STDIN_FILENO);
+		printf("parent : pipe 1nd\n");
+		//close(pipe_fd[PIPE_R]);
 	}
 	else
 	{	
 		close(pipe_fd[PIPE_R]);
-		r_fd = dup2(pipe_fd[PIPE_W], STDOUT_FILENO);
-		close(pipe_fd[PIPE_W]);
+		//r_fd = dup2(pipe_fd[PIPE_W], STDOUT_FILENO);
+		printf("parent : pipe 2nd\n");
+		//close(pipe_fd[PIPE_W]);
 	}
-	if (r_fd == -1)
-		return (1);
+	//if (r_fd == -1)
+	//	return (1);
 	// 끝날때만 설정
 	if (i == 1)
 	{
@@ -215,6 +214,8 @@ int	main(int argc, char **argv, char **envp)
 		if (i % 2 != 0)
 			if (pipe(fd_odd) == -1)
 				exit(1);
+		if (i % 2 == 1)
+			close(fd_even[PIPE_W]);
 		pid = fork();
 		printf("pid%d : %d\n", i, pid);
 		if (pid == -1)

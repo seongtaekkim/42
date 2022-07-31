@@ -32,7 +32,7 @@ char	*ft_utoa(unsigned int n)
 	unsigned int	number;
 	char			*array;
 	int				size;
-	
+
 	number = n;
 	size = number_size(n);
 	array = malloc(sizeof(char) * (size + 1));

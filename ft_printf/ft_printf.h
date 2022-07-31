@@ -16,20 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
-#include <stdio.h>
-/*typedef enum s_type
-{
-	c;
-	s;
-	d;
-	i;
-	u;
-	x;
-	x2;
-	p;
-	t_type_size;
-}	t_type;
-*/
+
 typedef enum s_bool
 {
 	true = 1,
@@ -53,36 +40,36 @@ typedef struct s_options
 
 typedef struct s_format
 {
-	size_t	tot_len;
 	t_bool	zero;
 	size_t	zero_size;
 	size_t	empty_size;
 	size_t	type_size;
 	t_bool	left_align;
-	char	hash_val[3];
-	t_bool	is_show_sign;
-	t_bool	is_print;
 	char	sign;
 }	t_format;
 
-int	ft_printf(const char *data, ...);
+int		ft_printf(const char *data, ...);
+ssize_t	do_write(char *data, size_t size, t_format *f);
+ssize_t	do_write_c(char data, size_t size, t_format *f);
 void	init(t_options *o, t_format *f);
-int	set_option(t_options *o, const char *target);
+int		set_option(t_options *o, const char *target);
 void	set_format(t_options *o, t_format *f);
-
 size_t	ft_strlen(char *str);
+t_bool	is_number(char c);
+size_t	sub_or_zero(size_t a, size_t b);
 char	*ft_strndup(const char *s1, size_t n);
-
-int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
-int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
-int	p_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
-int	di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
-int	u_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
-int	x_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
-int	x2_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
-
-char	*ft_itou(int n);
+int		c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int		s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int		p_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int		di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int		u_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int		x_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int		x2_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+void	set_proc_format_p(t_options *o, t_format *f, size_t size);
+void	set_proc_format_diu(t_options *o, t_format *f, size_t size);
+char	*ft_itoa(int n);
 char	*ft_utoa(unsigned int n);
-char	*ft_nbr_base(unsigned int number, t_bool is_hash, char hash, int xindex);
+char	*ft_nbr_base(unsigned int number, t_bool is_hash, \
+		char hash, int xindex);
 char	*ft_p_base(unsigned long long number);
 #endif

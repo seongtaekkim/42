@@ -1,14 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   c_proc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
+/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+static void	set_proc_format(t_options *o, t_format *f, size_t size)
 {
-	char	c;
-	size_t	size;
-	ssize_t	prt;
-
-	prt = 0;
-	size = 1;
-	c = va_arg(*ap, unsigned int);
 	if (o->precision && o->p_width)
 		if (o->p_minus || o->p_plus)
 			o->width = o->p_width;
@@ -20,34 +25,16 @@ int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 		if (size == 0 && f->empty_size)
 			f->empty_size -= 1;
 	}
-	f->type_size = size;
-	f->tot_len = size + f->zero_size + f->empty_size;
-
-	if (f->left_align)
-	{
-		// 0 + type + ' '
-		while (f->zero_size--)
-			prt += write(1, "0", 1);
-		prt += write(1, &c, 1);
-		while (f->empty_size--)
-			prt += write(1, " ", 1);
-	}
-	else
-	{
-		// ' ' + 0 + type
-		while (f->empty_size--)
-			prt += write(1, " ", 1);
-		while (f->zero_size--)
-			prt += write(1, "0", 1);
-		prt += write(1, &c, 1);
-	}
-/*
-	while (o->width > size)
-	{
-		prt += write(1, " ", 1);
-		o->width += -1;
-	}*/
-	*prt_cnt += prt;
-	return (0);
 }
 
+int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+{
+	char	c;
+	size_t	size;
+
+	size = 1;
+	c = va_arg(*ap, unsigned int);
+	set_proc_format(o, f, size);
+	*prt_cnt += do_write_c(c, size, f);
+	return (0);
+}

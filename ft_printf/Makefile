@@ -1,7 +1,7 @@
 NAME	=   libftprintf.a
 SRCS	=	ft_printf.c \
 			ft_printf_setting.c \
-			ft_itou.c	\
+			ft_itoa.c	\
 			ft_nbr_base.c	\
 			ft_utoa.c	\
 			util.c	\
@@ -10,7 +10,7 @@ SRCS	=	ft_printf.c \
 			p_proc.c	\
 			di_proc.c	\
 			u_proc.c	\
-			x_proc.c
+			x_proc.c	
 OBJS	= $(SRCS:.c=.o)
 RM		= rm -f
 LIBC	= ar -rcs
@@ -29,7 +29,7 @@ fclean: clean
 	$(RM) $(NAME)
 
 clean:
-	$(RM) -f $(OBJS)
+	$(RM) $(OBJS)
     
 re:
 	make fclean

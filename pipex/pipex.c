@@ -131,8 +131,8 @@ int	pipex(int pipe_fd[2], int *pid, t_arg *arg, char **envp)
 	}
 	else if(*pid > 0)
 	{
-		wait(NULL);
-		//waitpid(*pid, NULL, WNOHANG);
+		//wait(NULL);
+		waitpid(*pid, NULL, WNOHANG);
 		close(pipe_fd[PIPE_W]);
 		int r_fd = dup2(pipe_fd[PIPE_R], STDIN_FILENO);
 		close(pipe_fd[PIPE_R]);

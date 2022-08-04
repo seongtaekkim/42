@@ -32,7 +32,9 @@ SRCS	=	ft_atoi.c \
 			ft_tolower.c \
 			ft_toupper.c	\
 			ft_strtrim.c	\
-			ft_split.c
+			ft_split.c	\
+			ft_split2.c	\
+			ft_split2_util.c
 SRCS_B	=   ft_lstnew.c	\
 			ft_lstadd_front.c	\
 			ft_lstadd_back.c	\

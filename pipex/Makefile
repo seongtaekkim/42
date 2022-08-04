@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ulee <ulee@student.42.fr>                  +#+  +:+       +#+         #
+#    By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/08/26 15:31:20 by ulee              #+#    #+#              #
-#    Updated: 2021/08/26 15:31:21 by ulee             ###   ########.fr        #
+#    Created: 2022/08/01 15:31:20 by seongtki          #+#    #+#              #
+#    Updated: 2022/08/03 15:31:21 by seongtki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ CFLAGS = -Wall -Wextra -Werror
 INCS = -I./libft -I./
 LIBFT = -L./libft -lft
 RM = rm -f
-FILE =	pipex 
-BONUS = pipex_bonus
+FILE =	pipex
+BONUS = pipex_bonus ./get_next_line/get_next_line ./get_next_line/get_next_line_utils
 SRCS = $(addprefix ./, $(addsuffix .c, $(FILE)))
 OBJS = $(addprefix ./, $(addsuffix .o, $(FILE)))
 SRCS_B = $(addprefix ./, $(addsuffix .c, $(BONUS)))
@@ -47,7 +47,6 @@ fclean: clean
 re:	clean all
 bonus :
 	$(RM) pipex.o
-	$(RM) pipex_utils.o
 	make BO=1 $(NAME)
 
 .PHONY: all clean fclean re bonus

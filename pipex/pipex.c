@@ -1,49 +1,38 @@
-
-#include <stdio.h>
 #include "pipex.h"
 
-typedef struct	s_arg
+
+void	p_exit(char *str, int code)
 {
-	char	*cmd1;
-	char	*cmd2;
-	char	**cmd_arg1;
-	char	**cmd_arg2;
-	char	*infile;
-	char	*outfile;
-	char	**cmd_envp;
-}	t_arg;
+	perror(str);
+	exit(code);
+}
 
 int	parse_envp(char ***ptr, char **envp)
 {
-	int	i;
+	int		i;
+	char	*path;
 
 	i =0;
 	while (envp[i])
 	{
-		//printf("envp : %s\n", envp[i]);
-		if ((ft_strnstr(envp[i], "PATH=", 6) == envp[i]))
+		path = ft_strnstr(envp[i], "PATH=", 6);
+		if (path == envp[i])
 			break ;
+		free(path);
 		i++;
 	}
-	//if ((i == ft_veclen((char **)envp)) || ft_veclen((char **)envp) == 1)
-	//	return (1);
-	//printf("%c\n", envp[i][5]);
 	(*ptr) = ft_split(&(envp[i][5]), ':');
-	//printf("ptr : %s\n", *ptr[0]);
-	//printf("ptr : %s\n", (*ptr)[1]);
-	//printf("ptr : %s\n", (*ptr)[2]);
 	return (0);
 }
 
 char	*is_valid_cmd(t_arg *arg, char *arg_cmd)
 {
-	int	i;
-	int	fd;
+	int		i;
+	int		fd;
 	char	*path_cmd;
 	char	*cmd;
 
 	path_cmd = ft_strjoin("/", arg_cmd);
-	//printf("cmd : %s\n", path_cmd);
 	fd = 0;
 	i = 0;
 	fd = access(path_cmd, X_OK);
@@ -52,7 +41,6 @@ char	*is_valid_cmd(t_arg *arg, char *arg_cmd)
 	while (arg->cmd_envp[i])
 	{
 		cmd = ft_strjoin(arg->cmd_envp[i], path_cmd);
-		//printf("in cmd : %s\n",cmd);
 		fd = access(cmd, X_OK);
 		if (fd != -1)
 		{
@@ -67,21 +55,14 @@ char	*is_valid_cmd(t_arg *arg, char *arg_cmd)
 	return (NULL);
 }
 
-int	parse_argv(char **argv, t_arg *arg)
+int	parse_argv(char **argv, t_arg *arg, int i)
 {
-	arg->cmd_arg1 = ft_split(argv[2], ' ');
-	if (arg->cmd_arg1 == NULL)
-		return (1);
-	arg->cmd_arg2 = ft_split(argv[3], ' ');
-	if (arg->cmd_arg2 == NULL)
-		return (1);
-	arg->cmd1 = is_valid_cmd(arg, arg->cmd_arg1[0]);
-	arg->cmd2 = is_valid_cmd(arg, arg->cmd_arg2[0]);
-	if (arg->cmd1 == NULL || arg->cmd2 == NULL)
-	{
-		perror("command not found");
-		exit(127);
-	}
+	arg->cmd_arg = ft_split2(argv[i+2], ' ', '\'');
+	if (arg->cmd_arg == NULL)
+		p_exit("command not found", 127);
+	arg->cmd = is_valid_cmd(arg, arg->cmd_arg[0]);
+	if (arg->cmd == NULL)
+		p_exit("command not found", 127);
 	return (0);
 }
 
@@ -94,81 +75,186 @@ int	init(int argc, char **argv, char **envp, t_arg **arg)
 		return (1);
 	(*arg)->infile = ft_strdup(argv[1]);
 	(*arg)->outfile = ft_strdup(argv[argc - 1]);
-	//printf("infile : %s\n", (*arg)->infile);
-	//printf("outfile : %s\n", (*arg)->outfile);
+	(*arg)->pipe_num = 2;
 	if ((*arg)->infile == NULL || (*arg)->outfile == NULL)
-		return (1);
+		p_exit("not exist file", 1);
 	if ((parse_envp(&((*arg)->cmd_envp), envp)) == 1)
-		return (1);
-	if ((parse_argv(argv, *arg)) == 1)
 		return (1);
 	return (0);
 }
 
-int	pipex(int pipe_fd[2], int *pid, t_arg *arg, char **envp)
+int	open_infile(t_arg *arg)
 {
-	int fd;
-	//printf("pid : %d\n", *pid);
-	if (*pid < 0)
+	int		fd;
+	int		r_fd;
+
+	fd = open(arg->infile, O_RDONLY);
+	if (fd == -1)
+		p_exit("fail open file", 1);
+	r_fd = dup2(fd, STDIN_FILENO);
+	close(fd);
+	if (r_fd == -1)
+		p_exit("fail dup", 1);
+	return (0);
+}
+
+int	open_outfile(t_arg *arg)
+{
+	int	fd;
+	int	w_fd;
+
+	fd = open(arg->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd == -1)
+		p_exit("fail open file", 1);
+	w_fd = dup2(fd, STDOUT_FILENO);
+	close(fd);
+	if (w_fd == -1)
+		p_exit("fail dup", 1);
+	return (0);
+}
+
+void	proc_parent_last(t_arg *arg)
+{
+	close(arg->pipe_even[PIPE_R]);
+	close(arg->pipe_odd[PIPE_R]);
+	close(arg->pipe_odd[PIPE_W]);
+}
+
+int	proc_parent(int *pid, t_arg *arg, int i)
+{		
+	if (i == 0)
+		close(arg->pipe_even[PIPE_W]);
+	else if (i == arg->pipe_num - 1)
+		proc_parent_last(arg);
+	else if (i % 2 == 0)
+	{
+		close(arg->pipe_even[PIPE_W]);
+		close(arg->pipe_odd[PIPE_R]);
+	}
+	else
+	{
+		close(arg->pipe_odd[PIPE_W]);
+		close(arg->pipe_even[PIPE_R]);
+	}
+	waitpid(*pid, NULL, WNOHANG);
+	return (0);
+}
+
+int	proc_child_first(t_arg *arg)
+{
+	int	w_fd;
+
+	open_infile(arg);
+	close(arg->pipe_even[PIPE_R]);
+	w_fd = dup2(arg->pipe_even[PIPE_W], STDOUT_FILENO);
+	close(arg->pipe_even[PIPE_W]);
+	if (w_fd == -1)
 		return (1);
+	return (0);
+}
+
+int	proc_child_last(t_arg *arg)
+{
+	int	fd;
+	open_outfile(arg); 
+	close(arg->pipe_odd[PIPE_W]);
+	close(arg->pipe_odd[PIPE_R]);
+	fd = dup2(arg->pipe_even[PIPE_R], STDIN_FILENO);
+	close(arg->pipe_even[PIPE_R]);
+	if (fd == -1)
+		return (1);
+	return (0);
+}
+
+void	close_pipe(t_arg *arg, int i)
+{
+	close(arg->pipe_even[PIPE_R]);
+	close(arg->pipe_even[PIPE_W]);
+	if (i > 0)
+	{
+		close(arg->pipe_odd[PIPE_R]);
+		close(arg->pipe_odd[PIPE_W]);
+	}
+}
+
+int	pipex(int *pid, t_arg *arg, char **envp, int i)
+{
+	int	ret;
+
+	ret = 0;
+	if (*pid < 0)
+	{
+		close_pipe(arg, i);
+		return (1);
+	}
 	else if (!*pid)
 	{
-		close(pipe_fd[PIPE_R]);
-		int w_fd = dup2(pipe_fd[PIPE_W], STDOUT_FILENO);
-		close(pipe_fd[PIPE_W]);
-		if (w_fd == -1)
+		if (i == 0)
+			ret = proc_child_first(arg);
+		else if(i == arg->pipe_num - 1)
+			ret = proc_child_last(arg);
+		if (ret == 1)
 			return (1);
-		fd = open(arg->infile, O_RDONLY);
-		//printf("pipex infile : %s\n", arg->infile);
-		if (fd == -1)
-			return (1);
-		int r_fd = dup2(fd, STDIN_FILENO);
-		close(fd);
-		if (r_fd == -1)
-			return (1);
-		if (execve(arg->cmd1, arg->cmd_arg1, envp) == -1)
+		if (execve(arg->cmd, arg->cmd_arg, envp) == -1)
 			return (1);
 	}
 	else if(*pid > 0)
-	{
-		//wait(NULL);
-		waitpid(*pid, NULL, WNOHANG);
-		close(pipe_fd[PIPE_W]);
-		int r_fd = dup2(pipe_fd[PIPE_R], STDIN_FILENO);
-		close(pipe_fd[PIPE_R]);
-		if (r_fd == -1)
+		if (proc_parent(pid, arg, i) == 1)
 			return (1);
-		fd = open(arg->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		//printf("pipex outfile : %s\n", arg->outfile);
-		if (fd == -1)
-			return (1);
-		int w_fd = dup2(fd, STDOUT_FILENO);
-		close(fd);
-		if (w_fd == -1)
-			return (1);
-		if (execve(arg->cmd2, arg->cmd_arg2, envp) == -1)
-			return (1);
-	}
 	return (0);
+}
+
+void	cmd_free(t_arg *arg)
+{
+	int	i;
+
+	i = 0;
+	free(arg->cmd);
+	while (arg->cmd_arg[i])	
+	{
+		free(arg->cmd_arg[i]);
+		i++;
+	}
+	free(arg->cmd_arg);
+}
+
+void	arg_free(t_arg *arg)
+{
+	int	i;
+
+	i = 0;
+	free(arg->infile);
+	free(arg->outfile);
+	while (arg->cmd_envp[i])
+	{
+		free(arg->cmd_envp[i]);
+		i++;
+	}
+	free(arg->cmd_envp);
+	free(arg);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_arg *arg;
-	int		pipe_fd[2];
 	pid_t	pid;
+	int		i;
+
 	if (init(argc, argv, envp, &arg) == 1)
 		exit(1);
-	if (pipe(pipe_fd) == -1)
-		exit(1);
-	pid = fork();
-	if (pid == -1)
+	i = -1;
+	while (++i < arg->pipe_num)
 	{
-		close(pipe_fd[PIPE_R]);
-		close(pipe_fd[PIPE_W]);
-		exit(1);
+		parse_argv(argv, arg, i);
+		if (i % 2 == 0 && pipe(arg->pipe_even) == -1)
+			exit(1);
+		if (i % 2 == 1 && pipe(arg->pipe_odd) == -1)
+			exit(1);
+		pid = fork();
+		if (pipex(&pid, arg, envp, i) == 1)
+			exit(1);
+		cmd_free(arg);
 	}
-	if (pipex(pipe_fd, &pid, arg, envp) == 1)
-		exit(1);
+	arg_free(arg);	
 	return (0);
 }

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 typedef struct	s_arg
 {
@@ -74,9 +74,9 @@ char	*is_valid_cmd(t_arg *arg, char *arg_cmd)
 int	parse_argv(char **argv, t_arg *arg, int i)
 {
 	if (arg->heredoc)
-		arg->cmd_arg = ft_split(argv[i+3], ' ');
+		arg->cmd_arg = ft_split2(argv[i+3], ' ', '\'');
 	else
-		arg->cmd_arg = ft_split(argv[i+2], ' ');
+		arg->cmd_arg = ft_split2(argv[i+2], ' ', '\'');
 	if (arg->cmd_arg == NULL)
 		return (1);
 	arg->cmd = is_valid_cmd(arg, arg->cmd_arg[0]);

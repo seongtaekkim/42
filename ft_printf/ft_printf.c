@@ -88,10 +88,18 @@ int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
 	t_format	format;
 	int			format_len;
 	int			ret_code;
+	char		type;
 
 	init(&options, &format);
 	format_len = set_option(&options, format_syntax);
-	ret_code = set_print_data(&format, &options, ap, prt_cnt);
+	type = format_syntax[format_len - 1];
+	if (type == '%')
+	{
+		set_format(&options, &format);
+		ret_code = per_proc(&options, &format, prt_cnt);
+	}
+	else
+		ret_code = set_print_data(&format, &options, ap, prt_cnt);
 	return (format_len);
 }
 
@@ -108,14 +116,9 @@ int	ft_printf(const char *data, ...)
 	{
 		if (data[i] == '%')
 		{
-			if (data[i + 1] == '%')
-			{
-				prt_cnt += write(1, &(data[i]), 1);
-				i += 2;
-				continue ;
-			}
 			i++;
-			i += do_printf(&ap, &data[i], &prt_cnt);
+			if (data[i])
+				i += do_printf(&ap, &data[i], &prt_cnt);
 		}
 		else
 			prt_cnt += write(1, &(data[i++]), 1);

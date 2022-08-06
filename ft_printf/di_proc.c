@@ -13,26 +13,17 @@
 
 void	set_proc_format_p(t_options *o, t_format *f, size_t size)
 {
-	if (o->p_minus)
+	if (o->width && o->p_width)
 	{
-		//if (o->p_width)
-		//	f->empty_size = sub_or_zero(o->p_width, size + !(!o->p_minus));
+		f->zero_size = sub_or_zero(o->p_width, size);
+		if (o->width > o->p_width)
+			f->empty_size = sub_or_zero(o->width,
+					size + f->zero_size + !(!f->sign));
 	}
-	else
-	{
-		if (o->width && o->p_width)
-		{
-			if (o->p_width > size)
-				f->zero_size = o->p_width - size;
-			if (o->width > o->p_width)
-				f->empty_size = sub_or_zero(o->width,
-						size + f->zero_size + !(!f->sign));
-		}
-		else if (!o->width && o->p_width)
-			f->zero_size = sub_or_zero(o->p_width, size);
-		else if (o->width && !o->p_width)
-			f->empty_size = sub_or_zero(o->width, size + !(!f->sign));
-	}
+	else if (!o->width && o->p_width)
+		f->zero_size = sub_or_zero(o->p_width, size);
+	else if (o->width && !o->p_width)
+		f->empty_size = sub_or_zero(o->width, size + !(!f->sign));
 }
 
 void	set_proc_format_diu(t_options *o, t_format *f, size_t size)
@@ -52,10 +43,10 @@ static void	set_proc_format_sign(int ret, t_options *o, t_format *f)
 {
 	if (ret < 0)
 		f->sign = '-';
-	if (o->plus || o->p_plus)
+	if (o->plus)
 	{
 		if (ret >= 0)
-				f->sign = '+';
+			f->sign = '+';
 	}
 	else if (o->space)
 		if (ret >= 0)

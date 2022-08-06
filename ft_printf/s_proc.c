@@ -16,7 +16,7 @@ static void	set_proc_format(t_options *o, t_format *f, size_t size)
 {
 	if (o->precision && !o->p_width)
 		size = 0;
-	else if (o->precision && (o->p_plus || o->p_minus))
+	else if (o->precision && !o->p_width)
 	{
 		size = 0;
 		o->width = 0;
@@ -27,8 +27,6 @@ static void	set_proc_format(t_options *o, t_format *f, size_t size)
 		if (o->p_width < size)
 			size = o->p_width;
 	}
-	if (o->zero && (!o->minus && !o->p_minus))
-		f->zero_size = sub_or_zero(o->width, size);
 	f->empty_size = sub_or_zero(o->width, size + f->zero_size);
 	f->type_size = size;
 }

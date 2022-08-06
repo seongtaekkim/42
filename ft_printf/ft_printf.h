@@ -65,11 +65,12 @@ int		di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
 int		u_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
 int		x_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
 int		x2_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt);
+int		per_proc(t_options *o, t_format *f, int *prt_cnt);
 void	set_proc_format_p(t_options *o, t_format *f, size_t size);
 void	set_proc_format_diu(t_options *o, t_format *f, size_t size);
 char	*ft_itoa(int n);
 char	*ft_utoa(unsigned int n);
-char	*ft_nbr_base(unsigned int number, t_bool is_hash, \
-		char hash, int xindex);
+char	*ft_nbr_base(unsigned int number, t_bool is_hash,
+			char hash, int xindex);
 char	*ft_p_base(unsigned long long number);
 #endif

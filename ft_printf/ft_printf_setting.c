@@ -80,7 +80,7 @@ int	set_option(t_options *o, const char *target)
 	{
 		data = target[index];
 		set_option2(o, data);
-		if ('0' == data && !is_number(target[index - 1]))
+		if ('0' == data && !is_number(target[index - 1]) && !o->precision)
 			o->zero = true;
 		if (!is_number(data) && get_type(data) > -1)
 		{

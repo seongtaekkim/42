@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   c_proc.c                                           :+:      :+:    :+:   */
+/*   per_proc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,22 +14,16 @@
 
 static void	set_proc_format(t_options *o, t_format *f, size_t size)
 {
-	if (o->width > size)
-	{
-		if (o->zero && !o->minus)
-			f->zero_size = sub_or_zero(o->width, size);
+	if (!o->minus && o->zero)
+		f->zero_size = sub_or_zero(o->width, size);
+	else
 		f->empty_size = sub_or_zero(o->width, size + f->zero_size);
-	}
+	f->type_size = size;
 }
 
-int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+int	per_proc(t_options *o, t_format *f, int *prt_cnt)
 {
-	char	c;
-	size_t	size;
-
-	size = 1;
-	c = va_arg(*ap, unsigned int);
-	set_proc_format(o, f, size);
-	*prt_cnt += do_write_c(c, size, f);
+	set_proc_format(o, f, 1);
+	*prt_cnt += do_write_c('%', 1, f);
 	return (0);
 }

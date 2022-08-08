@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 15:56:32 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/08 18:13:06 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/08 18:47:56 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,10 @@ int	open_outfile(t_arg *arg)
 {
 	int	fd;
 	int	w_fd;
-
-	fd = open(arg->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (arg->heredoc)
+		fd = open(arg->outfile, O_CREAT | O_RDWR | O_APPEND , 0644);
+	else
+		fd = open(arg->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 		return (1);
 	w_fd = dup2(fd, STDOUT_FILENO);

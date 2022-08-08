@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/07 19:01:12 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/08 09:15:56 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	get_type(char data)
+static int	get_type(char data)
 {
 	const char	*type = "csdiuxXp%";
 	int			index;
@@ -32,15 +32,12 @@ void	init(t_options *o, t_format *f)
 	o->space = false;
 	o->plus = false;
 	o->minus = false;
-	o->p_plus = false;
-	o->p_minus = false;
 	o->width = 0;
 	o->p_width = 0;
 	o->zero = false;
 	o->hash = false;
 	o->precision = false;
 	o->type = 0;
-	f->zero = false;
 	f->zero_size = 0;
 	f->empty_size = 0;
 	f->type_size = 0;
@@ -56,10 +53,6 @@ static void	set_option2(t_options *o, char data)
 		o->p_width = o->p_width * 10 + data - '0';
 	if ('.' == data)
 		o->precision = true;
-	if (o->precision == true && '-' == data)
-		o->p_minus = true;
-	if (o->precision == true && '+' == data)
-		o->p_plus = true;
 	if (' ' == data)
 		o->space = true;
 	if ('+' == data)
@@ -95,13 +88,6 @@ int	set_option(t_options *o, const char *target)
 
 void	set_format(t_options *o, t_format *f)
 {
-	if (o->minus || o->p_minus)
+	if (o->minus)
 		f->left_align = true;
-	else
-	{
-		if (o->zero && (o->precision && o->p_width > 0))
-			f->zero = true;
-		else if (o->zero && !o->precision)
-			f->zero = true;
-	}
 }

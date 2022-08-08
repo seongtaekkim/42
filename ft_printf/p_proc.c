@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/07 19:01:29 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/08 09:24:38 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	p_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+void	p_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 {
 	char					*data;
 	unsigned long long		ret;
@@ -24,5 +24,4 @@ int	p_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	set_proc_format_diu(o, f, size);
 	*prt_cnt += do_write(data, size, f);
 	free(data);
-	return (0);
 }

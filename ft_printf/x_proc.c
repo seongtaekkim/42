@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/07 19:02:03 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/08 09:27:06 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	x_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+void	x_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 {
 	char			*data;
 	unsigned int	ret;
@@ -27,16 +27,15 @@ int	x_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	if (ret == 0 && o->precision && !o->width && !o->p_width)
 	{
 		free(data);
-		return (0);
+		return ;
 	}
 	if (ret == 0 && o->precision && !o->p_width)
 		data[0] = ' ';
 	*prt_cnt += do_write(data, size, f);
 	free(data);
-	return (0);
 }
 
-int	x2_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+void	x2_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 {
 	char			*data;
 	unsigned int	ret;
@@ -51,11 +50,10 @@ int	x2_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	if (ret == 0 && o->precision && !o->width && !o->p_width)
 	{
 		free(data);
-		return (0);
+		return ;
 	}
 	if (ret == 0 && o->precision && !o->p_width)
 		data[0] = ' ';
 	*prt_cnt += do_write(data, size, f);
 	free(data);
-	return (0);
 }

@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/07 19:00:42 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/08 09:26:38 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "ft_printf.h"
 
 void	set_proc_format_p(t_options *o, t_format *f, size_t size)
@@ -32,7 +33,7 @@ void	set_proc_format_diu(t_options *o, t_format *f, size_t size)
 		set_proc_format_p(o, f, size);
 	else
 	{
-		if (o->zero)
+		if (o->zero && !o->minus)
 			f->zero_size = sub_or_zero(o->width, size + !(!f->sign));
 		else
 			f->empty_size = sub_or_zero(o->width, size + !(!f->sign));
@@ -53,7 +54,7 @@ static void	set_proc_format_sign(int ret, t_options *o, t_format *f)
 			f->sign = ' ';
 }
 
-int	di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+void	di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 {
 	int		ret;
 	size_t	size;
@@ -67,11 +68,10 @@ int	di_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	if (ret == 0 && o->precision && !o->width && !o->p_width)
 	{
 		free(data);
-		return (0);
+		return ;
 	}
 	if (ret == 0 && o->precision && o->width && !o->p_width)
 		data[0] = ' ';
 	*prt_cnt += do_write(data, size, f);
 	free(data);
-	return (0);
 }

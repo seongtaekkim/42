@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/07 19:01:42 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/08 09:24:14 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ static void	set_proc_format(t_options *o, t_format *f, size_t size)
 {
 	if (o->precision && !o->p_width)
 		size = 0;
-	else if (o->precision && !o->p_width)
-	{
-		size = 0;
-		o->width = 0;
-		f->empty_size = o->p_width;
-	}
 	else if (o->precision && o->p_width)
 	{
 		if (o->p_width < size)
@@ -31,7 +25,7 @@ static void	set_proc_format(t_options *o, t_format *f, size_t size)
 	f->type_size = size;
 }
 
-int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+void	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 {
 	char	*data;
 	size_t	size;
@@ -46,5 +40,4 @@ int	s_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 		size = ft_strlen(data);
 	set_proc_format(o, f, size);
 	*prt_cnt += do_write(data, f->type_size, f);
-	return (0);
 }

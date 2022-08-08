@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/20 13:30:57 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/20 13:52:34 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/07 19:01:04 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/08 09:23:38 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,9 @@ ssize_t	do_write(char *data, size_t size, t_format *f)
 	return (prt);
 }
 
-int	set_print_data(t_format *f, t_options *o, va_list *ap, int *prt_cnt)
+static int	set_print_data(t_format *f, t_options *o, va_list *ap, int *prt_cnt)
 {
-	int	ret_code;
-	int	(*fp[8])(va_list *, t_options *, t_format *, int *);
+	void	(*fp[8])(va_list *, t_options *, t_format *, int *);
 
 	fp[0] = &c_proc;
 	fp[1] = &s_proc;
@@ -78,16 +77,15 @@ int	set_print_data(t_format *f, t_options *o, va_list *ap, int *prt_cnt)
 	fp[6] = &x2_proc;
 	fp[7] = &p_proc;
 	set_format(o, f);
-	ret_code = (*fp[o->type])(ap, o, f, prt_cnt);
+	(*fp[o->type])(ap, o, f, prt_cnt);
 	return (0);
 }
 
-int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
+static int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
 {
 	t_options	options;
 	t_format	format;
 	int			format_len;
-	int			ret_code;
 	char		type;
 
 	init(&options, &format);
@@ -96,10 +94,10 @@ int	do_printf(va_list *ap, const char *format_syntax, int *prt_cnt)
 	if (type == '%')
 	{
 		set_format(&options, &format);
-		ret_code = per_proc(&options, &format, prt_cnt);
+		per_proc(&options, &format, prt_cnt);
 	}
 	else
-		ret_code = set_print_data(&format, &options, ap, prt_cnt);
+		set_print_data(&format, &options, ap, prt_cnt);
 	return (format_len);
 }
 

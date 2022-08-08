@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/07 19:00:33 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/08 09:24:02 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	set_proc_format(t_options *o, t_format *f, size_t size)
 	}
 }
 
-int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
+void	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 {
 	char	c;
 	size_t	size;
@@ -31,5 +31,4 @@ int	c_proc(va_list *ap, t_options *o, t_format *f, int *prt_cnt)
 	c = va_arg(*ap, unsigned int);
 	set_proc_format(o, f, size);
 	*prt_cnt += do_write_c(c, size, f);
-	return (0);
 }

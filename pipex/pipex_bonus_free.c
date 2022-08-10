@@ -6,11 +6,22 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 15:56:23 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/08 16:16:34 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/10 19:02:20 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+void	cmd_find_error(t_arg *arg)
+{
+	if (arg->cmd_arg == NULL)
+		write(2, "pipex :command not found\n", 25);
+	if (arg->cmd == NULL)
+	{
+		write(2, "pipex :command not found\n", 25);
+		arg->exit_code = 127;
+	}
+}
 
 int	close_pipe(t_arg *arg, int i)
 {
@@ -26,7 +37,7 @@ int	close_pipe(t_arg *arg, int i)
 
 void	do_exit(int code, t_arg **arg)
 {
-	free(*arg);
+	(void)arg;
 	exit(code);
 }
 

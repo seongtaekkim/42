@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 15:56:32 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/08 18:47:56 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/10 14:18:34 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,7 @@ int	parse_argv(char **argv, t_arg *arg, int i)
 		arg->cmd_arg = ft_split2(argv[i + 3], ' ', '\'');
 	else
 		arg->cmd_arg = ft_split2(argv[i + 2], ' ', '\'');
-	if (arg->cmd_arg == NULL)
-		perror("command not found");
 	arg->cmd = is_valid_cmd(arg, arg->cmd_arg[0]);
-	if (arg->cmd == NULL)
-	{
-		perror("command not found");
-		arg->exit_code = 127;
-	}
 	return (0);
 }
 
@@ -83,11 +76,11 @@ int	open_infile(t_arg *arg)
 
 	fd = open(arg->infile, O_RDONLY);
 	if (fd == -1)
-		return (1);
+		p_exit("fail open file", 1);
 	r_fd = dup2(fd, STDIN_FILENO);
 	close(fd);
 	if (r_fd == -1)
-		return (1);
+		p_exit("fail dup", 1);
 	return (0);
 }
 
@@ -95,15 +88,16 @@ int	open_outfile(t_arg *arg)
 {
 	int	fd;
 	int	w_fd;
+
 	if (arg->heredoc)
-		fd = open(arg->outfile, O_CREAT | O_RDWR | O_APPEND , 0644);
+		fd = open(arg->outfile, O_CREAT | O_RDWR | O_APPEND, 0644);
 	else
 		fd = open(arg->outfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
-		return (1);
+		p_exit("fail open file", 1);
 	w_fd = dup2(fd, STDOUT_FILENO);
 	close(fd);
 	if (w_fd == -1)
-		return (1);
+		p_exit("fail dup", 1);
 	return (0);
 }

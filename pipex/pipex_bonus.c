@@ -6,11 +6,17 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 16:02:18 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/08 18:15:09 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/10 19:15:41 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+void	p_exit(char *str, int code)
+{
+	perror(str);
+	exit(code);
+}
 
 int	open_here_doc(t_arg *arg)
 {
@@ -26,8 +32,7 @@ int	open_here_doc(t_arg *arg)
 		str = get_next_line(0);
 		if (!str)
 			break ;
-		if (ft_strncmp(arg->heredoc_exit
-				, str, ft_strlen(arg->heredoc_exit)) == 0)
+		if (ft_strncmp(arg->heredoc_exit, str, ft_strlen(str + 1)) == 0)
 			break ;
 		write(fd, str, ft_strlen(str));
 		free(str);
@@ -39,22 +44,23 @@ int	open_here_doc(t_arg *arg)
 
 int	init(int argc, char **argv, char **envp, t_arg **arg)
 {
-	if (argc < 4)
-		return (1);
 	(*arg) = (t_arg *)malloc(sizeof(t_arg));
 	if ((*arg) == NULL)
 		return (1);
 	(*arg)->infile = ft_strdup(argv[1]);
 	(*arg)->outfile = ft_strdup(argv[argc - 1]);
 	(*arg)->heredoc = 1;
+	(*arg)->pipe_num = argc - 3;
 	if (ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])) == 0)
 		(*arg)->heredoc_exit = ft_strdup(argv[2]);
 	else
 		(*arg)->heredoc = 0;
 	if ((*arg)->heredoc)
 		(*arg)->pipe_num = argc - 4;
-	else
-		(*arg)->pipe_num = argc - 3;
+	if ((*arg)->heredoc && argc < 6)
+		do_exit(1, arg);
+	else if (!(*arg)->heredoc && argc < 5)
+		do_exit(1, arg);
 	if ((*arg)->infile == NULL || (*arg)->outfile == NULL)
 		return (1);
 	if ((parse_envp(&((*arg)->cmd_envp), envp)) == 1)
@@ -84,8 +90,9 @@ int	pipex(int *pid, t_arg *arg, char **envp, int i)
 			ret = proc_child_odd(arg);
 		if (ret == 1)
 			return (1);
+		cmd_find_error(arg);
 		if (execve(arg->cmd, arg->cmd_arg, envp) == -1)
-			return (1);
+			exit(1);
 	}
 	else if (*pid > 0)
 		if (proc_parent(pid, arg, i) == 1)
@@ -105,9 +112,9 @@ int	main(int argc, char **argv, char **envp)
 	while (++i < arg->pipe_num)
 	{
 		parse_argv(argv, arg, i);
-		if (i % 2 == 0 && pipe(arg->pipe_even) == -1)
+		if (i % 2 == 0 && arg->pipe_num > i + 1 && pipe(arg->pipe_even) == -1)
 			do_exit(1, &arg);
-		if (i % 2 == 1 && pipe(arg->pipe_odd) == -1)
+		if (i % 2 == 1 && arg->pipe_num > i + 1 && pipe(arg->pipe_odd) == -1)
 			do_exit(1, &arg);
 		pid = fork();
 		if (pipex(&pid, arg, envp, i) == 1)

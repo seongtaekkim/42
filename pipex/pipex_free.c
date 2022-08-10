@@ -6,11 +6,22 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 19:24:32 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/08 16:10:36 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/10 14:25:23 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	cmd_find_error(t_arg *arg)
+{
+	if (arg->cmd_arg == NULL)
+		write(2, "pipex :command not found\n", 25);
+	if (arg->cmd == NULL)
+	{
+		write(2, "pipex :command not found\n", 25);
+		arg->exit_code = 127;
+	}
+}
 
 void	p_exit(char *str, int code)
 {

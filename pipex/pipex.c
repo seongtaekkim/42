@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 19:23:08 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/08 17:57:54 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/10 13:24:01 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ int	pipex(int *pid, t_arg *arg, char **envp, int i)
 			ret = proc_child_last(arg);
 		if (ret == 1)
 			return (1);
+		cmd_find_error(arg);
 		if (execve(arg->cmd, arg->cmd_arg, envp) == -1)
-			return (1);
+			exit(1);
 	}
 	else if (*pid > 0)
 		if (proc_parent(pid, arg, i) == 1)
@@ -70,8 +71,6 @@ int	main(int argc, char **argv, char **envp)
 	{
 		parse_argv(argv, arg, i);
 		if (i % 2 == 0 && pipe(arg->pipe_even) == -1)
-			exit(1);
-		if (i % 2 == 1 && pipe(arg->pipe_odd) == -1)
 			exit(1);
 		pid = fork();
 		if (pipex(&pid, arg, envp, i) == 1)

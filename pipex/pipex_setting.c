@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 19:26:32 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/08 18:10:09 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/10 08:53:23 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,7 @@ char	*is_valid_cmd(t_arg *arg, char *arg_cmd)
 int	parse_argv(char **argv, t_arg *arg, int i)
 {
 	arg->cmd_arg = ft_split2(argv[i + 2], ' ', '\'');
-	if (arg->cmd_arg == NULL)
-		perror("command not found");
 	arg->cmd = is_valid_cmd(arg, arg->cmd_arg[0]);
-	if (arg->cmd == NULL)
-	{
-		perror("command not found");
-		arg->exit_code = 127;
-	}
 	return (0);
 }
 

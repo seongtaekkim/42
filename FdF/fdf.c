@@ -101,7 +101,8 @@ void	put_pixel(t_mlx *mlx, int x, int y, int color)
 	img = (int*)mlx->addr;
 //x += mlx->width / 2;
 //	y += mlx->height / 2;
-
+// map을 벡터로 변환하면서 벡터의 값들들 실제 표출되는 좌표로 변환을 하면 될듯
+// 좌표로 변환을 하면서 직선방정식으로 변환하면서 한 직선 당 while로 putpixcel을 호출하면 될거같다.
 	if (x >= 0 && x < mlx->width && y >= 0 && y < mlx->height)
 	{
 	x *= 11.3;

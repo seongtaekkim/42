@@ -1,31 +1,18 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bresenham.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/14 14:07:22 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/14 17:59:14 by seongtki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	bresenham(int x0, int y0, int x1, int y1)
-{
-	int	h;
-	int	w;
-	int	f0;
-	int	f1;
+#include "fdf.h"
 
-	w = x1 - x0;
-	h = y1 - y0;
-	f0 = 2 * h - w;
-	while (x1 >= x0)
-	{
-		printf("( %d , %d )\n", x0, y0);
-		if (f0 > 0)
-		{
-			f1 = f0 + 2 * (h - w);
-			y0++;
-		}
-		else 
-			f1 = f0 + 2 * h;
-		f0 = f1;
-		x0++;
-	}
-}
-
-void	bresenham2(int x0, int y0, int x1, int y1)
+void	bresenham(t_fdf *fdf, int x0, int y0, int x1, int y1)
 {
 	int	h;
 	int	w;
@@ -33,10 +20,10 @@ void	bresenham2(int x0, int y0, int x1, int y1)
 	int	f1;
 	int	ybec;
 	int	xbec;
-
 	w = (x1 - x0) > 0 ? (x1 - x0) : (x0 - x1);
 	h = (y1 - y0) > 0 ? (y1 - y0) : (y0 - y1);
-	printf("( %d , %d )\n", x0, y0);
+	//printf("( %d , %d )\n", x0, y0);
+	put_pixel(&fdf->mlx, x0, y0, 0x00FF0000);
 	xbec = x1 > 0 ? 1 : -1;
 	ybec = y1 > 0 ? 1 : -1;
 	// 1,4,5,8
@@ -54,7 +41,8 @@ void	bresenham2(int x0, int y0, int x1, int y1)
 				f1 = f0 + 2 * h;
 			f0 = f1;
 			x0 += xbec;
-			printf("( %d , %d )\n", x0, y0);
+			put_pixel(&fdf->mlx, x0, y0, 0x00FF0000);
+			//printf("( %d , %d )\n", x0, y0);
 		}
 	}
 	else
@@ -71,14 +59,8 @@ void	bresenham2(int x0, int y0, int x1, int y1)
 				f1 = f0 + 2 * w;
 			f0 = f1;
 			y0 += ybec;
-			printf("( %d , %d )\n", x0, y0);
+			put_pixel(&fdf->mlx, x0, y0, 0x00FF0000);
+			//printf("( %d , %d )\n", x0, y0);
 		}
 	}
-}
-
-int	main(void)
-{
-	//bresenham(1, 1, 7, 5);
-	bresenham2(1, 1, -7, -5);
-	return (0);
 }

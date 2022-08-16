@@ -6,7 +6,7 @@
 #    By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/11 12:07:40 by seongtki          #+#    #+#              #
-#    Updated: 2022/08/14 15:09:22 by seongtki         ###   ########.fr        #
+#    Updated: 2022/08/16 19:29:00 by seongtki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ INCS_B = -I ./libft/libft.h -I ./get_next_line.h -I ./fdf_bonus.h
 LIBFT = -L./libft -lft
 MLX_FLAGS = -L./mlx -lmlx -framework OpenGL -framework AppKit
 RM = rm -f
-SRCS =	fdf.c get_next_line.c get_next_line_utils.c readfile.c bresenham.c mlx.c draw.c 
+SRCS =	fdf.c get_next_line.c get_next_line_utils.c readfile.c bresenham.c mlx.c draw.c util.c 
 SRCS_B = fdf.c
 OBJS = $(SRCS:.c=.o) 
 OBJS_B = $(SRCS_B:.c=.o) 

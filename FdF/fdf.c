@@ -13,6 +13,8 @@ void	init(t_fdf *fdf)
 	fdf->mlx.size_line = 1000 * 4;
 	fdf->map.x = 0;
 	fdf->map.y = 0;
+	fdf->option.zoom = 30;
+	fdf->option.projection = 1;
 }
 
 int main(int argc, char **argv)

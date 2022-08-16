@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 16:23:44 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/14 18:43:31 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/16 19:34:22 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int		read_file(char	*file, t_fdf *fdf);
 void	do_mlx(t_fdf *fdf);
 void	do_draw(t_fdf *fdf);
 void	put_pixel(t_mlx *mlx, int x, int y, int color);
-void	bresenham(t_fdf *fdf, int x0, int y0, int x1, int y1);
-
+void	bresenham(t_fdf *fdf, t_point p0, t_point p1);
+int		_abs(int n);
+int		abs_one(int n);
+double	deg_to_rad(int degree);
 #endif

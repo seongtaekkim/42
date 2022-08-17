@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:51:52 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 16:31:42 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/17 19:37:40 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ void	isometric(t_fdf *fdf, int *x, int *y, int z)
 {
 	int	prev_x;
 	int	prev_y;
-	//int theta = 0;
+	int theta = fdf->option.rotate;
 	//rotate_x(y, &z, PI / 6);
 	//rotate_y(x, &z, PI / 6);
-	//rotate_z(x, y, theta * PI / 180);	
+	rotate_z(x, y, theta * PI / 180);	
 	prev_x = *x;
 	prev_y = *y;
 	

@@ -17,6 +17,7 @@ void	init(t_fdf *fdf)
 	fdf->option.projection = 1;
 	fdf->option.position.x = fdf->mlx.width / 2;
 	fdf->option.position.y = fdf->mlx.height / 2;
+	fdf->option.rotate = 0;
 }
 
 int main(int argc, char **argv)

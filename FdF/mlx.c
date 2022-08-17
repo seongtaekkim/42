@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:14:51 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 16:32:07 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/17 19:37:09 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,22 @@ int	key_motion(int keycode, t_fdf *fdf)
 		mlx_put_image_to_window(fdf->mlx.mlx, fdf->mlx.win, fdf->mlx.image, 0, 0);
 
 	}
+	if (keycode == 15)
+	{
+		fdf->option.rotate += 5;
+		do_draw(fdf);	
+		mlx_put_image_to_window(fdf->mlx.mlx, fdf->mlx.win, fdf->mlx.image, 0, 0);
+
+	}
+	if (keycode == 17)
+	{
+		fdf->option.rotate -= 5;
+		do_draw(fdf);	
+		mlx_put_image_to_window(fdf->mlx.mlx, fdf->mlx.win, fdf->mlx.image, 0, 0);
+
+	}
+
+
 
 
 

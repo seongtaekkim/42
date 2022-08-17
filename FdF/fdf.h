@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 16:23:44 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 16:13:19 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/17 19:36:17 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct	s_option
 	//bool		disp_helper;
 	//int			height_mod;
 	t_vec	position;
-	double	zoom;
+	int		zoom;
 	int		rotate;
 	//int			angle_mod;
 	int		exit_code;

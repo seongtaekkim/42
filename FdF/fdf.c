@@ -15,6 +15,8 @@ void	init(t_fdf *fdf)
 	fdf->map.y = 0;
 	fdf->option.zoom = 30;
 	fdf->option.projection = 1;
+	fdf->option.position.x = fdf->mlx.width / 2;
+	fdf->option.position.y = fdf->mlx.height / 2;
 }
 
 int main(int argc, char **argv)

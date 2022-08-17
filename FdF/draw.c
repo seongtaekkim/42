@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:51:52 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/16 19:27:43 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/17 16:31:42 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,7 @@ void	put_pixel(t_mlx *mlx, int x, int y, int color)
 	}
 }
 
-void	clear_image(t_mlx *mlx, int color)
-{
-	int x;
-	int y;
-
-	x = 0;
-	while (x < mlx->width)
-	{
-		y = 0;
-		while (y < mlx->height)
-		{
-			put_pixel(mlx, x, y, color);
-			++y;
-		}
-		++x;
-	}
-}
-
-
-double	fpart(double x)
-{
-	return (x > 0 ? x - (int)x : x - (int)x - 1);
-}
- void	rotate_x(int *y, int *z, double alpha)
+void	rotate_x(int *y, int *z, double alpha)
 {
 	int	prev_y;
 
@@ -98,97 +75,59 @@ void	isometric(t_fdf *fdf, int *x, int *y, int z)
 	prev_y = *y;
 	
 	conv_to_iso(x, y, z);	
-	//printf("%d %d %d\n", *x, *y, z);
 	*x += fdf->mlx.width / 2 ;
 	*y += fdf->mlx.height / 2 - 300;
 }
-void	fdf_swap(int *a, int *b)
-{
-	int	c;
 
-	c = *a;
-	*a = *b;
-	*b = c;
-}
 void	draw2(t_fdf *fdf, t_point p1, t_point p2)
 {
 	t_point pixel1;
 	t_point pixel2;
-	pixel1.z = fdf->map.map[p1.y][p1.x].z * 5;
-	
+
 	pixel1.x = p1.x - fdf->map.x / 2;
-	pixel1.x *= 30;
-	pixel1.x += 500;
-	
+	pixel1.x *= fdf->option.zoom;
+	pixel1.z = fdf->map.map[p1.y][p1.x].z * 5;
 	pixel1.y = p1.y - fdf->map.y / 2;
-	pixel1.y *= 30;
-	pixel1.y += 500;
+	pixel1.y *= fdf->option.zoom;
 	isometric(fdf, &pixel1.x, &pixel1.y, pixel1.z);
-	
-	pixel2.z = fdf->map.map[p2.y][p2.x].z * 5;
-	
 	pixel2.x = p2.x - fdf->map.x / 2;
-	pixel2.x *= 30;
-	pixel2.x += 500;
-	
+	pixel2.x *= fdf->option.zoom;
+	pixel2.z = fdf->map.map[p2.y][p2.x].z * 5;
 	pixel2.y = p2.y - fdf->map.y / 2;
-	pixel2.y *= 30;
-	pixel2.y += 500;
-	
-
+	pixel2.y *= fdf->option.zoom;
 	isometric(fdf, &pixel2.x, &pixel2.y, pixel2.z);
-	/*int	steep;
-
-	steep = ft_abs(pixel2.y - pixel1.y) > ft_abs(pixel2.x - pixel1.x);
-	if (steep)
-	{
-		fdf_swap(&pixel1.x, &pixel1.y);
-		fdf_swap(&pixel2.x, &pixel2.y);
-	}
-	if (pixel1.x > pixel2.x)
-	{
-		fdf_swap(&pixel1.x, &pixel2.x);
-		fdf_swap(&pixel1.y, &pixel2.y);
-	}*/
-	//if (fdf->mlx.width > pixel1.x && fdf->mlx.width > pixel2.x
-	//		&& fdf->mlx.height > pixel1.y && fdf->mlx.height > pixel2.y)
-
-	//printf("pixel : %d %d %d %d\n",pixel1.x,pixel1.y, pixel2.x, pixel2.y); 
+	pixel1.x += fdf->option.position.x;
+	pixel1.y += fdf->option.position.y;
+	pixel2.x += fdf->option.position.x;
+	pixel2.y += fdf->option.position.y;
 	bresenham(fdf, pixel1, pixel2);	
 }
 
 
 void	set_position(t_fdf *fdf)
 {
-	int	index;
-	int	jndex;
-	index = 0;
+	int		index;
+	int		jndex;
+	t_point	p1;
+	t_point	p2;
+	t_point	p3;
+
 	jndex = 0;
 	while (fdf->map.y > jndex)
 	{
 		index = 0;
 		while (fdf->map.x > index)
 		{
-			t_point	p1;
 			p1.x = index - 1;
 			p1.y = jndex;
-
-			t_point p2;
 			p2.x = index;
 			p2.y = jndex - 1;
-			
-			t_point pc;
-			pc.x = index;
-			pc.y  =jndex;
-			
-			t_point pc2;
-			pc2.x = index;
-			pc2.y  =jndex;
-		if (index != 0)
-			draw2(fdf, p1, pc);
-		if (jndex != 0)
-			draw2(fdf, p2, pc2);	
-			//mlx_pixel_put(fdf->mlx.mlx, fdf->mlx.win, index, jndex, 0x0000FF00);
+			p3.x = index;
+			p3.y = jndex;
+			if (index != 0)
+				draw2(fdf, p1, p3);
+			if (jndex != 0)
+				draw2(fdf, p2, p3);	
 			index++;
 		}
 		jndex++;
@@ -198,5 +137,6 @@ void	set_position(t_fdf *fdf)
 void	do_draw(t_fdf *fdf)
 {
 	mlx_clear_window(fdf->mlx.mlx, fdf->mlx.win);
+	clear_image(&fdf->mlx, 0x00000000);
 	set_position(fdf);
 }

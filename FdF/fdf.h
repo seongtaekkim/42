@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 16:23:44 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/16 19:34:22 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/17 16:13:19 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 # include <mlx.h>
 # include <math.h>
 # define PI 3.141592
+
+typedef struct s_vec
+{
+	int	x;
+	int	y;
+}	t_vec;
 
 typedef struct s_point
 {
@@ -39,8 +45,8 @@ typedef struct	s_option
 {
 	//bool		disp_helper;
 	//int			height_mod;
-	//t_vec2	pos;
-	int		zoom;
+	t_vec	position;
+	double	zoom;
 	int		rotate;
 	//int			angle_mod;
 	int		exit_code;
@@ -76,4 +82,6 @@ void	bresenham(t_fdf *fdf, t_point p0, t_point p1);
 int		_abs(int n);
 int		abs_one(int n);
 double	deg_to_rad(int degree);
+void	clear_image(t_mlx *mlx, int color);
+
 #endif

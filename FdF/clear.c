@@ -1,48 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/16 19:27:01 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 13:53:42 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/17 13:41:58 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/17 16:02:26 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	_abs(int n)
+void	clear_image(t_mlx *mlx, int color)
 {
-	if (n < 0)
-		return (-n);
-	else
-		return (n);
-}
+	int x;
+	int y;
 
-int	abs_one(int n)
-{
-	if (n <= 0)
-		return (-1);
-	else
-		return (1);
+	x = 0;
+	while (x < mlx->width)
+	{
+		y = 0;
+		while (y < mlx->height)
+		{
+			put_pixel(mlx, x, y, color);
+			++y;
+		}
+		++x;
+	}
 }
-
-double	deg_to_rad(int degree)
-{
-	return (degree * 3.14159265F / 180.0F);
-}
-/*
-double	fpart(double x)
-{
-	return (x > 0 ? x - (int)x : x - (int)x - 1);
-}
-void	fdf_swap(int *a, int *b)
-{
-	int	c;
-
-	c = *a;
-	*a = *b;
-	*b = c;
-}
-*/

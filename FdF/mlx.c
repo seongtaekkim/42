@@ -6,25 +6,16 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:14:51 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 19:37:09 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:04:45 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-/*
-int	test(t_fdf *fdf)
-{
-	printf("%d ",fdf->mlx.width);
-	//write(1, "aa",2);
-	return (0);
-}
-*/
-
 int	key_motion(int keycode, t_fdf *fdf)
 {
 	if (keycode == 53)
-		mlx_destroy_window(fdf->mlx.mlx, fdf->mlx.win);
+		do_exit(fdf);
 	else if (keycode == 69)
 	{
 		fdf->option.zoom += 2;

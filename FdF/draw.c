@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:51:52 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 19:37:40 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/18 14:37:57 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	put_pixel(t_mlx *mlx, int x, int y, int color)
 {
 	int		*img;
-	
+
 	img = (int*)mlx->addr;
 	if (x >= 0 && x < mlx->width && y >= 0 && y < mlx->height)
 	{
@@ -70,11 +70,11 @@ void	isometric(t_fdf *fdf, int *x, int *y, int z)
 	int theta = fdf->option.rotate;
 	//rotate_x(y, &z, PI / 6);
 	//rotate_y(x, &z, PI / 6);
-	rotate_z(x, y, theta * PI / 180);	
+	rotate_z(x, y, theta * PI / 180);
 	prev_x = *x;
 	prev_y = *y;
-	
-	conv_to_iso(x, y, z);	
+
+	conv_to_iso(x, y, z);
 	*x += fdf->mlx.width / 2 ;
 	*y += fdf->mlx.height / 2 - 300;
 }
@@ -86,13 +86,13 @@ void	draw2(t_fdf *fdf, t_point p1, t_point p2)
 
 	pixel1.x = p1.x - fdf->map.x / 2;
 	pixel1.x *= fdf->option.zoom;
-	pixel1.z = fdf->map.map[p1.y][p1.x].z * 5;
+	pixel1.z = fdf->map.map[p1.y][p1.x].z * fdf->option.zoom / 4;
 	pixel1.y = p1.y - fdf->map.y / 2;
 	pixel1.y *= fdf->option.zoom;
 	isometric(fdf, &pixel1.x, &pixel1.y, pixel1.z);
 	pixel2.x = p2.x - fdf->map.x / 2;
 	pixel2.x *= fdf->option.zoom;
-	pixel2.z = fdf->map.map[p2.y][p2.x].z * 5;
+	pixel2.z = fdf->map.map[p2.y][p2.x].z * fdf->option.zoom / 4;
 	pixel2.y = p2.y - fdf->map.y / 2;
 	pixel2.y *= fdf->option.zoom;
 	isometric(fdf, &pixel2.x, &pixel2.y, pixel2.z);
@@ -100,7 +100,7 @@ void	draw2(t_fdf *fdf, t_point p1, t_point p2)
 	pixel1.y += fdf->option.position.y;
 	pixel2.x += fdf->option.position.x;
 	pixel2.y += fdf->option.position.y;
-	bresenham(fdf, pixel1, pixel2);	
+	bresenham(fdf, pixel1, pixel2);
 }
 
 
@@ -127,7 +127,7 @@ void	set_position(t_fdf *fdf)
 			if (index != 0)
 				draw2(fdf, p1, p3);
 			if (jndex != 0)
-				draw2(fdf, p2, p3);	
+				draw2(fdf, p2, p3);
 			index++;
 		}
 		jndex++;

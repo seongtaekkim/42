@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:07:22 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/16 19:39:58 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/18 11:11:13 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	bresenham(t_fdf *fdf, t_point p0, t_point p1)
 			f0 = f1;
 			p0.x += xbec;
 			put_pixel(&fdf->mlx, p0.x, p0.y, 0x00FF0000);
-			//printf("( %d , %d )\n", x0, x1);
+			//printf("1( %d , %d )\n", p0.x, p1.x);
+			//break ;
 		}
 	}
 	else
@@ -61,7 +62,8 @@ void	bresenham(t_fdf *fdf, t_point p0, t_point p1)
 			f0 = f1;
 			p0.y += ybec;
 			put_pixel(&fdf->mlx, p0.x, p0.y, 0x00FF0000);
-			//printf("( %d , %d )\n", x0, y0);
+			//printf("2( %d , %d )\n", p0.y, p1.y);
+			//break ;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:05:16 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/15 11:45:34 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/18 17:09:52 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,46 @@ static int	append_line(char **data, t_fdf *fdf)
 	{
 		tmp[index] = fdf->map.map[index];
 	}
+	free(fdf->map.map);
 	fdf->map.map = tmp;
 	return (0);
+}
+
+int	ft_str2len(char **arr)
+{
+	int	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }
 
 int	read_file(char	*file, t_fdf *fdf)
 {
 	int		fd;
 	char	*line;
+	char	*line2;
 	char	**data;
+	int		line_size;
+
 	fd = open(file, O_RDONLY);
 	if (!fd)
-		return (1);
+		do_exit(fdf);
 	while (1)
 	{
 		line = get_next_line(fd);
-		// tmp생성해서 map에 누적저장하는 식으로 쌓는다.
-		free(line);
 		if (!line)
-			break ;
-		data = ft_split(line, ' ');
-		int	index = 0;
-		while (data[index])
-			index++;
-		fdf->map.x = index;
+			do_exit(fdf);
+		line2 = ft_strtrim(line, " \n");
+		data = ft_split(line2, ' ');
+		free(line);
+		free(line2);
+		line_size = ft_str2len(data);
+		if (fdf->map.x != 0 && line_size != fdf->map.x)
+			do_exit(fdf);
+		fdf->map.x = line_size;
 		fdf->map.y += 1;
 		append_line(data, fdf);
+		free_arr2(data);
 	}
 	return (0);
 }

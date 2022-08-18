@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 16:23:44 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 19:36:17 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:14:40 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,7 @@ int		_abs(int n);
 int		abs_one(int n);
 double	deg_to_rad(int degree);
 void	clear_image(t_mlx *mlx, int color);
-
+void	do_exit(t_fdf *fdf);
+void	free_map(t_map *map);
+void	free_arr2(char **arr);
 #endif

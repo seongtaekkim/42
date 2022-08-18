@@ -6,14 +6,14 @@
 
 void	init(t_fdf *fdf)
 {
-	fdf->mlx.width = 1000;
+	fdf->mlx.width = 1200;
 	fdf->mlx.height = 1000;
 	fdf->mlx.endian = 0;
 	fdf->mlx.bpp = 32;
 	fdf->mlx.size_line = 1000 * 4;
 	fdf->map.x = 0;
 	fdf->map.y = 0;
-	fdf->option.zoom = 30;
+	fdf->option.zoom = 20;
 	fdf->option.projection = 1;
 	fdf->option.position.x = fdf->mlx.width / 2;
 	fdf->option.position.y = fdf->mlx.height / 2;

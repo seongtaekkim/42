@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:12:17 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/16 14:41:21 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/18 19:26:32 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,6 @@ void	rr(t_stack *a, t_stack *b);
 void	rra(t_stack *s);
 void	rrb(t_stack *s);
 void	rrr(t_stack *a, t_stack *b);
+void	a_to_b(t_stack *a, t_stack *b, int l, int r);
+void	b_to_a(t_stack *a, t_stack *b, int l, int r);
 #endif

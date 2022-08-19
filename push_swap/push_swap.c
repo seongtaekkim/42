@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:06:37 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/18 19:39:30 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/19 13:56:53 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,14 @@ void	show(t_stack *s)
 	bottom = s->bottom;
 	if (s->top == -1)
 		return ;
+	printf("show data =============\n");
 	while (top >= bottom)
 	{
 		printf("%d ", s->list[top]);
 		top--;
 	}
 	printf("\n");
+	printf("=======================\n");
 }
 
 void	init(t_stack *a, t_stack *b, int num, char **data)
@@ -104,11 +106,13 @@ void	init(t_stack *a, t_stack *b, int num, char **data)
 	a->list = (int *)malloc(sizeof(int) * num);
 	a->top = -1;
 	a->bottom = -1;
-	a->size = num - 1;
+	a->size = 0;
+	a->capacity = i;
 	b->list = (int *)malloc(sizeof(int) * num);
 	b->top = -1;
 	b->bottom = -1;
-	b->size = num - 1;
+	b->size = 0;
+	b->capacity = i;
 	while (i > 0)
 	{
 		ret = ft_atoi(data[i]); // atoi 내부에서 예외 처리하도록 해야함
@@ -116,6 +120,7 @@ void	init(t_stack *a, t_stack *b, int num, char **data)
 		if (sret != -1)
 			pexit();
 		push(a , ret);
+		//printf("push : %d\n", a->size);
 		i--;
 	}
 }
@@ -145,17 +150,23 @@ int	step1(t_stack *a, int l, int r)
 	}
 	ft_sort_int_tab(arr, size);
 	i=0;
-	while (i < size)
+	//printf("step1 : l : %d, r : %d\n", l,r);
+	/*while (i < size)
 		printf("%d ", arr[i++]);
 	printf("\n");
-
-	int search_data = arr[size / 2];
-	printf("searchdat %d\n", search_data);
+*/
+	int search_data;
+	if (size % 2 == 0)
+		search_data = arr[size / 2 - 1];
+	else
+		search_data = arr[size / 2];
+	//printf("searchdat %d, size : %d, r : %d\n", search_data, a->size, r);
 	i = a->size - 1;
 	while (i >= 0)
 	{
 		if (search_data == a->list[i])
-			return (a->size -1 -i);
+			return (i);
+			//return (a->size -1 -i);
 		i--;
 	}
 	return (-1);
@@ -175,35 +186,39 @@ void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 	size = r - l + 1;
 	if (size <= 1)
 	{
-		printf("size 1 return !!!!!!!!!!!!!!!!!!");
+		//printf("size 1 return !!!!!!!!!!!!!!!!!!");
 		return ;
 	}
 	pivot = step1(a, l, r);
-	printf("a pivot : %d size : %d\n", pivot, size);
+	//printf("a pivot : %d, list : %d, size : %d\n", pivot, a->list[pivot],  size);
+	//show(a);
 	data = a->list[pivot];
 	while (i < size)
 	{
+		//printf("a data : %d, list : %d\n", data, a->list[a->top]);
 		if (data < a->list[a->top])
 		{
 			ra(a);
 			ra_cnt++;
+			//show(a);
 		}
 		else
 		{
 			pb(a, b);
 			pb_cnt++;
+			//show(a);
 		}
 		i++;
 	}
-	/*i = 0;
+	i = 0;
 	while (i < ra_cnt)
 	{
 		rra(a);
 		i++;
-	}*/
-	printf("ra_cnt : %d\n",ra_cnt);
-	a_to_b(a, b, 0, ra_cnt -1);
-	b_to_a(a, b, 0, pb_cnt -1);
+	}
+	//printf("a->top : %d, ra_cnt : %d\n",a->top, ra_cnt);
+	a_to_b(a, b, a->top - (ra_cnt -1), a->top);
+	b_to_a(a, b, b->top - (pb_cnt -1), b->top);
 }
 
 void	b_to_a(t_stack *a, t_stack *b, int l, int r)
@@ -219,12 +234,14 @@ void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 	pa_cnt = 0;
 	i = 0;
 	size = r - l + 1;
-	pivot = step1(a, l, r);
 	if (size == 1)
 	{
 		pa(b, a);
 		return ;
 	}
+	pivot = step1(b, l, r);
+	//show(b);
+	//printf("b pivot : %d, list : %d, size : %d\n", pivot, b->list[pivot],  size);
 	data = b->list[pivot];
 	while (i < size)
 	{
@@ -240,14 +257,18 @@ void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 		}
 		i++;
 	}
-	/*i = 0;
+	//return ;
+	i = 0;
 	while (i < rb_cnt)
 	{
 		rrb(b);
 		i++;
-	}*/
-	a_to_b(a, b, 0, pa_cnt -1);
-	b_to_a(a, b, 0, rb_cnt -1);
+	}
+	//a_to_b(a, b, 0, pa_cnt -1);
+	//b_to_a(a, b, 0, rb_cnt -1);
+	a_to_b(a, b, a->top - (pa_cnt -1), a->top);
+	b_to_a(a, b, b->top - (rb_cnt -1), b->top);
+
 }
 
 int	main(int argc, char **argv)
@@ -260,10 +281,11 @@ int	main(int argc, char **argv)
 	t_stack	a;
 	t_stack	b;
 	init(&a, &b, argc, argv);
-	
+//show(&a);	
 //	int pivot = step1(&a, 0, (&a)->size -1);	
 //printf("pivot : %d\n", pivot);
 	a_to_b(&a, &b, 0, (&a)->size -1);
+//printf("\n======================프로그램 종료\n");	
 	//show(&a);
 	//show(&a);
 	//show(&a);

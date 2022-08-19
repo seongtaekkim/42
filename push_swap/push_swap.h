@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:12:17 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/18 19:26:32 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/19 12:22:18 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_stack
 {
 	int	top;
 	int	bottom;
+	int	capacity;
 	int	size;
 	int	*list;
 }	t_stack;

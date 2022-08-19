@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:24:50 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/16 13:18:17 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/19 12:22:01 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ void	push(t_stack *s, int data)
 
 	top = s->top;
 	bottom = s->bottom;
-	if (top == s->size - 1)
+	if (top == s->capacity - 1)
 		return ;
 	if (top == -1)
 		bottom++;
 	s->list[++top] = data;
 	s->top = top;
 	s->bottom = bottom;
+	s->size += 1;
 }
 
 void	pop(t_stack *s)
@@ -38,6 +39,7 @@ void	pop(t_stack *s)
 	if (top == 0)
 		s->bottom += -1;
 	s->top = --top;
+	s->size--;
 }
 
 int	peek(t_stack *s)

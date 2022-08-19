@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:06:37 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/19 13:56:53 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/19 19:37:04 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,42 @@ int	step1(t_stack *a, int l, int r)
 	return (-1);
 }
 
+int	confirm_ordered(t_stack *a, int l, int r)
+{
+	int	i;
+	int	size;
+	int	min;
+
+	size = r - l + 1;
+	i = r;
+	min = a->list[r];
+	while (i > 0)
+	{
+		if (a->list[i] > a->list[i - 1])
+			return (0);
+		i--;
+	}
+	return (1);
+}
+
+int	confirm_ordered_desc(t_stack *a, int l, int r)
+{
+	int	i;
+	int	size;
+	int	min;
+
+	size = r - l + 1;
+	i = r;
+	min = a->list[r];
+	while (i > 0)
+	{
+		if (a->list[i] < a->list[i - 1])
+			return (0);
+		i--;
+	}
+	return (1);
+}
+
 void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 {
 	int	pivot;
@@ -189,15 +225,113 @@ void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 		//printf("size 1 return !!!!!!!!!!!!!!!!!!");
 		return ;
 	}
+	int confirm = 0;
+	confirm = confirm_ordered(a, l, r);
+if (confirm == 1)
+		return ;
+	if (size == 2)
+	{
+		if (a->list[r] > a->list[l])
+		{
+			sa(a);
+			return ;
+		}
+		else
+			return ;
+	}
+	if (size == 3)
+	{
+		if (a->list[r] > a->list[l + 1])
+		{
+			if (a->list[l + 1] > a->list[l])
+			{	
+				// 3 2 1
+				sa(a);
+				pb(a, b);
+				sa(a);
+				pa(b, a);
+				sa(a);
+				return ;
+			}
+			else if (a->list[l] > a->list[r])
+			{
+				sa(a);
+				return ;
+			}
+			else
+			{
+				// 3 1 2
+				sa(a);
+				pb(a, b);
+				sa(a);
+				pa(b, a);
+				return ;
+			}
+		}
+		else
+		{
+			if (a->list[r] > a->list[l])
+			{
+				// 2 3 1
+				pb(a, b);
+				sa(a);
+				pa(b, a);
+				sa(a);
+				return ;
+			}
+			else if (a->list[l] > a->list[l + 1])
+			{
+				return ;
+			}
+			else
+			{	// 1 3 2
+				pb(a, b);
+				sa(a);
+				pa(b, a);
+				return ;
+			}
+		}
+	}
 	pivot = step1(a, l, r);
 	//printf("a pivot : %d, list : %d, size : %d\n", pivot, a->list[pivot],  size);
 	//show(a);
 	data = a->list[pivot];
+	//write(1,"\ns=================\n",20);
 	while (i < size)
 	{
-		//printf("a data : %d, list : %d\n", data, a->list[a->top]);
+					//printf("a data : %d, list : %d\n", data, a->list[a->top]);
 		if (data < a->list[a->top])
 		{
+			if (i + 1 ==  size && data > a->list[a->top -1])
+			{
+				sa(a);
+				pa(a, b);
+				break ;
+			}
+			/*int j=i;
+			int k=1;
+			int	flag = 1;
+			
+			while (j < size)
+			{
+				if (j + 1 < size && data < a->list[a->top -k])
+				{
+					flag = 1;
+				}
+				else
+				{
+					flag = 0;
+					break ;
+				}
+			//	("awegaweg");
+			j++;
+			k--;
+			//printf("k : %d\n",k);
+			}	
+			if (flag == 1)
+				break ;*/
+			//write(1,"x\n",2);
+
 			ra(a);
 			ra_cnt++;
 			//show(a);
@@ -210,12 +344,21 @@ void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 		}
 		i++;
 	}
+	//write(1,"\ne=================\n",20);
 	i = 0;
-	while (i < ra_cnt)
+	//if (!(a->capacity == size))
+	if (l != 0)
 	{
-		rra(a);
-		i++;
+		while (i < ra_cnt)
+		{
+			rra(a);
+			i++;
+		}
 	}
+	//else
+	//	printf("rrf : %d\n", ra_cnt);
+	//printf("top : %d, l : %d, r : %d\n", a->top, l, r);
+	//	write(1,"l\n",2);
 	//printf("a->top : %d, ra_cnt : %d\n",a->top, ra_cnt);
 	a_to_b(a, b, a->top - (ra_cnt -1), a->top);
 	b_to_a(a, b, b->top - (pb_cnt -1), b->top);
@@ -239,7 +382,114 @@ void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 		pa(b, a);
 		return ;
 	}
+	int confirm = 0;
+	confirm = confirm_ordered_desc(a, l, r);
+	if (confirm == 1)
+	{
+		while (i < size)
+		{
+			pa(b, a);
+			i++;
+		}
+		return ;
+	}
+	if (size == 2)
+	{
+		if (confirm == 1)
+			return ;
+		if (b->list[r] > b->list[l])
+		{
+			pa(b, a);
+			pa(b, a);
+			return ;
+		}
+		else
+		{
+			sb(b);
+			pa(b, a);
+			pa(b, a);
+			
+			return ;
+		}
+	}
+	if (size == 3)
+	{
+		if (confirm == 1)
+			return ;
+		if (b->list[r] > b->list[l + 1])
+		{
+			if (b->list[l + 1] > b->list[l])
+			{	
+				// 3 2 1
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else if (b->list[l] > b->list[r])
+			{
+				// 2 1 3
+				pa(b, a);
+				sb(b);
+				pb(a, b);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else
+			{
+				// 3 1 2
+				pa(b, a);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				return ;
+				
+			}
+		}
+		else
+		{
+			if (b->list[r] > b->list[l])
+			{
+				// 2 3 1
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else if (b->list[l] > b->list[l + 1])
+			{
+				// 1 2 3
+				sb(b);
+				pa(b, a);
+				sb(b);
+				pb(a, b);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else
+			{	// 1 3 2
+				sb(b);
+				pa(b, a);
+				sb(b);
+				pb(a, b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+		}
+
+	}
+
 	pivot = step1(b, l, r);
+	//pivot = 2;
 	//show(b);
 	//printf("b pivot : %d, list : %d, size : %d\n", pivot, b->list[pivot],  size);
 	data = b->list[pivot];
@@ -252,6 +502,12 @@ void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 		}
 		else
 		{
+			if (i + 1 ==  size && data < b->list[b->top -1])
+			{
+				sb(b);
+				pb(b, a);
+				break ;
+			}
 			rb(b);
 			rb_cnt++;
 		}
@@ -259,10 +515,13 @@ void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 	}
 	//return ;
 	i = 0;
+	if (l != 0)
+	{
 	while (i < rb_cnt)
 	{
 		rrb(b);
 		i++;
+	}
 	}
 	//a_to_b(a, b, 0, pa_cnt -1);
 	//b_to_a(a, b, 0, rb_cnt -1);
@@ -286,7 +545,7 @@ int	main(int argc, char **argv)
 //printf("pivot : %d\n", pivot);
 	a_to_b(&a, &b, 0, (&a)->size -1);
 //printf("\n======================프로그램 종료\n");	
-	//show(&a);
+//	show(&a);
 	//show(&a);
 	//show(&a);
 	//show(&b);

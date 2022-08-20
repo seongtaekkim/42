@@ -228,10 +228,10 @@ void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 	}
 	int confirm = 0;
 	confirm = confirm_ordered(a, l, r);
-if (confirm == 1)
+	if (confirm == 1)
 		return ;
 	//write(1,"\nahs===============\n",20);
-	if (size == 2 && l != 0)
+	if (size == 2 && a->top == r)
 	{
 		if (a->list[r] > a->list[l])
 		{
@@ -241,7 +241,53 @@ if (confirm == 1)
 		else
 			return ;
 	}
-	if (size == 3 && l != 0)
+	if (a->capacity == 3)
+	{
+		if (a->list[r] > a->list[l + 1])
+		{
+			if (a->list[l + 1] > a->list[l])
+			{	
+				// 3 2 1
+                rra(a, 1);
+                rra(a, 1);
+            	sa(a);
+				return ;
+			}
+			else if (a->list[l] > a->list[r])
+			{
+				sa(a);
+				return ;
+			}
+			else
+			{
+				// 3 1 2
+                rra(a, 1);
+                rra(a, 1);
+				return ;
+			}
+		}
+		else
+		{
+			if (a->list[r] > a->list[l])
+			{
+				// 2 3 1
+                rra(a, 1);
+				return ;
+			}
+			else if (a->list[l] > a->list[l + 1])
+			{
+				return ;
+			}
+			else
+			{	// 1 3 2
+                rra(a, 1);
+                sa(a);
+				return ;
+			}
+		}
+	}
+
+	if (size == 3 && a->top == r)
 	{
 		if (a->list[r] > a->list[l + 1])
 		{
@@ -294,6 +340,7 @@ if (confirm == 1)
 			}
 		}
 	}
+
 	//write(1,"\nahe===============\n",20);
 	pivot = step1(a, l, r);
 	//printf("a pivot : %d, %d list : %d, size : %d\n", pivot[0], pivot[1], a->list[pivot[0]], a->list[pivot[1]]);
@@ -315,8 +362,8 @@ if (confirm == 1)
 			pb_cnt++;
 			if (data2 <= b->list[b->top])
 			{
-				rb(b);
-				rb_cnt++;
+					rb(b);
+					rb_cnt++;
 			}
 		}
 		i++;
@@ -382,18 +429,123 @@ void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 		pa(b, a);
 		return ;
 	}
-	/*int confirm = 0;
+	int confirm = 0;
+	if (b->top == r)
+	{
 	confirm = confirm_ordered_desc(a, l, r);
 	if (confirm == 1)
+		{
+			while (i < size)
+			{
+				pa(b, a);
+				i++;
+			}
+			return ;
+		}
+	}
+	if (size == 2 && b->top == r)
 	{
-		while (i < size)
+		if (b->list[r] > b->list[l])
 		{
 			pa(b, a);
-			i++;
+			pa(b, a);
+			return ;
 		}
-		return ;
+		else
+		{
+			sb(b);
+			pa(b, a);
+			pa(b, a);
+			
+			return ;
+		}
 	}
-*/
+	if (size == 3 && b->top == r)
+	{
+		if (b->list[r] > b->list[l + 1])
+		{
+			if (b->list[l + 1] > b->list[l])
+			{	
+				// 3 2 1
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else if (b->list[l] > b->list[r])
+			{
+				// 2 1 3
+/*
+				pa(b, a);
+				sb(b);
+				pb(a, b);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				*/
+				rb(b);
+				sb(b);
+				pa(b, a);
+				rrb(b, 1);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else
+			{
+				// 3 1 2
+				pa(b, a);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				return ;
+				
+			}
+		}
+		else
+		{
+			if (b->list[r] > b->list[l])
+			{
+				// 2 3 1
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else if (b->list[l] > b->list[l + 1])
+			{
+				// 1 2 3
+				sb(b);
+				rb(b);
+				sb(b);
+				pa(b, a);
+				rrb(b, 1);
+				pa(b, a);
+				pa(b, a);
+				/*sb(b);
+				pa(b, a);
+				sb(b);
+				pb(a, b);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);*/
+				return ;
+			}
+			else
+			{	// 1 3 2
+				sb(b);
+				pa(b, a);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+		}
+
+	}
 	pivot = step1(b, l, r);
 	//pivot = 2;
 	//show(b);

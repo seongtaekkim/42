@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:19:29 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 16:59:45 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/20 19:16:43 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	rr(t_stack *a, t_stack *b)
 	print("rr\n");
 }
 
-void	rra(t_stack *s)
+void	rra(t_stack *s, int flag)
 {
 	int	data;
 	int	bottom;
@@ -142,10 +142,11 @@ void	rra(t_stack *s)
 	}
 	s->list[bottom - 1] = s->list[bottom];
 	s->list[s->top] = data;
-	print("rra\n");
+	if (flag)
+		print("rra\n");
 }
 
-void	rrb(t_stack *s)
+void	rrb(t_stack *s, int flag)
 {
 	int	data;
 	int	bottom;
@@ -162,12 +163,14 @@ void	rrb(t_stack *s)
 	}
 	s->list[bottom - 1] = s->list[bottom];
 	s->list[s->top] = data;
-	print("rrb\n");
+	if (flag)
+		print("rrb\n");
 }
 
-void	rrr(t_stack *a, t_stack *b)
+void	rrr(t_stack *a, t_stack *b, int flag)
 {
-	rra(a);
-	rrb(b);
-	print("rrr\n");
+	rra(a, 0);
+	rrb(b, 0);
+	if (flag == 1)
+		print("rrr\n");
 }

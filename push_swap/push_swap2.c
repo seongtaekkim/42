@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:06:37 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/20 19:47:56 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/20 15:59:34 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	init(t_stack *a, t_stack *b, int num, char **data)
 // 일단 그냥 찾고,
 // 이게 효용성 있으면
 // 구조체로 a의 인덱스를 arr에 넣어서 두번 찾는걸 개선하자.
-int	*step1(t_stack *a, int l, int r)
+int	step1(t_stack *a, int l, int r)
 {
 	int	*arr;
 	int	i;
@@ -141,7 +141,7 @@ int	*step1(t_stack *a, int l, int r)
 	size = r - l + 1;
 	arr = (int *)malloc(sizeof(int) * size);
 	if (!arr)
-		return (NULL);
+		return (-1);
 	while (j < size)
 	{
 		arr[j] = a->list[i];
@@ -150,27 +150,26 @@ int	*step1(t_stack *a, int l, int r)
 	}
 	ft_sort_int_tab(arr, size);
 	i=0;
-	int search_data[2];
-	int	*index;
-	index = (int *)malloc(sizeof(int) * 2);
-	index[0] = -1;
-	index[1] = -1;
-	search_data[0] = arr[size / 3];
-	search_data[1] = arr[size * 2 / 3];
-
+	//printf("step1 : l : %d, r : %d\n", l,r);
+	/*while (i < size)
+		printf("%d ", arr[i++]);
+	printf("\n");
+*/
+	int search_data;
+	if (size % 2 == 0)
+		search_data = arr[size / 2 - 1];
+	else
+		search_data = arr[size / 2];
 	//printf("searchdat %d, size : %d, r : %d\n", search_data, a->size, r);
 	i = a->size - 1;
 	while (i >= 0)
 	{
-		if (search_data[0] == a->list[i])
-			index[0] = i;
-		if (search_data[1] == a->list[i])
-			index[1] = i;
-		if (index[0] != -1 && index[1] != -1)
-			return (index);
+		if (search_data == a->list[i])
+			return (i);
+			//return (a->size -1 -i);
 		i--;
 	}
-	return (NULL);
+	return (-1);
 }
 
 int	confirm_ordered(t_stack *a, int l, int r)
@@ -211,7 +210,7 @@ int	confirm_ordered_desc(t_stack *a, int l, int r)
 
 void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 {
-	int	*pivot;
+	int	pivot;
 	int	size;
 	int	i;
 	int	ra_cnt;
@@ -221,7 +220,7 @@ void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 	pb_cnt = 0;
 	i = 0;
 	size = r - l + 1;
-	if (size == 1)
+	if (size <= 1)
 	{
 		//printf("size 1 return !!!!!!!!!!!!!!!!!!");
 		return ;
@@ -231,7 +230,7 @@ void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 if (confirm == 1)
 		return ;
 	//write(1,"\nahs===============\n",20);
-	if (size == 2 && l != 0)
+	if (size == 2)
 	{
 		if (a->list[r] > a->list[l])
 		{
@@ -241,7 +240,7 @@ if (confirm == 1)
 		else
 			return ;
 	}
-	if (size == 3 && l != 0)
+	if (size == 3)
 	{
 		if (a->list[r] > a->list[l + 1])
 		{
@@ -296,52 +295,66 @@ if (confirm == 1)
 	}
 	//write(1,"\nahe===============\n",20);
 	pivot = step1(a, l, r);
-	//printf("a pivot : %d, %d list : %d, size : %d\n", pivot[0], pivot[1], a->list[pivot[0]], a->list[pivot[1]]);
-	data = a->list[pivot[1]];
-	int data2 = a->list[pivot[0]];
-	int	rb_cnt = 0;
+	//printf("a pivot : %d, list : %d, size : %d\n", pivot, a->list[pivot],  size);
+	data = a->list[pivot];
 	//write(1,"\ns=================\n",20);
 	while (i < size)
 	{
 					//printf("a data : %d, list : %d\n", data, a->list[a->top]);
-		if (data <= a->list[a->top])
+		if (data < a->list[a->top])
 		{
+			if (i + 1 ==  size && data > a->list[a->top -1])
+			{
+				sa(a);
+				pa(a, b);
+				break ;
+			}
+			/*int j=i;
+			int k=1;
+			int	flag = 1;
+			
+			while (j < size)
+			{
+				if (j + 1 < size && data < a->list[a->top -k])
+				{
+					flag = 1;
+				}
+				else
+				{
+					flag = 0;
+					break ;
+				}
+			//	("awegaweg");
+			j++;
+			k--;
+			//printf("k : %d\n",k);
+			}	
+			if (flag == 1)
+				break ;*/
+			//write(1,"x\n",2);
+
 			ra(a);
 			ra_cnt++;
+			//show(a);
 		}
 		else
 		{
 			pb(a, b);
 			pb_cnt++;
-			if (data2 <= b->list[b->top])
-			{
-				rb(b);
-				rb_cnt++;
-			}
+			//show(a);
 		}
 		i++;
 	}
 	i = 0;
-	int j = 0;
-	//if (l != 0)
-	//{
-		while (i < ra_cnt && j < rb_cnt)
-		{
-			rrr(a, b, 1);
-			i++;
-			j++;
-		}
+	//if (!(a->capacity == size))
+	if (l != 0)
+	{
 		while (i < ra_cnt)
 		{
-			rra(a, 1);
+			rra(a);
 			i++;
 		}
-		while (j < rb_cnt)
-		{
-			rrb(b, 1);
-			j++;
-		}
-	//}
+	}
 //	char *str_ra = ft_itoa(ra_cnt);
 //	write(1, str_ra, ft_strlen(str_ra));
 //	write(1,"\ne=================\n",20);
@@ -349,24 +362,14 @@ if (confirm == 1)
 	//	printf("rrf : %d\n", ra_cnt);
 	//printf("top : %d, l : %d, r : %d\n", a->top, l, r);
 	//	write(1,"l\n",2);
-	//printf("a->top : %d, ra_cnt : %d, rb_cnt : %d\n",a->top, ra_cnt,rb_cnt);
-	if (ra_cnt != 0)
-		a_to_b(a, b, a->top - (ra_cnt -1), a->top);// ra호출개수
-	//show(a);
-	//show(b);
-	if (rb_cnt !=0)
-	b_to_a(a, b, 0, rb_cnt -1);// pb 호출개수 -> rb 호출횟수
-	//show(a);
-	//show(b);
-	if (pb_cnt - rb_cnt != 0)
-	b_to_a(a, b, b->top - (pb_cnt -rb_cnt -1), b->top); // pb호출개수 - rb 호출회수
-	//show(a);
-	//show(b);
+	//printf("a->top : %d, ra_cnt : %d\n",a->top, ra_cnt);
+	a_to_b(a, b, a->top - (ra_cnt -1), a->top);
+	b_to_a(a, b, b->top - (pb_cnt -1), b->top);
 }
 
 void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 {
-	int	*pivot;
+	int	pivot;
 	int	size;
 	int	i;
 	int	rb_cnt;
@@ -382,7 +385,7 @@ void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 		pa(b, a);
 		return ;
 	}
-	/*int confirm = 0;
+	int confirm = 0;
 	confirm = confirm_ordered_desc(a, l, r);
 	if (confirm == 1)
 	{
@@ -393,67 +396,148 @@ void	b_to_a(t_stack *a, t_stack *b, int l, int r)
 		}
 		return ;
 	}
-*/
-	pivot = step1(b, l, r);
-	//pivot = 2;
-	//show(b);
-	//printf("b pivot : %d, %d list : %d, size : %d\n", pivot[0], pivot[1], b->list[pivot[0]], b->list[pivot[1]]);
-	data = b->list[pivot[1]];
-	
-	int data2 = b->list[pivot[0]];
-	int	ra_cnt = 0;
-//		write(1,"\nbs================\n",20);
-	while (i < size)
+//	write(1,"\nbhs===============\n",20);
+	if (size == 2)
 	{
-		if (data2 < b->list[b->top])
+		if (confirm == 1)
+			return ;
+		if (b->list[r] > b->list[l])
 		{
 			pa(b, a);
-			pa_cnt++;
-			if (data > a->list[a->top])
+			pa(b, a);
+			return ;
+		}
+		else
+		{
+			sb(b);
+			pa(b, a);
+			pa(b, a);
+			
+			return ;
+		}
+	}
+	if (size == 3)
+	{
+		if (confirm == 1)
+			return ;
+		if (b->list[r] > b->list[l + 1])
+		{
+			if (b->list[l + 1] > b->list[l])
+			{	
+				// 3 2 1
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else if (b->list[l] > b->list[r])
 			{
-				ra(a);
-				ra_cnt++;
+				// 2 1 3
+				pa(b, a);
+				sb(b);
+				pb(a, b);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else
+			{
+				// 3 1 2
+				pa(b, a);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				return ;
+				
 			}
 		}
 		else
 		{
+			if (b->list[r] > b->list[l])
+			{
+				// 2 3 1
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else if (b->list[l] > b->list[l + 1])
+			{
+				// 1 2 3
+				sb(b);
+				pa(b, a);
+				sb(b);
+				pb(a, b);
+				sb(b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+			else
+			{	// 1 3 2
+				sb(b);
+				pa(b, a);
+				sb(b);
+				pb(a, b);
+				pa(b, a);
+				pa(b, a);
+				pa(b, a);
+				return ;
+			}
+		}
+
+	}
+//	write(1,"\nbhe===============\n",20);
+
+	pivot = step1(b, l, r);
+	//pivot = 2;
+	//show(b);
+	//printf("b pivot : %d, list : %d, size : %d\n", pivot, b->list[pivot],  size);
+	data = b->list[pivot];
+//		write(1,"\nbs================\n",20);
+	while (i < size)
+	{
+		if (data < b->list[b->top])
+		{
+			pa(b, a);
+			pa_cnt++;
+		}
+		else
+		{
+			if (i + 1 ==  size && data < b->list[b->top -1])
+			{
+				sb(b);
+				pb(b, a);
+				break ;
+			}
 			rb(b);
 			rb_cnt++;
 		}
 		i++;
 	}
-	//printf("pacnt : %d, ra_cnt : %d, rb_cnt : %d\n",pa_cnt, ra_cnt, rb_cnt);
-	if (pa_cnt -ra_cnt  != 0)
-		a_to_b(a, b, a->top - (pa_cnt -ra_cnt -1), a->top); // pa호출횟수 - ra호출횟수
+	//return ;
 	i = 0;
-	int j = 0;
-	//if (l != 0)
-	//{
-		while (i < ra_cnt && j < rb_cnt)
-		{
-			rrr(a, b, 1);
-			i++;
-			j++;
-		}
-		while (i < ra_cnt)
-		{
-			rra(a, 1);
-			i++;
-		}
-		while (j < rb_cnt)
-		{
-			rrb(b, 1);
-			j++;
-		}
-	//}
+	if (l != 0)
+	{
+	while (i < rb_cnt)
+	{
+		rrb(b);
+		i++;
+	}
+	}
 //	char *str_rb = ft_itoa(rb_cnt);
 //	write(1, str_rb, ft_strlen(str_rb));
 
 //	write(1,"\nbe================\n",20);
-	if (ra_cnt != 0)
-		a_to_b(a, b, a->top - (ra_cnt -1), a->top); //  pa호출회수-> ra호출횟수  
-	if (rb_cnt != 0)
-		b_to_a(a, b, b->top - (rb_cnt -1), b->top); // pb 호출회수-> rb호출횟수
+	//a_to_b(a, b, 0, pa_cnt -1);
+	//b_to_a(a, b, 0, rb_cnt -1);
+	a_to_b(a, b, a->top - (pa_cnt -1), a->top);
+	b_to_a(a, b, b->top - (rb_cnt -1), b->top);
+
 }
 
 int	main(int argc, char **argv)
@@ -472,7 +556,7 @@ int	main(int argc, char **argv)
 	a_to_b(&a, &b, 0, (&a)->size -1);
 //printf("\n======================프로그램 종료\n");	
 //	show(&a);
-//	show(&b);
+	//show(&a);
 	//show(&a);
 	//show(&b);
 

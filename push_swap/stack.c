@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:24:50 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/19 12:22:01 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/20 14:35:20 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	pop(t_stack *s)
 		return ;
 	if (top == 0)
 		s->bottom += -1;
+	s->list[s->top] = 0;
 	s->top = --top;
 	s->size--;
 }

@@ -248,9 +248,8 @@ void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 			if (a->list[l + 1] > a->list[l])
 			{	
 				// 3 2 1
-                rra(a, 1);
-                rra(a, 1);
-            	sa(a);
+                ra(a);
+				sa(a);
 				return ;
 			}
 			else if (a->list[l] > a->list[r])
@@ -261,8 +260,7 @@ void	a_to_b(t_stack *a, t_stack *b, int l, int r)
 			else
 			{
 				// 3 1 2
-                rra(a, 1);
-                rra(a, 1);
+                ra(a);
 				return ;
 			}
 		}

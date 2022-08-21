@@ -34,21 +34,29 @@ typedef struct s_stack
 	int	*list;
 }	t_stack;
 
-int	pexit();
+
 void	push(t_stack *s, int data);
 void	pop(t_stack *s);
 int		peek(t_stack *s);
-void	sa(t_stack *s);
-void	sb(t_stack *s);
-void	ss(t_stack *a, t_stack *b);
-void	pa(t_stack *a, t_stack *b);
-void	pb(t_stack *a, t_stack *b);
-void	ra(t_stack *s);
-void	rb(t_stack *s);
-void	rr(t_stack *a, t_stack *b);
-void	rra(t_stack *s, int flag);
-void	rrb(t_stack *s, int flag);
-void	rrr(t_stack *a, t_stack *b, int flag);
-void	a_to_b(t_stack *a, t_stack *b, int l, int r);
-void	b_to_a(t_stack *a, t_stack *b, int l, int r);
+void	sab(t_stack *s, char *op);
+//void	ss(t_stack *a, t_stack *b);
+void	pab(t_stack *a, t_stack *b, char *op);
+void	rab(t_stack *s, char *op);
+//void	rr(t_stack *a, t_stack *b);
+void	rrab(t_stack *s, char *op);
+void	rrr(t_stack *a, t_stack *b);
+void	swap_a(t_stack *a, t_stack *b, int l, int r);
+void	swap_b(t_stack *a, t_stack *b, int l, int r);
+
+int		pexit();
+int		confirm_ordered_desc(t_stack *a, int l, int r);
+int		confirm_ordered(t_stack *a, int l, int r);
+void	ft_sort_int_tab(int *tab, int size);
+int		*get_pivot(t_stack *a, int l, int r);
+int		search_dupl(t_stack *s, int target);
+void	init(t_stack *a, t_stack *b, int num, char **data);
+void	output(char *s);
+
+int    process1(t_stack *a, t_stack *b, int l, int r);
+int    process2(t_stack *a, t_stack *b, int l, int r);
 #endif

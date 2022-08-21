@@ -6,7 +6,7 @@
 #    By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/15 18:05:39 by seongtki          #+#    #+#              #
-#    Updated: 2022/08/16 12:47:55 by seongtki         ###   ########.fr        #
+#    Updated: 2022/08/21 15:26:25 by seongtki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ INCS = -I ./libft/libft.h -I ./push_swap.h
 INCS_B = -I ./libft/libft.h -I ./push_swap_bonus.h
 LIBFT = -L./libft -lft
 RM = rm -f
-SRCS =	push_swap.c stack.c operations.c 
+SRCS =	push_swap.c stack.c operations.c close.c sort.c search.c init.c output.c process1.c
 SRCS_B = push_swap.c
 OBJS = $(SRCS:.c=.o) 
 OBJS_B = $(SRCS_B:.c=.o) 

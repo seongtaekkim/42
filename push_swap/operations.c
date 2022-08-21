@@ -12,12 +12,7 @@
 
 #include "push_swap.h"
 
-void	print(char *s)
-{
-	write(1, s, ft_strlen(s));
-}
-
-void	sa(t_stack *s)
+void	sab(t_stack *s, char *op)
 {
 	int	data1;
 	int	data2;
@@ -30,57 +25,30 @@ void	sa(t_stack *s)
 	pop(s);
 	push(s, data1);
 	push(s, data2);
-	print("sa\n");
+	if (op != (void *)0)
+		output(op);
 }
 
-void	sb(t_stack *s)
+// void	ss(t_stack *a, t_stack *b)
+// {
+// 	sab(a, "");
+// 	sab(b, "");
+// 	output("ss");
+// }
+
+void	pab(t_stack *a, t_stack *b, char *op)
 {
 	int	data1;
-	int	data2;
 
-	if (s->top < 1)
-		return ;
-	data1 = s->list[s->top];
-	pop(s);
-	data2 = s->list[s->top];
-	pop(s);
-	push(s, data1);
-	push(s, data2);
-	print("sb\n");
-}
-
-void	ss(t_stack *a, t_stack *b)
-{
-	sa(a);
-	sb(b);
-	print("ss\n");
-}
-
-void	pa(t_stack *a, t_stack *b)
-{
-	int	data1;
-	
 	if (a->top == -1)
 		return ;
 	data1 = peek(a);
 	pop(a);
 	push(b, data1);
-	print("pa\n");
+	output(op);
 }
 
-void	pb(t_stack *a, t_stack *b)
-{
-	int	data1;
-	
-	if (a->top == -1)
-		return ;
-	data1 = peek(a);
-	pop(a);
-	push(b, data1);
-	print("pb\n");
-}
-
-void	ra(t_stack *s)
+void	rab(t_stack *s, char *op)
 {
 	int	data;
 	int	top;
@@ -96,36 +64,18 @@ void	ra(t_stack *s)
 		top--;
 	}
 	s->list[s->bottom] = data;
-	print("ra\n");
+	if (op != (void *)0)
+		output(op);
 }
 
-void	rb(t_stack *s)
-{
-	int	data;
-	int	top;
+// void	rr(t_stack *a, t_stack *b)
+// {
+// 	rab(a, "");
+// 	rab(b, "");
+// 	output("rr");
+// }
 
-	top = s->top;
-	if (top < -1)
-		return ;
-	data = peek(s);
-	top--;
-	while (top != -1)
-	{
-		s->list[top + 1] = s->list[top];
-		top--;
-	}
-	s->list[s->bottom] = data;
-	print("rb\n");
-}
-
-void	rr(t_stack *a, t_stack *b)
-{
-	ra(a);
-	rb(b);
-	print("rr\n");
-}
-
-void	rra(t_stack *s, int flag)
+void	rrab(t_stack *s, char *op)
 {
 	int	data;
 	int	bottom;
@@ -142,35 +92,13 @@ void	rra(t_stack *s, int flag)
 	}
 	s->list[bottom - 1] = s->list[bottom];
 	s->list[s->top] = data;
-	if (flag)
-		print("rra\n");
+	if (op != (void *)0)
+		output(op);
 }
 
-void	rrb(t_stack *s, int flag)
+void	rrr(t_stack *a, t_stack *b)
 {
-	int	data;
-	int	bottom;
-
-	bottom = s->bottom;
-	if (s->top < 1)
-		return ;
-	data = s->list[bottom];
-	bottom++;
-	while (bottom != s->top)
-	{
-		s->list[bottom - 1] = s->list[bottom];
-		bottom++;
-	}
-	s->list[bottom - 1] = s->list[bottom];
-	s->list[s->top] = data;
-	if (flag)
-		print("rrb\n");
-}
-
-void	rrr(t_stack *a, t_stack *b, int flag)
-{
-	rra(a, 0);
-	rrb(b, 0);
-	if (flag == 1)
-		print("rrr\n");
+	rrab(a, (void *)0);
+	rrab(b, (void *)0);
+	output("rrr");
 }

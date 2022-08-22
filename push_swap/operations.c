@@ -68,12 +68,12 @@ void	rab(t_stack *s, char *op)
 		output(op);
 }
 
-// void	rr(t_stack *a, t_stack *b)
-// {
-// 	rab(a, "");
-// 	rab(b, "");
-// 	output("rr");
-// }
+void	rr(t_stack *a, t_stack *b)
+{
+	rab(a, (void *)0);
+	rab(b, (void *)0);
+	output("rr");
+}
 
 void	rrab(t_stack *s, char *op)
 {

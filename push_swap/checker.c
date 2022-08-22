@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/15 18:06:37 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/20 19:47:56 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/22 16:37:38 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/22 17:25:13 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <fcntl.h>
+
+
 
 // 삭제 
 void	show(t_stack *s)
@@ -32,35 +35,6 @@ void	show(t_stack *s)
 	printf("=======================\n");
 }
 
-// int	break_ra(t_stack *a, t_stack *b, int i, int size)
-// {
-// 	int j=i;
-// 	int k=1;
-// 	int	flag = 1;
-	
-// 	if (i + 1 ==  size && data > a->list[a->top -1])
-// 	{
-// 		sab(a, "sa");
-// 		pab(a, b, "pa");
-// 		return (1);
-// 	}
-
-// 	while (j < size)
-// 	{
-// 		if (j + 1 < size && data <= a->list[a->top -k])
-// 			flag = 1;
-// 		else
-// 		{
-// 			flag = 0;
-// 			break ;
-// 		}
-// 	j++;
-// 	k--;
-// 	}	
-// 	if (flag == 1)
-// 		return (1);
-// 	return (0);
-// }
 void	swap_a(t_stack *a, t_stack *b, int l, int r)
 {
 	int	*pivot;
@@ -275,14 +249,46 @@ void	swap_b(t_stack *a, t_stack *b, int l, int r)
 		swap_b(a, b, b->top - (rb_cnt -1), b->top); // pb 호출회수-> rb호출횟수
 }
 
+int	get_operators(const char operators[12][4], char *op)
+{
+	int	i;
+
+	i = 0;
+	while (1)
+	{
+		if (ft_strncmp(operators[i], op, ft_strlen(op +1)) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int	main(int argc, char **argv)
 {
+	const char	operators[12][4] = {{"sa"}, {"sb"}, {"ss"}, {"pa"}, {"pb"}, {"ra"}, {"rb"}, {"rr"}, {"rra"}, {"rrb"}, {"rrr"}};
 	if (argc < 2)
 		pexit();
 	t_stack	a;
 	t_stack	b;
 	init(&a, &b, argc, argv);
+	
+	char	*line;
+	while (1)
+	{
+		line = get_next_line(0);
+		if (line == 0)
+			break ;
+		int ret = get_operators(operators, line);
+		free(line);
+		if (ret == -1)
+			pexit();
+		if (ret == 0)
+			sab(&a, "sa");
+		if (!line)
+			break ;
+	}	
 	swap_a(&a, &b, 0, (&a)->size -1);
+	
 //printf("\n======================프로그램 종료\n");	
 //	show(&a);
 //	show(&b);

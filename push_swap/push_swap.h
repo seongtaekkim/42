@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:12:17 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/20 19:17:27 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/22 17:18:39 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	sab(t_stack *s, char *op);
 //void	ss(t_stack *a, t_stack *b);
 void	pab(t_stack *a, t_stack *b, char *op);
 void	rab(t_stack *s, char *op);
-//void	rr(t_stack *a, t_stack *b);
+void	rr(t_stack *a, t_stack *b);
 void	rrab(t_stack *s, char *op);
 void	rrr(t_stack *a, t_stack *b);
 void	swap_a(t_stack *a, t_stack *b, int l, int r);
@@ -59,4 +59,6 @@ void	output(char *s);
 
 int    process1(t_stack *a, t_stack *b, int l, int r);
 int    process2(t_stack *a, t_stack *b, int l, int r);
+
+char	*get_next_line(int fd);
 #endif

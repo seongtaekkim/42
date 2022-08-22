@@ -39,8 +39,27 @@ static int	*find_pivot(int *arr, t_stack *a, int size)
 	pivot = (int *)malloc(sizeof(int) * 2);
 	pivot[0] = -1;
 	pivot[1] = -1;
-	search_data[0] = arr[size / 3];
-	search_data[1] = arr[size * 2 / 3];
+
+	if (size > 100)
+	{	search_data[0] = arr[size * 1/ 3];
+		search_data[1] = arr[size * 2/ 3];
+
+	} else if (size >= 100)
+	{	search_data[0] = arr[size * 5/ 100];
+		search_data[1] = arr[size * 50 / 100];
+
+	}
+	else if (size >= 10)
+	{	search_data[0] = arr[size * 35/ 100];
+		search_data[1] = arr[size * 60 / 100];
+
+	}
+	else
+	{
+		search_data[0] = arr[size * 1 / 3];
+		search_data[1] = arr[size * 2 / 3];
+	}
+
 	i = a->size - 1;
 	while (i >= 0)
 	{

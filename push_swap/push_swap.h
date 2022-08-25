@@ -32,6 +32,9 @@ typedef struct s_stack
 	int	capacity;
 	int	size;
 	int	*list;
+	int	pa_cnt;
+	int	ra_cnt;
+	int	rb_cnt;
 }	t_stack;
 
 

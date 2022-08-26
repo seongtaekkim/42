@@ -6,19 +6,20 @@
 #    By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/15 18:05:39 by seongtki          #+#    #+#              #
-#    Updated: 2022/08/21 15:26:25 by seongtki         ###   ########.fr        #
+#    Updated: 2022/08/22 17:15:47 by seongtki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = push_swap
+BNAME = checker
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCS = -I ./libft/libft.h -I ./push_swap.h
-INCS_B = -I ./libft/libft.h -I ./push_swap_bonus.h
+INCS_B = -I ./libft/libft.h -I ./push_swap.h
 LIBFT = -L./libft -lft
 RM = rm -f
 SRCS =	push_swap.c stack.c operations.c close.c sort.c search.c init.c output.c process1.c
-SRCS_B = push_swap.c
+SRCS_B = checker.c stack.c operations.c close.c sort.c search.c init.c output.c process1.c get_next_line.c get_next_line_utils.c
 OBJS = $(SRCS:.c=.o) 
 OBJS_B = $(SRCS_B:.c=.o) 
 ifdef V_BO
@@ -34,12 +35,16 @@ endif
 $(NAME) : $(OBJ_FILES)
 	make -C ./libft
 	$(CC) $(CFLAGS) $(V_INCS) $(LIBFT) $(MLX_FLAGS) $(OBJ_FILES) -o $@
+
+$(BNAME) : $(OBJ_FILES)
+	make -C ./libft
+	$(CC) $(CFLAGS) $(V_INCS) $(LIBFT) $(MLX_FLAGS) $(OBJ_FILES) -o $@
 all :
 	$(RM) $(OBJS_B)
 	make $(NAME)
 bonus :
 	$(RM) $(OBJS)
-	make V_BO=1 $(NAME)
+	make V_BO=1 $(BNAME)
 clean:
 	make -C ./libft clean
 	$(RM) $(OBJS)

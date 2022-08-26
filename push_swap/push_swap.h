@@ -24,6 +24,14 @@ typedef struct s_stack
 	int				data;
 }	t_stack;
 */
+typedef struct s_swapinfo
+{
+	int	size;
+	int	l;
+	int	r;
+	int	pivot1;
+	int pivot2;
+}	t_swapinfo;
 
 typedef struct s_stack
 {
@@ -35,21 +43,22 @@ typedef struct s_stack
 	int	pa_cnt;
 	int	ra_cnt;
 	int	rb_cnt;
+	int	pb_cnt;
 }	t_stack;
 
 
 void	push(t_stack *s, int data);
 void	pop(t_stack *s);
 int		peek(t_stack *s);
-void	sab(t_stack *s, char *op);
-//void	ss(t_stack *a, t_stack *b);
-void	pab(t_stack *a, t_stack *b, char *op);
-void	rab(t_stack *s, char *op);
-void	rr(t_stack *a, t_stack *b);
-void	rrab(t_stack *s, char *op);
-void	rrr(t_stack *a, t_stack *b);
-void	swap_a(t_stack *a, t_stack *b, int l, int r);
-void	swap_b(t_stack *a, t_stack *b, int l, int r);
+void	sab(t_stack *s, char *op, int is_print);
+void	ss(t_stack *a, t_stack *b, int is_print);
+void	pab(t_stack *a, t_stack *b, char *op, int is_print);
+void	rab(t_stack *s, char *op, int is_print);
+void	rr(t_stack *a, t_stack *b, int is_print);
+void	rrab(t_stack *s, char *op, int is_print);
+void	rrr(t_stack *a, t_stack *b, int is_print);
+void	swap_a(t_stack *a, t_stack *b, t_swapinfo info);
+void	swap_b(t_stack *a, t_stack *b, t_swapinfo info);
 
 int		pexit();
 int		confirm_ordered_desc(t_stack *a, int l, int r);

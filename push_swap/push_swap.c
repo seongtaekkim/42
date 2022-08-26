@@ -32,6 +32,15 @@ void	show(t_stack *s)
 	printf("=======================\n");
 }
 
+t_swapinfo	set_info(int l, int r)
+{
+	t_swapinfo info;
+
+	info.l = l;
+	info.r = r;
+	return (info);
+}
+
 
 
 void	reverse_op(t_stack *a, t_stack *b, int ra_cnt, int rb_cnt)
@@ -43,184 +52,154 @@ void	reverse_op(t_stack *a, t_stack *b, int ra_cnt, int rb_cnt)
 	j = 0;
 	while (i < ra_cnt && j < rb_cnt)
 	{
-		rrr(a, b);
+		rrr(a, b, 1);
 		i++;
 		j++;	
 	}
 	while (i++ < ra_cnt)
-		rrab(a, "rra");
+		rrab(a, "rra", 1);
 	while (j++ < rb_cnt)
-		rrab(b, "rrb");
+		rrab(b, "rrb", 1);
 }
 
+int	pre_swap_a(t_stack *a, t_stack *b, t_swapinfo info)
+{
+	if (info.size == 1)
+		return (1);
+	if (confirm_ordered(a, info.l, info.r) == 1)
+		return (1);
+	if (process1(a, b, info.l, info.r))
+		return (1);
+	return (0);
+}
 
+int	is_ordered_swap_a(t_stack *a, t_swapinfo info, int i)
+{
+	int	k;
+	int	flag;
 
-// int	break_ra(t_stack *a, t_stack *b, int i, int size)
-// {
-// 	int j=i;
-// 	int k=1;
-// 	int	flag = 1;
-	
-// 	if (i + 1 ==  size && data > a->list[a->top -1])
-// 	{
-// 		sab(a, "sa");
-// 		pab(a, b, "pa");
-// 		return (1);
-// 	}
+	k = 0;
+	flag = 1;
+	while (i < info.size)
+	{
+		if (i + 1 < info.size && info.pivot1 <= a->list[a->top -k])
+			flag = 1;
+		else
+		{
+			flag = 0;
+			break ;
+		}
+	i++;
+	k--;
+	}	
+	if (flag == 1)
+		return (1);
+	return (0);
+}
+int	do_swap_a2(t_stack *a, t_stack *b, t_swapinfo info, int i)
+{
+	if (i + 1 ==  info.size && info.pivot1 > a->list[a->top -1])
+	{
+		sab(a, "sa", 1);
+		pab(a, b, "pa", 1);
+		return (1);
+	}
+	if (is_ordered_swap_a(a, info, i))
+		return (1);
+	rab(a, "ra", 1);
+	a->ra_cnt++;
+	return (0);
+}
 
-// 	while (j < size)
-// 	{
-// 		if (j + 1 < size && data <= a->list[a->top -k])
-// 			flag = 1;
-// 		else
-// 		{
-// 			flag = 0;
-// 			break ;
-// 		}
-// 	j++;
-// 	k--;
-// 	}	
-// 	if (flag == 1)
-// 		return (1);
-// 	return (0);
-// }
+void	do_swap_a3(t_stack *a, t_stack *b, t_swapinfo info)
+{
+	if (info.l == 0 && info.r == (a->capacity -1))
+	{
+		pab(a, b, "pb", 1);
+		a->pb_cnt++;
+		if (info.pivot2 >= b->list[b->top])
+			rab(b, "rb", 1);
+	}
+	else
+	{
+		pab(a, b, "pb", 1);
+		a->pb_cnt++;
+		if (info.pivot2 < b->list[b->top])
+		{
+				rab(b, "rb", 1);
+				a->rb_cnt++;
+		}
+	}
+}
 
-void	swap_a(t_stack *a, t_stack *b, int l, int r)
+void	do_swap_a(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	int	*pivot;
-	int	size;
+	int	i;
+
+	i = 0;
+	pivot = get_pivot(a, info.l, info.r);
+	info.pivot1 = a->list[pivot[1]];
+	info.pivot2 = a->list[pivot[0]];
+	a->pb_cnt = 0;
+	a->rb_cnt = 0;
+	a->ra_cnt = 0;
+	while (i < info.size)
+	{
+		if (info.pivot1 <= a->list[a->top])
+		{
+			if (do_swap_a2(a, b, info, i))
+				break ;
+		}
+		else
+			do_swap_a3(a, b, info);
+		i++;
+	}
+	free(pivot);
+}
+
+void	swap_a(t_stack *a, t_stack *b, t_swapinfo info)
+{
 	int	i;
 	int	ra_cnt;
 	int	pb_cnt;
-	int	data;
-	int data2;
+	int	rb_cnt;
 
-	ra_cnt = 0;
-	pb_cnt = 0;
+	info.size = info.r - info.l + 1;
+	if (pre_swap_a(a, b, info))
+		return ;
+	do_swap_a(a, b, info);
+	pb_cnt = a->pb_cnt;
+	rb_cnt = a->rb_cnt;
+	ra_cnt = a->ra_cnt;
 	i = 0;
-	size = r - l + 1;
-	if (size == 1)
-		return ;
-	if (confirm_ordered(a, l, r) == 1)
-		return ;
-	if (process1(a, b, l, r))
-		return ;
-	pivot = get_pivot(a, l, r);
-	data = a->list[pivot[1]];
-	data2 = a->list[pivot[0]];
-	free(pivot);
-	int	rb_cnt = 0;
-	int	rr_flag = 0;
-	while (i < size)
-	{
-		if (data <= a->list[a->top])
-		{
-			if (i + 1 ==  size && data > a->list[a->top -1])
-			{
-				sab(a, "sa");
-				pab(a, b, "pa");
-				break ;
-			}
-
-			int j=i;
-			int k=1;
-			int	flag = 1;
-
-			while (j < size)
-			{
-				if (j + 1 < size && data <= a->list[a->top -k])
-					flag = 1;
-				else
-				{
-					flag = 0;
-					break ;
-				}
-			j++;
-			k--;
-			}	
-			if (flag == 1)
-				break ;
-			
-			if (rr_flag == 1)
-			{
-				rr(a, b);
-				ra_cnt++;
-				rb_cnt++;
-				rr_flag = 0;
-			}
-			else
-			{
-				rab(a, "ra");
-				ra_cnt++;
-			}
-		}
-		else
-		{
-
-			if (l == 0 && r == (a->capacity -1))
-			{
-				pab(a, b, "pb");
-				pb_cnt++;
-				if (data2 >= b->list[b->top])
-					rab(b, "rb");
-			}
-			else
-			{
-				pab(a, b, "pb");
-				pb_cnt++;
-				if (data2 < b->list[b->top])
-				{
-					if (i + 1 <=  size && data <= b->list[b->top -1])
-					{
-						rr_flag = 1;
-					}
-					else
-					{
-						rab(b, "rb");
-						rb_cnt++;
-					}
-						
-				}
-			}
-		}
-		i++;
-	}
-	i = 0;
-	int j = 0;
-	if (l == 0)
-	{
-		while (j++ < rb_cnt)
-			rrab(b, "rrb");
-	}
+	if (info.l == 0)
+		while (i++ < rb_cnt)
+			rrab(b, "rrb", 1);
 	else
 		reverse_op(a, b, ra_cnt, rb_cnt);
-	//printf("==============================================================\n");
 	if (ra_cnt != 0)
-		swap_a(a, b, a->top - (ra_cnt -1), a->top);// ra호출개수
+		swap_a(a, b, set_info(a->top - (ra_cnt -1), a->top));// ra호출개수
 	if (rb_cnt !=0)
-		swap_b(a, b, 0, rb_cnt -1);// pb 호출개수 -> rb 호출횟수
+		swap_b(a, b, set_info(0, rb_cnt -1));// pb 호출개수 -> rb 호출횟수
 	if (pb_cnt - rb_cnt != 0)
-		swap_b(a, b, b->top - (pb_cnt -rb_cnt -1), b->top); // pb호출개수 - rb 호출회수
+		swap_b(a, b, set_info(b->top - (pb_cnt -rb_cnt -1), b->top)); // pb호출개수 - rb 호출회수
 }
 
 
-
-
-int	do_confirm_ordered_desc(t_stack *a, t_stack *b, int l, int r)
+int	do_confirm_ordered_desc(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	int	i;
-	int	size;
 
-	size = r - l + 1;
 	i = 0;
 	int confirm = 0;
-	if (b->top == r)
+	if (b->top == info.r)
 	{
-		confirm = confirm_ordered_desc(a, l, r);
+		confirm = confirm_ordered_desc(a, info.l, info.r);
 		if (confirm == 1)
 		{
-			while (i++ < size)
-				pab(b, a, "pa");
+			while (i++ < info.size)
+				pab(b, a, "pa", 1);
 			return (1);
 		}
 	}
@@ -228,102 +207,84 @@ int	do_confirm_ordered_desc(t_stack *a, t_stack *b, int l, int r)
 }
 
 
-static void	do_swap_b2(t_stack *a, t_stack *b, int data[2])
+static void	do_swap_b2(t_stack *a, t_stack *b, t_swapinfo info)
 {
-	pab(b, a, "pa");
+	pab(b, a, "pa", 1);
 	b->pa_cnt++;
-	if (data[0] > a->list[a->top])
+	if (info.pivot1 > a->list[a->top])
 	{
-		rab(a, "ra");
+		rab(a, "ra", 1);
 		b->ra_cnt++;
 	}
 }
 
-static void	do_swap_b(t_stack *a, t_stack *b, int pivot[2], int size)
+static void	do_swap_b(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	int	i;
-	int	data[2];
 
-	data[0] = b->list[pivot[1]];
-	data[1] = b->list[pivot[0]];
 	i = 0;
 	b->pa_cnt = 0;
 	b->ra_cnt = 0;
 	b->rb_cnt = 0;
-	while (i < size)
+	while (i < info.size)
 	{
-		if (data[1] < b->list[b->top])
-			do_swap_b2(a, b, data);
+		if (info.pivot2 < b->list[b->top])
+			do_swap_b2(a, b, info);
 		else
 		{
-			if (i + 1 ==  size && data[0] < b->list[b->top -1])
+			if (i + 1 ==  info.size && info.pivot1 < b->list[b->top -1])
 			{
-				sab(b, "sb");
-				pab(b, a, "pb");
+				sab(b, "sb", 1);
+				pab(b, a, "pb", 1);
 				break ;
 			}
-			rab(b, "rb");
+			rab(b, "rb", 1);
 			b->rb_cnt++;
 		}
 		i++;
 	}
-	free(pivot);
 }
 
-int	pre_swap_b(t_stack *a, t_stack *b, int l, int r)
+int	pre_swap_b(t_stack *a, t_stack *b, t_swapinfo info)
 {
-	int	size;
-
-	size = r - l + 1;
-	if (size == 1)
+	if (info.size == 1)
 	{
-		pab(b, a, "pa");
+		pab(b, a, "pa", 1);
 		return (1);
 	}
-	if (do_confirm_ordered_desc(a, b, l, r))
+	if (do_confirm_ordered_desc(a, b, info))
 		return (1);
-	if (process2(a, b, l, r))
+	if (process2(a, b, info.l, info.r))
 		return (1);
 	return (0);
 }
 
-void	swap_b(t_stack *a, t_stack *b, int l, int r)
+void	swap_b(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	int	*pivot;
-	int	size;
 	int	rb_cnt;
 	int	pa_cnt;
 	int	ra_cnt;
 	
-	size = r - l + 1;
-	if (pre_swap_b(a, b, l ,r))
+	info.size = info.r - info.l + 1;
+	if (pre_swap_b(a, b, info))
 		return ;
-	pivot = get_pivot(b, l, r);
-	do_swap_b(a, b, pivot,size);
+	pivot = get_pivot(b, info.l, info.r);
+	info.pivot1 = b->list[pivot[1]];
+	info.pivot2 = b->list[pivot[0]];
+	free(pivot);
+	do_swap_b(a, b, info);
 	pa_cnt = b->pa_cnt;
 	ra_cnt = b->ra_cnt;
 	rb_cnt = b->rb_cnt;
 	if (pa_cnt -ra_cnt  != 0)
-		swap_a(a, b, a->top - (pa_cnt -ra_cnt -1), a->top); // pa호출횟수 - ra호출횟수
+		swap_a(a, b, set_info(a->top - (pa_cnt -ra_cnt -1), a->top)); // pa호출횟수 - ra호출횟수
 	reverse_op(a, b, ra_cnt, rb_cnt);
 	if (ra_cnt != 0)
-		swap_a(a, b, a->top - (ra_cnt -1), a->top); //  pa호출회수-> ra호출횟수  
+		swap_a(a, b, set_info(a->top - (ra_cnt -1), a->top)); //  pa호출회수-> ra호출횟수  
 	if (rb_cnt != 0)
-		swap_b(a, b, b->top - (rb_cnt -1), b->top); // pb 호출회수-> rb호출횟수
+		swap_b(a, b, set_info(b->top - (rb_cnt -1), b->top)); // pb 호출회수-> rb호출횟수
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -333,12 +294,13 @@ void	swap_b(t_stack *a, t_stack *b, int l, int r)
 
 int	main(int argc, char **argv)
 {
+	t_stack		a;
+	t_stack		b;
+
 	if (argc < 2)
 		pexit();
-	t_stack	a;
-	t_stack	b;
 	init(&a, &b, argc, argv);
-	swap_a(&a, &b, 0, (&a)->size -1);
+	swap_a(&a, &b, set_info(0, (&a)->size -1));
 //printf("\n======================프로그램 종료\n");	
 //	show(&a);
 //	show(&b);

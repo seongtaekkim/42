@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void	sab(t_stack *s, char *op)
+void	sab(t_stack *s, char *op, int is_print)
 {
 	int	data1;
 	int	data2;
@@ -25,18 +25,19 @@ void	sab(t_stack *s, char *op)
 	pop(s);
 	push(s, data1);
 	push(s, data2);
-	if (op != (void *)0)
+	if (op != (void *)0 && is_print)
 		output(op);
 }
 
-// void	ss(t_stack *a, t_stack *b)
-// {
-// 	sab(a, "");
-// 	sab(b, "");
-// 	output("ss");
-// }
+void	ss(t_stack *a, t_stack *b, int is_print)
+{
+	sab(a, (void *)0, is_print);
+	sab(b, (void *)0, is_print);
+	if (is_print)
+		output("ss");
+}
 
-void	pab(t_stack *a, t_stack *b, char *op)
+void	pab(t_stack *a, t_stack *b, char *op, int is_print)
 {
 	int	data1;
 
@@ -45,16 +46,17 @@ void	pab(t_stack *a, t_stack *b, char *op)
 	data1 = peek(a);
 	pop(a);
 	push(b, data1);
-	output(op);
+	if (is_print)
+		output(op);
 }
 
-void	rab(t_stack *s, char *op)
+void	rab(t_stack *s, char *op, int is_print)
 {
 	int	data;
 	int	top;
 
 	top = s->top;
-	if (top < -1)
+	if (top == -1)
 		return ;
 	data = peek(s);
 	top--;
@@ -64,24 +66,25 @@ void	rab(t_stack *s, char *op)
 		top--;
 	}
 	s->list[s->bottom] = data;
-	if (op != (void *)0)
+	if (op != (void *)0 && is_print)
 		output(op);
 }
 
-void	rr(t_stack *a, t_stack *b)
+void	rr(t_stack *a, t_stack *b, int is_print)
 {
-	rab(a, (void *)0);
-	rab(b, (void *)0);
-	output("rr");
+	rab(a, (void *)0, is_print);
+	rab(b, (void *)0, is_print);
+	if (is_print)
+		output("rr");
 }
 
-void	rrab(t_stack *s, char *op)
+void	rrab(t_stack *s, char *op, int is_print)
 {
 	int	data;
 	int	bottom;
 
 	bottom = s->bottom;
-	if (s->top < 1)
+	if (s->top <= 0)
 		return ;
 	data = s->list[bottom];
 	bottom++;
@@ -92,13 +95,14 @@ void	rrab(t_stack *s, char *op)
 	}
 	s->list[bottom - 1] = s->list[bottom];
 	s->list[s->top] = data;
-	if (op != (void *)0)
+	if (op != (void *)0 && is_print)
 		output(op);
 }
 
-void	rrr(t_stack *a, t_stack *b)
+void	rrr(t_stack *a, t_stack *b, int is_print)
 {
-	rrab(a, (void *)0);
-	rrab(b, (void *)0);
-	output("rrr");
+	rrab(a, (void *)0, is_print);
+	rrab(b, (void *)0, is_print);
+	if (is_print)
+		output("rrr");
 }

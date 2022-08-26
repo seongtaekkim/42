@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 18:41:43 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/21 18:43:34 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/26 14:48:31 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,35 +40,15 @@ static int	*find_pivot(int *arr, t_stack *a, int size)
 	pivot[0] = -1;
 	pivot[1] = -1;
 
-	// if (size > 100)
-	// {	search_data[0] = arr[size * 1/ 3];
-	// 	search_data[1] = arr[size * 2/ 3];
-
-	// } else if (size >= 100)
-	// {	search_data[0] = arr[size * 5/ 100];
-	// 	search_data[1] = arr[size * 50 / 100];
-
-	// }
-	// else if (size >= 10)
-	// {	search_data[0] = arr[size * 35/ 100];
-	// 	search_data[1] = arr[size * 60 / 100];
-
-	// }
-	// else
-	// {
-	// 	search_data[0] = arr[size * 1 / 3];
-	// 	search_data[1] = arr[size * 2 / 3];
-	// }
-
  	if (size == a->capacity)
-	{	search_data[0] = arr[size * 5/ 100];
+	{
+		search_data[0] = arr[size * 5/ 100];
 		search_data[1] = arr[size * 50 / 100];
-
 	}
 	else if (size >= 9)
-	{	search_data[0] = arr[size * 35/ 100];
+	{	
+		search_data[0] = arr[size * 35/ 100];
 		search_data[1] = arr[size * 60 / 100];
-
 	}
 	else
 	{

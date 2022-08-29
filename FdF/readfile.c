@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:05:16 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/18 17:09:52 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:38:37 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static t_point	*set_mapheight(char **data, t_fdf *fdf)
 
 	index = 0;
 	tmp = (t_point *)malloc(sizeof(t_point) * fdf->map.x);
+	if (!tmp)
+		do_exit(fdf);
 	while (data[index])
 	{
 		tmp[index].z = ft_atoi(data[index]);
@@ -33,6 +35,8 @@ static int	append_line(char **data, t_fdf *fdf)
 	int		index;
 
 	tmp = (t_point **)malloc(sizeof(t_point *) * fdf->map.y);
+	if (!tmp)
+		do_exit(fdf);
 	index = fdf->map.y - 1;
 	tmp[index] = set_mapheight(data, fdf);
 	while (--index >= 0)
@@ -67,7 +71,7 @@ int	read_file(char	*file, t_fdf *fdf)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			do_exit(fdf);
+			break ;
 		line2 = ft_strtrim(line, " \n");
 		data = ft_split(line2, ' ');
 		free(line);

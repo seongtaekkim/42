@@ -67,3 +67,12 @@ void	init(t_stack *a, t_stack *b, int num, char **data)
 		push(a, ret);
 	}
 }
+
+t_swapinfo	set_info(int l, int r)
+{
+	t_swapinfo	info;
+
+	info.l = l;
+	info.r = r;
+	return (info);
+}

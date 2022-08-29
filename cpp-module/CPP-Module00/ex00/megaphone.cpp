@@ -6,13 +6,13 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 09:51:10 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/26 10:25:30 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/29 10:47:15 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 
-void	toupperMessage(int count, char **messages)
+void	toupperMessage(int &count, char **messages)
 {
 	int		index;
 	size_t	jndex;

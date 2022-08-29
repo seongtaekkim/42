@@ -69,8 +69,10 @@ int		search_dupl(t_stack *s, int target);
 void	init(t_stack *a, t_stack *b, int num, char **data);
 void	output(char *s);
 
-int    process1(t_stack *a, t_stack *b, int l, int r);
-int    process2(t_stack *a, t_stack *b, int l, int r);
+int		do_hardcode_a(t_stack *a, t_stack *b,  t_swapinfo info);
+int		do_hardcode_b(t_stack *a, t_stack *b, t_swapinfo info);
+int		hard_size2_b(t_stack *a, t_stack *b, t_swapinfo info);
 
-char	*get_next_line(int fd);
+char		*get_next_line(int fd);
+t_swapinfo	set_info(int l, int r);
 #endif

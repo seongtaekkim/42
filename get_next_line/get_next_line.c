@@ -18,6 +18,7 @@ static char	*read_file(int fd, char *line)
 	ssize_t	n;
 
 	buf = malloc(sizeof(char) * BUFFER_SIZE);
+		write(1,"aa",2);
 	if (!buf)
 		return (NULL);
 	while (1)

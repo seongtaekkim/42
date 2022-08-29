@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 16:37:38 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/26 18:48:45 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/29 17:39:35 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,9 @@ void	do_operator(t_stack *a, t_stack *b, int *op_list, int size)
 
 void	checker(t_stack *a, t_stack *b)
 {
-	const char	operators[11][4] = {{"sa"}, {"sb"}, {"ss"}, {"pa"}, {"pb"}, {"ra"}, {"rb"}, {"rr"}, {"rra"}, {"rrb"}, {"rrr"}};
+	const char	operators[11][4]
+		= {{"sa"}, {"sb"}, {"ss"}, {"pa"},
+	{"pb"}, {"ra"}, {"rb"}, {"rr"}, {"rra"}, {"rrb"}, {"rrr"}};
 	char		*line;
 	int			size;
 	int			*op_list;

@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <unistd.h>
-
+#include <fcntl.h>
+#include <stdlib.h>
 int	main(void)
 {
 	pid_t	pid;

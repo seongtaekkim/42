@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:06:37 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/20 19:47:56 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/29 17:28:15 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,6 @@ void	show(t_stack *s)
 	printf("=======================\n");
 }
 
-t_swapinfo	set_info(int l, int r)
-{
-	t_swapinfo info;
-
-	info.l = l;
-	info.r = r;
-	return (info);
-}
-
-
-
 void	reverse_op(t_stack *a, t_stack *b, int ra_cnt, int rb_cnt)
 {
 	int	i;
@@ -54,7 +43,7 @@ void	reverse_op(t_stack *a, t_stack *b, int ra_cnt, int rb_cnt)
 	{
 		rrr(a, b, 1);
 		i++;
-		j++;	
+		j++;
 	}
 	while (i++ < ra_cnt)
 		rrab(a, "rra", 1);
@@ -68,7 +57,7 @@ int	pre_swap_a(t_stack *a, t_stack *b, t_swapinfo info)
 		return (1);
 	if (confirm_ordered(a, info.l, info.r) == 1)
 		return (1);
-	if (process1(a, b, info.l, info.r))
+	if (do_hardcode_a(a, b, info))
 		return (1);
 	return (0);
 }
@@ -82,7 +71,7 @@ int	is_ordered_swap_a(t_stack *a, t_swapinfo info, int i)
 	flag = 1;
 	while (i < info.size)
 	{
-		if (i + 1 < info.size && info.pivot1 <= a->list[a->top -k])
+		if (i + 1 < info.size && info.pivot1 <= a->list[a->top - k])
 			flag = 1;
 		else
 		{
@@ -96,9 +85,10 @@ int	is_ordered_swap_a(t_stack *a, t_swapinfo info, int i)
 		return (1);
 	return (0);
 }
+
 int	do_swap_a2(t_stack *a, t_stack *b, t_swapinfo info, int i)
 {
-	if (i + 1 ==  info.size && info.pivot1 > a->list[a->top -1])
+	if (i + 1 == info.size && info.pivot1 > a->list[a->top - 1])
 	{
 		sab(a, "sa", 1);
 		pab(a, b, "pa", 1);
@@ -113,7 +103,7 @@ int	do_swap_a2(t_stack *a, t_stack *b, t_swapinfo info, int i)
 
 void	do_swap_a3(t_stack *a, t_stack *b, t_swapinfo info)
 {
-	if (info.l == 0 && info.r == (a->capacity -1))
+	if (info.l == 0 && info.r == (a->capacity - 1))
 	{
 		pab(a, b, "pb", 1);
 		a->pb_cnt++;
@@ -126,8 +116,8 @@ void	do_swap_a3(t_stack *a, t_stack *b, t_swapinfo info)
 		a->pb_cnt++;
 		if (info.pivot2 < b->list[b->top])
 		{
-				rab(b, "rb", 1);
-				a->rb_cnt++;
+			rab(b, "rb", 1);
+			a->rb_cnt++;
 		}
 	}
 }
@@ -179,20 +169,20 @@ void	swap_a(t_stack *a, t_stack *b, t_swapinfo info)
 	else
 		reverse_op(a, b, ra_cnt, rb_cnt);
 	if (ra_cnt != 0)
-		swap_a(a, b, set_info(a->top - (ra_cnt -1), a->top));// ra호출개수
-	if (rb_cnt !=0)
-		swap_b(a, b, set_info(0, rb_cnt -1));// pb 호출개수 -> rb 호출횟수
+		swap_a(a, b, set_info(a->top - (ra_cnt - 1), a->top));
+	if (rb_cnt != 0)
+		swap_b(a, b, set_info(0, rb_cnt - 1));
 	if (pb_cnt - rb_cnt != 0)
-		swap_b(a, b, set_info(b->top - (pb_cnt -rb_cnt -1), b->top)); // pb호출개수 - rb 호출회수
+		swap_b(a, b, set_info(b->top - (pb_cnt - rb_cnt - 1), b->top));
 }
-
 
 int	do_confirm_ordered_desc(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	int	i;
+	int	confirm;
 
 	i = 0;
-	int confirm = 0;
+	confirm = 0;
 	if (b->top == info.r)
 	{
 		confirm = confirm_ordered_desc(a, info.l, info.r);
@@ -205,7 +195,6 @@ int	do_confirm_ordered_desc(t_stack *a, t_stack *b, t_swapinfo info)
 	}
 	return (0);
 }
-
 
 static void	do_swap_b2(t_stack *a, t_stack *b, t_swapinfo info)
 {
@@ -232,7 +221,7 @@ static void	do_swap_b(t_stack *a, t_stack *b, t_swapinfo info)
 			do_swap_b2(a, b, info);
 		else
 		{
-			if (i + 1 ==  info.size && info.pivot1 < b->list[b->top -1])
+			if (i + 1 == info.size && info.pivot1 < b->list[b->top - 1])
 			{
 				sab(b, "sb", 1);
 				pab(b, a, "pb", 1);
@@ -254,7 +243,7 @@ int	pre_swap_b(t_stack *a, t_stack *b, t_swapinfo info)
 	}
 	if (do_confirm_ordered_desc(a, b, info))
 		return (1);
-	if (process2(a, b, info.l, info.r))
+	if (do_hardcode_b(a, b, info))
 		return (1);
 	return (0);
 }
@@ -265,7 +254,7 @@ void	swap_b(t_stack *a, t_stack *b, t_swapinfo info)
 	int	rb_cnt;
 	int	pa_cnt;
 	int	ra_cnt;
-	
+
 	info.size = info.r - info.l + 1;
 	if (pre_swap_b(a, b, info))
 		return ;
@@ -277,20 +266,14 @@ void	swap_b(t_stack *a, t_stack *b, t_swapinfo info)
 	pa_cnt = b->pa_cnt;
 	ra_cnt = b->ra_cnt;
 	rb_cnt = b->rb_cnt;
-	if (pa_cnt -ra_cnt  != 0)
-		swap_a(a, b, set_info(a->top - (pa_cnt -ra_cnt -1), a->top)); // pa호출횟수 - ra호출횟수
+	if (pa_cnt - ra_cnt != 0)
+		swap_a(a, b, set_info(a->top - (pa_cnt - ra_cnt -1), a->top));
 	reverse_op(a, b, ra_cnt, rb_cnt);
 	if (ra_cnt != 0)
-		swap_a(a, b, set_info(a->top - (ra_cnt -1), a->top)); //  pa호출회수-> ra호출횟수  
+		swap_a(a, b, set_info(a->top - (ra_cnt - 1), a->top));
 	if (rb_cnt != 0)
-		swap_b(a, b, set_info(b->top - (rb_cnt -1), b->top)); // pb 호출회수-> rb호출횟수
+		swap_b(a, b, set_info(b->top - (rb_cnt - 1), b->top));
 }
-
-
-
-
-
-
 
 int	main(int argc, char **argv)
 {
@@ -301,9 +284,6 @@ int	main(int argc, char **argv)
 		pexit();
 	init(&a, &b, argc, argv);
 	swap_a(&a, &b, set_info(0, (&a)->size -1));
-//printf("\n======================프로그램 종료\n");	
-//	show(&a);
-//	show(&b);
 	free((&a)->list);
 	free((&b)->list);
 	return (0);

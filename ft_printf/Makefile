@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/08/07 18:50:30 by seongtki          #+#    #+#              #
+#    Updated: 2022/08/07 18:50:32 by seongtki         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME	=   libftprintf.a
 SRCS	=	ft_printf.c \
 			ft_printf_setting.c \
@@ -10,7 +22,8 @@ SRCS	=	ft_printf.c \
 			p_proc.c	\
 			di_proc.c	\
 			u_proc.c	\
-			x_proc.c	
+			x_proc.c	\
+			per_proc.c	
 OBJS	= $(SRCS:.c=.o)
 RM		= rm -f
 LIBC	= ar -rcs

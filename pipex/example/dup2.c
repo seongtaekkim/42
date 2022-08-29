@@ -13,7 +13,9 @@ int	main(void)
 	tmp = open("test.txt", O_RDONLY);
 	printf("tmp : %d\n", tmp);
 	printf("fileno : %d\n", STDIN_FILENO);
-	fd = dup2(tmp, STDIN_FILENO);
+	int	p[2];
+	int ffd = pipe(p);
+	ffd = dup2(p[1], STDIN_FILENO);
 	printf("fd : %d\n", fd);
 	close(tmp);
 	if (fd == -1)

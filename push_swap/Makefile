@@ -18,8 +18,8 @@ INCS = -I ./libft/libft.h -I ./push_swap.h
 INCS_B = -I ./libft/libft.h -I ./push_swap.h
 LIBFT = -L./libft -lft
 RM = rm -f
-SRCS =	push_swap.c stack.c operations.c close.c sort.c search.c init.c output.c process1.c
-SRCS_B = checker.c stack.c operations.c close.c sort.c search.c init.c output.c process1.c get_next_line.c get_next_line_utils.c
+SRCS =	push_swap.c stack.c operations.c close.c sort.c search.c init.c output.c hardcode_swap_a.c hardcode_swap_b.c hardcode_swap_b2.c
+SRCS_B = checker.c stack.c operations.c close.c sort.c search.c init.c output.c hardcode_swap_a.c hardcode_swap_b.c hardcode_swap_b2.c get_next_line.c get_next_line_utils.c
 OBJS = $(SRCS:.c=.o) 
 OBJS_B = $(SRCS_B:.c=.o) 
 ifdef V_BO

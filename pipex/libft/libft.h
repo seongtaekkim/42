@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 10:29:59 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 14:39:24 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/10 19:14:01 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	change_flag(const char **str, char c2, int *flag);
 int		next_word(const char **str, char c, char c2, int *flag);
+int	ft_strcmp(const char *s1, const char *s2);
 
 #endif

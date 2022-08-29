@@ -12,7 +12,7 @@ void	print(int fd)
 		line = get_next_line(fd);
 		if (line == 0)
 			break ;
-		printf("%s", line);
+		//printf("%s", line);
 		free(line);
 		if (!line)
 			break ;

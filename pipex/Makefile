@@ -6,14 +6,15 @@
 #    By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/01 15:31:20 by seongtki          #+#    #+#              #
-#    Updated: 2022/08/08 17:47:55 by seongtki         ###   ########.fr        #
+#    Updated: 2022/08/10 12:11:43 by seongtki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-CC = gcc
+CC = gcc -g
 CFLAGS = -Wall -Wextra -Werror
-INCS = -I./libft -I./
+INCS = -I ./libft/libft.h -I ./get_next_line/get_next_line.h -I ./pipex.h
+INCS_B = -I ./libft/libft.h -I ./get_next_line/get_next_line.h -I ./pipex_bonus.h
 LIBFT = -L./libft -lft
 RM = rm -f
 SRCS =	pipex.c pipex_proc.c pipex_free.c pipex_setting.c
@@ -28,24 +29,23 @@ OBJS = $(SRCS:.c=.o)
 OBJS_B = $(SRCS_B:.c=.o) 
 ifdef V_BO
 	OBJ_FILES = $(OBJS_B)
+	V_INCS = $(INCS_B)
 else
 	OBJ_FILES = $(OBJS)
+	V_INCS = $(INCS)
 endif
 .c.o :
-	$(CC) $(CFLAGS) -I $(INCS) -c $< -o $@
+	$(CC) $(CFLAGS) $(V_INCS) -c $< -o $@
 
 $(NAME) : $(OBJ_FILES)
 	make -C ./libft
-	$(CC) $(CFLAGS) $(LIBFT) $(OBJ_FILES) -o $@
-
-
+	$(CC) $(CFLAGS) $(V_INCS) $(LIBFT) $(OBJ_FILES) -o $@
 all :
 	$(RM) $(OBJS_B)
 	make $(NAME)
 bonus :
-	#$(RM) $(OBJS)
+	$(RM) $(OBJS)
 	make V_BO=1 $(NAME)
-
 clean:
 	make -C ./libft clean
 	$(RM) $(OBJS)
@@ -54,6 +54,4 @@ fclean: clean
 	make -C ./libft fclean
 	$(RM) $(NAME)
 re:	clean all
-
 .PHONY: all bonus clean fclean re
-

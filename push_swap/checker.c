@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int	get_operators(const char operators[12][4]
+static int	get_operators(const char operators[12][4]
 		, char *op, const int len_of_operator)
 {
 	int	i;
@@ -27,52 +27,40 @@ int	get_operators(const char operators[12][4]
 	return (-1);
 }
 
-int	*append_op(int *op_list, int size, int op)
+static void	operate(t_stack *a, t_stack *b, int *op_list, int i)
 {
-	int	i;
-	int	*tmp;
-
-	i = 0;
-	tmp = (int *)malloc(sizeof(int) * size);
-	while (i < size - 1)
-	{
-		tmp[i] = op_list[i];
-		i++;
-	}
-	tmp[i] = op;
-	free(op_list);
-	return (tmp);
+	if (op_list[i] == 0)
+		sab(a, "sa", 0);
+	else if (op_list[i] == 1)
+		sab(b, "sb", 0);
+	else if (op_list[i] == 2)
+		ss(a, b, 0);
+	else if (op_list[i] == 3)
+		pab(b, a, "pa", 0);
+	else if (op_list[i] == 4)
+		pab(a, b, "pb", 0);
+	else if (op_list[i] == 5)
+		rab(a, "ra", 0);
+	else if (op_list[i] == 6)
+		rab(b, "rb", 0);
+	else if (op_list[i] == 7)
+		rr(a, b, 0);
+	else if (op_list[i] == 8)
+		rrab(a, "rra", 0);
+	else if (op_list[i] == 9)
+		rrab(b, "rrb", 0);
+	else if (op_list[i] == 10)
+		rrr(a, b, 0);
 }
 
-void	do_operator(t_stack *a, t_stack *b, int *op_list, int size)
+void	do_operate(t_stack *a, t_stack *b, int *op_list, int size)
 {
 	int	i;
 
 	i = 0;
 	while (i < size)
 	{
-		if (op_list[i] == 0)
-			sab(a, "sa", 0);
-		else if (op_list[i] == 1)
-			sab(b, "sb", 0);
-		else if (op_list[i] == 2)
-			ss(a, b, 0);
-		else if (op_list[i] == 3)
-			pab(b, a, "pa", 0);
-		else if (op_list[i] == 4)
-			pab(a, b, "pb", 0);
-		else if (op_list[i] == 5)
-			rab(a, "ra", 0);
-		else if (op_list[i] == 6)
-			rab(b, "rb", 0);
-		else if (op_list[i] == 7)
-			rr(a, b, 0);
-		else if (op_list[i] == 8)
-			rrab(a, "rra", 0);
-		else if (op_list[i] == 9)
-			rrab(b, "rrb", 0);
-		else if (op_list[i] == 10)
-			rrr(a, b, 0);
+		operate(a, b, op_list, i);
 		i++;
 	}
 	if (confirm_ordered(a, 0, a->size -1) && b->top == -1)
@@ -81,7 +69,7 @@ void	do_operator(t_stack *a, t_stack *b, int *op_list, int size)
 		write(1, "KO\n", 3);
 }
 
-void	checker(t_stack *a, t_stack *b)
+static void	checker(t_stack *a, t_stack *b)
 {
 	const char	operators[11][4]
 		= {{"sa"}, {"sb"}, {"ss"}, {"pa"},
@@ -103,9 +91,9 @@ void	checker(t_stack *a, t_stack *b)
 		if (ret == -1)
 			pexit();
 		size++;
-		op_list = append_op(op_list, size, ret);
+		op_list = append_array_data(op_list, size, ret);
 	}
-	do_operator(a, b, op_list, size);
+	do_operate(a, b, op_list, size);
 	free(op_list);
 }
 

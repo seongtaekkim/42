@@ -1,18 +1,27 @@
-#include "push_swap.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hardcode_swap_b.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/30 15:50:11 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/30 15:56:50 by seongtki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "push_swap.h"
 
 static void	hard_capacity3_b1(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	if (b->list[info.l + 1] > b->list[info.l])
 	{	
-		// 3 2 1
 		pab(b, a, "pa", 1);
 		pab(b, a, "pa", 1);
 		pab(b, a, "pa", 1);
 	}
 	else if (b->list[info.l] > b->list[info.r])
 	{
-		// 2 1 3
 		rrab(b, "rrb", 1);
 		pab(b, a, "pa", 1);
 		pab(b, a, "pa", 1);
@@ -20,7 +29,6 @@ static void	hard_capacity3_b1(t_stack *a, t_stack *b, t_swapinfo info)
 	}
 	else
 	{
-		// 3 1 2
 		pab(b, a, "pa", 1);
 		sab(b, "sb", 1);
 		pab(b, a, "pa", 1);
@@ -32,7 +40,6 @@ static void	hard_capacity3_b2(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	if (b->list[info.r] > b->list[info.l])
 	{
-		// 2 3 1
 		sab(b, "sb", 1);
 		pab(b, a, "pa", 1);
 		pab(b, a, "pa", 1);
@@ -40,7 +47,6 @@ static void	hard_capacity3_b2(t_stack *a, t_stack *b, t_swapinfo info)
 	}
 	else if (b->list[info.l] > b->list[info.l + 1])
 	{
-		// 1 2 3
 		rrab(b, "rrb", 1);
 		pab(b, a, "pa", 1);
 		sab(b, "sb", 1);
@@ -48,7 +54,7 @@ static void	hard_capacity3_b2(t_stack *a, t_stack *b, t_swapinfo info)
 		pab(b, a, "pa", 1);
 	}
 	else
-	{	// 1 3 2
+	{
 		sab(b, "sb", 1);
 		pab(b, a, "pa", 1);
 		sab(b, "sb", 1);
@@ -61,14 +67,12 @@ static void	hard_size3_b1(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	if (b->list[info.l + 1] > b->list[info.l])
 	{	
-		// 3 2 1
 		pab(b, a, "pa", 1);
 		pab(b, a, "pa", 1);
 		pab(b, a, "pa", 1);
 	}
 	else if (b->list[info.l] > b->list[info.r])
 	{
-		// 2 1 3
 		rab(b, "rb", 1);
 		sab(b, "sb", 1);
 		pab(b, a, "pa", 1);
@@ -78,7 +82,6 @@ static void	hard_size3_b1(t_stack *a, t_stack *b, t_swapinfo info)
 	}
 	else
 	{
-		// 3 1 2
 		pab(b, a, "pa", 1);
 		sab(b, "sb", 1);
 		pab(b, a, "pa", 1);
@@ -90,7 +93,6 @@ static void	hard_size3_b2(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	if (b->list[info.r] > b->list[info.l])
 	{
-		// 2 3 1
 		sab(b, "sb", 1);
 		pab(b, a, "pa", 1);
 		pab(b, a, "pa", 1);
@@ -98,7 +100,6 @@ static void	hard_size3_b2(t_stack *a, t_stack *b, t_swapinfo info)
 	}
 	else if (b->list[info.l] > b->list[info.l + 1])
 	{
-		// 1 2 3
 		sab(b, "sb", 1);
 		rab(b, "rb", 1);
 		sab(b, "sb", 1);
@@ -108,7 +109,7 @@ static void	hard_size3_b2(t_stack *a, t_stack *b, t_swapinfo info)
 		pab(b, a, "pa", 1);
 	}
 	else
-	{	// 1 3 2
+	{
 		sab(b, "sb", 1);
 		pab(b, a, "pa", 1);
 		sab(b, "sb", 1);
@@ -117,7 +118,7 @@ static void	hard_size3_b2(t_stack *a, t_stack *b, t_swapinfo info)
 	}
 }
 
-int    do_hardcode_b(t_stack *a, t_stack *b, t_swapinfo info)
+int	do_hardcode_b(t_stack *a, t_stack *b, t_swapinfo info)
 {
 	if (hard_size2_b(a, b, info))
 		return (1);
@@ -137,5 +138,5 @@ int    do_hardcode_b(t_stack *a, t_stack *b, t_swapinfo info)
 			hard_size3_b2(a, b, info);
 		return (1);
 	}
-    return (0);
+	return (0);
 }

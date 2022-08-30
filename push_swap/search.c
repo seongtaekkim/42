@@ -30,15 +30,8 @@ int	search_dupl(t_stack *s, int target)
 	return (-1);
 }
 
-static int	*find_pivot(int *arr, t_stack *a, int size)
+static int	*set_pivot_ratio(int *search_data, int *arr, t_stack *a, int size)
 {
-	int	search_data[2];
-	int	*pivot;
-	int	i;
-
-	pivot = (int *)malloc(sizeof(int) * 2);
-	pivot[0] = -1;
-	pivot[1] = -1;
 	if (size == a->capacity)
 	{
 		search_data[0] = arr[size * 5 / 100];
@@ -54,6 +47,20 @@ static int	*find_pivot(int *arr, t_stack *a, int size)
 		search_data[0] = arr[size * 1 / 3];
 		search_data[1] = arr[size * 2 / 3];
 	}
+	return (search_data);
+}
+
+static int	*find_pivot(int *arr, t_stack *a, int size)
+{
+	int	*search_data;
+	int	*pivot;
+	int	i;
+
+	pivot = (int *)malloc(sizeof(int) * 2);
+	pivot[0] = -1;
+	pivot[1] = -1;
+	search_data = (int *)malloc(sizeof(int) * 2);
+	set_pivot_ratio(search_data, arr, a, size);
 	i = a->size - 1;
 	while (i >= 0)
 	{

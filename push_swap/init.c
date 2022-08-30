@@ -12,33 +12,6 @@
 
 #include "push_swap.h"
 
-int	swap_for_atoi(const char *str, int *flag)
-{
-	long	result;
-	int		sign;
-
-	result = 0;
-	sign = 1;
-	while (*str == ' ')
-		str++;
-	if (*str == '+' || *str == '-')
-		if (*str++ == '-')
-			sign *= -1;
-	while (*str)
-	{
-		if (ft_isdigit(*str))
-			result = result * 10 + (*str++ - '0');
-		else
-		{
-			*flag = 0;
-			return (-1);
-		}
-		if ((result * sign) > 2147483647 || (result * sign) < -2147483648)
-			*flag = 0;
-	}
-	return (result * sign);
-}
-
 void	init(t_stack *a, t_stack *b, int num, char **data)
 {
 	int	i;

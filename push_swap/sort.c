@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 14:46:28 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/26 14:46:43 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/30 15:49:51 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,28 @@ int	confirm_ordered_desc(t_stack *a, int l, int r)
 		i--;
 	}
 	return (1);
+}
+
+int	is_ordered_swap(t_stack *s, t_swapinfo info, int i)
+{
+	int	k;
+	int	flag;
+
+	k = 0;
+	flag = 1;
+	while (i < info.size)
+	{
+		if (i + 1 < info.size && info.pivot1 <= s->list[s->top - k])
+			flag = 1;
+		else
+		{
+			flag = 0;
+			break ;
+		}
+	i++;
+	k--;
+	}	
+	if (flag == 1)
+		return (1);
+	return (0);
 }

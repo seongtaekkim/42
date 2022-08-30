@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hardcode_swap_b2.c                                 :+:      :+:    :+:   */
+/*   operations2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/30 15:56:05 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/30 15:56:28 by seongtki         ###   ########.fr       */
+/*   Created: 2022/08/15 18:19:29 by seongtki          #+#    #+#             */
+/*   Updated: 2022/08/30 16:03:48 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	hard_size2_b(t_stack *a, t_stack *b, t_swapinfo info)
+void	sab(t_stack *s, char *op, int is_print)
 {
-	if (info.size == 2 && b->top == info.r)
-	{
-		if (b->list[info.r] > b->list[info.l])
-		{
-			pab(b, a, "pa", 1);
-			pab(b, a, "pa", 1);
-			return (1);
-		}
-		else
-		{
-			sab(b, "sb", 1);
-			pab(b, a, "pa", 1);
-			pab(b, a, "pa", 1);
-			return (1);
-		}
-	}
-	return (0);
+	int	data1;
+	int	data2;
+
+	if (s->top < 1)
+		return ;
+	data1 = s->list[s->top];
+	pop(s);
+	data2 = s->list[s->top];
+	pop(s);
+	push(s, data1);
+	push(s, data2);
+	if (op != (void *)0 && is_print)
+		output(op);
+}
+
+void	ss(t_stack *a, t_stack *b, int is_print)
+{
+	sab(a, (void *)0, is_print);
+	sab(b, (void *)0, is_print);
+	if (is_print)
+		output("ss");
 }

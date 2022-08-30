@@ -32,7 +32,7 @@ void	init(t_stack *a, t_stack *b, int num, char **data)
 	flag = 1;
 	while (i > 0)
 	{
-		ret = swap_for_atoi(data[i--], &flag);
+		ret = swap_for_atoi(ft_strtrim(data[i--], " "), &flag);
 		if (flag == 0)
 			pexit();
 		if (search_dupl(a, ret) != -1)

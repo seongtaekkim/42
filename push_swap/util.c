@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 13:59:17 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/30 16:48:06 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/30 18:45:24 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	swap_for_atoi(const char *str, int *flag)
 
 	result = 0;
 	sign = 1;
-	while (*str == ' ')
-		str++;
+	if (*str == 0)
+		*flag = 0;
 	if (*str == '+' || *str == '-')
 		if (*str++ == '-')
 			sign *= -1;

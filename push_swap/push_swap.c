@@ -77,7 +77,7 @@ int	main(int argc, char **argv)
 	t_stack		b;
 
 	if (argc < 2)
-		pexit();
+		return (0);
 	init(&a, &b, argc, argv);
 	swap_a(&a, &b, set_info(0, (&a)->size -1));
 	free((&a)->list);

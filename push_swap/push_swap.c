@@ -6,31 +6,11 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:06:37 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/29 17:28:15 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:19:51 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-// 삭제 
-void	show(t_stack *s)
-{
-	int	top;
-	int	bottom;
-
-	top = s->top;
-	bottom = s->bottom;
-	if (s->top == -1)
-		return ;
-	printf("show data =============\n");
-	while (top >= bottom)
-	{
-		printf("%d ", s->list[top]);
-		top--;
-	}
-	printf("\n");
-	printf("=======================\n");
-}
 
 void	reverse_op(t_stack *a, t_stack *b, int ra_cnt, int rb_cnt)
 {

@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 16:37:38 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/29 17:39:35 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:17:32 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,13 @@ void	do_operate(t_stack *a, t_stack *b, int *op_list, int size)
 		write(1, "KO\n", 3);
 }
 
-static void	checker(t_stack *a, t_stack *b)
+static void	checker(t_stack *a, t_stack *b, const char operators[11][4])
 {
-	const char	operators[11][4]
-		= {{"sa"}, {"sb"}, {"ss"}, {"pa"},
-	{"pb"}, {"ra"}, {"rb"}, {"rr"}, {"rra"}, {"rrb"}, {"rrr"}};
 	char		*line;
 	int			size;
 	int			*op_list;
 	int			ret;
+	char		*r_trim;
 
 	size = 0;
 	op_list = (void *)0;
@@ -86,7 +84,9 @@ static void	checker(t_stack *a, t_stack *b)
 		line = get_next_line(0);
 		if (line == 0)
 			break ;
-		ret = get_operators(operators, ft_strtrim(line, "\n"), 11);
+		r_trim = ft_strtrim(line, "\n");
+		ret = get_operators(operators, r_trim, 11);
+		free(r_trim);
 		free(line);
 		if (ret == -1)
 			pexit();
@@ -99,13 +99,16 @@ static void	checker(t_stack *a, t_stack *b)
 
 int	main(int argc, char **argv)
 {
-	t_stack	a;
-	t_stack	b;
+	t_stack		a;
+	t_stack		b;
+	const char	operators[11][4]
+		= {{"sa"}, {"sb"}, {"ss"}, {"pa"},
+	{"pb"}, {"ra"}, {"rb"}, {"rr"}, {"rra"}, {"rrb"}, {"rrr"}};
 
 	if (argc < 2)
 		return (0);
 	init(&a, &b, argc, argv);
-	checker(&a, &b);
+	checker(&a, &b, operators);
 	free((&a)->list);
 	free((&b)->list);
 	return (0);

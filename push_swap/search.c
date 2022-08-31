@@ -69,7 +69,10 @@ static int	*find_pivot(int *arr, t_stack *a, int size)
 		if (search_data[1] == a->list[i])
 			pivot[1] = i;
 		if (pivot[0] != -1 && pivot[1] != -1)
+		{
+			free(search_data);
 			return (pivot);
+		}
 		i--;
 	}
 	free(pivot);

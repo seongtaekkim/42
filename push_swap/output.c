@@ -14,6 +14,14 @@
 
 void	output(char *s)
 {
-	write(1, s, ft_strlen(s));
-	write(1, "\n", 1);
+	size_t	size;
+	char	*str;
+
+	size = ft_strlen(s);
+	str = ft_calloc(size + 1, sizeof(char));
+	ft_memcpy(str, s, size);
+	str[size] = '\n';
+	str[size + 1] = '\0';
+	write(1, str, size + 1);
+	free(str);
 }

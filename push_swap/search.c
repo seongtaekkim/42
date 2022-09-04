@@ -32,12 +32,12 @@ int	search_dupl(t_stack *s, int target)
 
 static int	*set_pivot_ratio(int *search_data, int *arr, t_stack *a, int size)
 {
-	if (size == a->capacity && size >= 9)
+	if (size == a->capacity && size > 9)
 	{
 		search_data[0] = arr[size * 5 / 100];
 		search_data[1] = arr[size * 50 / 100];
 	}
-	else if (size >= 9)
+	else if (size > 9)
 	{	
 		search_data[0] = arr[size * 35 / 100];
 		search_data[1] = arr[size * 60 / 100];

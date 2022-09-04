@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-static int	get_operators(const char operators[12][4]
+static int	get_operators(const char operators[11][4]
 		, char *op, const int len_of_operator)
 {
 	int	i;

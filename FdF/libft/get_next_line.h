@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 14:06:37 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/12 18:33:27 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:58:12 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include "libft.h"
 # define BUFFER_SIZE 1024
 
 typedef struct s_holder
@@ -26,8 +27,6 @@ typedef struct s_holder
 }	t_holder;
 
 char	*get_next_line(int fd);
-char	*ft_strchr(const char *x, int c);
 char	*ft_strndup(const char *s1, size_t n);
-size_t	ft_strlen(const char *s);
 char	*ft_strnjoin(char *s1, char *s2, ssize_t n);
 #endif

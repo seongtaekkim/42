@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 19:27:01 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/17 13:53:42 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/09/07 17:42:55 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,7 @@ int	abs_one(int n)
 		return (1);
 }
 
-double	deg_to_rad(int degree)
+double	degree_to_radian(int degree)
 {
 	return (degree * 3.14159265F / 180.0F);
 }
-/*
-double	fpart(double x)
-{
-	return (x > 0 ? x - (int)x : x - (int)x - 1);
-}
-void	fdf_swap(int *a, int *b)
-{
-	int	c;
-
-	c = *a;
-	*a = *b;
-	*b = c;
-}
-*/

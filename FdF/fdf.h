@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 16:23:44 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/18 16:14:40 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:49:35 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,21 @@
 # define FDF_H
 
 # include "./libft/libft.h"
+# include "./libft/get_next_line.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <mlx.h>
 # include <math.h>
-# define PI 3.141592
+# define DEFAULT_COLOR 0x00FF0000
+# define CLEAR_COLOR 0x00000000
+
+typedef struct s_bh
+{
+	int	h;
+	int	w;
+	int	xbec;
+	int	ybec;
+}	t_bh;
 
 typedef struct s_vec
 {
@@ -73,7 +83,6 @@ typedef struct s_fdf
 	t_option	option;
 }	t_fdf;
 
-char	*get_next_line(int fd);
 int		read_file(char	*file, t_fdf *fdf);
 void	do_mlx(t_fdf *fdf);
 void	do_draw(t_fdf *fdf);
@@ -86,4 +95,14 @@ void	clear_image(t_mlx *mlx, int color);
 void	do_exit(t_fdf *fdf);
 void	free_map(t_map *map);
 void	free_arr2(char **arr);
+void	line_free(char **data, char *trim_line, char *line);
+double	degree_to_radian(int degree);
+
+void	rotate_x(int *y, int *z, double radian);
+void	rotate_y(int *x, int *z, double radian);
+void	rotate_z(int *x, int *y, double radian);
+void	conv_to_iso(int *x, int *y, int z);
+void	isometric(t_fdf *fdf, int *x, int *y, int z);
+
+
 #endif

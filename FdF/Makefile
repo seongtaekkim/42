@@ -6,19 +6,18 @@
 #    By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/11 12:07:40 by seongtki          #+#    #+#              #
-#    Updated: 2022/08/17 15:51:39 by seongtki         ###   ########.fr        #
+#    Updated: 2022/08/31 16:52:21 by seongtki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INCS = -I ./libft/libft.h -I ./get_next_line.h -I ./fdf.h
-INCS_B = -I ./libft/libft.h -I ./get_next_line.h -I ./fdf_bonus.h
+INCS = -I ./libft/libft.h -I ./fdf.h
 LIBFT = -L./libft -lft
 MLX_FLAGS = -L./mlx -lmlx -framework OpenGL -framework AppKit
 RM = rm -f
-SRCS =	fdf.c get_next_line.c get_next_line_utils.c readfile.c bresenham.c mlx.c draw.c util.c clear.c
+SRCS =	fdf.c readfile.c bresenham.c mlx.c draw.c util.c clear.c calc_proj.c calc_rotate.c
 SRCS_B = fdf.c
 OBJS = $(SRCS:.c=.o) 
 OBJS_B = $(SRCS_B:.c=.o) 
@@ -32,12 +31,11 @@ endif
 .c.o :
 	$(CC) $(CFLAGS) $(V_INCS) -c $< -o $@
 
+all : $(NAME)
+
 $(NAME) : $(OBJ_FILES)
 	make -C ./libft
 	$(CC) $(CFLAGS) $(V_INCS) $(LIBFT) $(MLX_FLAGS) $(OBJ_FILES) -o $@
-all :
-	$(RM) $(OBJS_B)
-	make $(NAME)
 bonus :
 	$(RM) $(OBJS)
 	make V_BO=1 $(NAME)

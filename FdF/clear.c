@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:41:58 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/18 17:03:23 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/09/07 18:04:44 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	clear_image(t_mlx *mlx, int color)
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
 
 	x = 0;
 	while (x < mlx->width)
@@ -56,6 +56,13 @@ void	free_arr2(char **arr)
 	free(arr);
 }
 
+void	line_free(char **data, char *trim_line, char *line)
+{
+	free(line);
+	free(trim_line);
+	free_arr2(data);
+}
+
 void	do_exit(t_fdf *fdf)
 {
 	free_map(&fdf->map);
@@ -65,4 +72,3 @@ void	do_exit(t_fdf *fdf)
 		mlx_destroy_image(fdf->mlx.mlx, fdf->mlx.image);
 	exit(0);
 }
-

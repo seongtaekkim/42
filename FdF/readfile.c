@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:05:16 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/18 18:38:37 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/09/07 17:42:37 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,11 @@ static int	append_line(char **data, t_fdf *fdf)
 	return (0);
 }
 
-int	ft_str2len(char **arr)
+static int	ft_str2len(char **arr)
 {
-	int	i = 0;
+	int	i;
+
+	i = 0;
 	while (arr[i])
 		i++;
 	return (i);
@@ -60,7 +62,7 @@ int	read_file(char	*file, t_fdf *fdf)
 {
 	int		fd;
 	char	*line;
-	char	*line2;
+	char	*trim_line;
 	char	**data;
 	int		line_size;
 
@@ -72,18 +74,15 @@ int	read_file(char	*file, t_fdf *fdf)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		line2 = ft_strtrim(line, " \n");
-		data = ft_split(line2, ' ');
-		free(line);
-		free(line2);
+		trim_line = ft_strtrim(line, " \n");
+		data = ft_split(trim_line, ' ');
 		line_size = ft_str2len(data);
 		if (fdf->map.x != 0 && line_size != fdf->map.x)
 			do_exit(fdf);
 		fdf->map.x = line_size;
 		fdf->map.y += 1;
 		append_line(data, fdf);
-		free_arr2(data);
+		line_free(data, trim_line, line);
 	}
 	return (0);
 }
-

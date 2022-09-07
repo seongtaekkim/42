@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/07 17:56:52 by seongtki          #+#    #+#             */
+/*   Updated: 2022/09/07 17:58:06 by seongtki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <mlx.h>
 #include <stdlib.h>
@@ -20,12 +32,12 @@ void	init(t_fdf *fdf)
 	fdf->option.rotate = 0;
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
+	t_fdf	fdf;
+
 	if (argc == 2)
 	{
-		t_fdf	fdf;
-	
 		ft_bzero(&fdf, sizeof(t_fdf));
 		init(&fdf);
 		read_file(argv[1], &fdf);

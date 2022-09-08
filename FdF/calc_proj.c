@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	conv_to_iso(int *x, int *y, int z)
+static void	conv_to_iso(int *x, int *y, int z)
 {
 	int	prev_x;
 	int	prev_y;
@@ -25,7 +25,7 @@ void	conv_to_iso(int *x, int *y, int z)
 	*y = (prev_x + prev_y + 1) * sin(degree_to_radian(degree)) - z;
 }
 
-void	isometric(t_fdf *fdf, int *x, int *y, int z)
+static void	isometric(t_fdf *fdf, int *x, int *y, int z)
 {
 	int	prev_x;
 	int	prev_y;
@@ -38,4 +38,28 @@ void	isometric(t_fdf *fdf, int *x, int *y, int z)
 	prev_x = *x;
 	prev_y = *y;
 	conv_to_iso(x, y, z);
+}
+
+static void	orthographic(t_fdf *fdf, int *x, int *y, int z)
+{
+	int	prev_x;
+	int	prev_y;
+	int	theta;
+
+	theta = fdf->option.rotate;
+	rotate_x(y, &z, degree_to_radian(theta));
+	rotate_y(x, &z, degree_to_radian(theta));
+	rotate_z(x, y, degree_to_radian(theta));
+	prev_x = *x;
+	prev_y = *y;
+}
+
+void	do_project(t_fdf *fdf, int *x, int *y, int z)
+{
+	if (fdf->option.projection == 0)
+		isometric(fdf, x, y, z);
+	else if (fdf->option.projection == 1)
+		orthographic(fdf, x, y, z);
+	else
+		return ;
 }

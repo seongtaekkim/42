@@ -22,6 +22,11 @@ static void	key_motion_move(int keycode, t_fdf *fdf)
 		fdf->option.position.y += 20;
 	if (keycode == 126)
 		fdf->option.position.y -= 20;
+	if (keycode == 35)
+	{
+		fdf->option.projection ^= 1;
+		fdf->option.rotate = 0;
+	}
 }
 
 static void	key_motion_rotate(int keycode, t_fdf *fdf)

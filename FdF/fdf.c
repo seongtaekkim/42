@@ -26,7 +26,7 @@ void	init(t_fdf *fdf)
 	fdf->map.x = 0;
 	fdf->map.y = 0;
 	fdf->option.zoom = 20;
-	fdf->option.projection = 1;
+	fdf->option.projection = 0;
 	fdf->option.position.x = fdf->mlx.width / 2;
 	fdf->option.position.y = fdf->mlx.height / 2;
 	fdf->option.rotate = 0;

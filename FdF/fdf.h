@@ -51,14 +51,11 @@ typedef struct s_map
 	int		y;
 }	t_map;
 
-typedef struct	s_option
+typedef struct s_option
 {
-	//bool		disp_helper;
-	//int			height_mod;
 	t_vec	position;
 	int		zoom;
 	int		rotate;
-	//int			angle_mod;
 	int		exit_code;
 	int		projection;
 }	t_option;
@@ -101,8 +98,6 @@ double	degree_to_radian(int degree);
 void	rotate_x(int *y, int *z, double radian);
 void	rotate_y(int *x, int *z, double radian);
 void	rotate_z(int *x, int *y, double radian);
-void	conv_to_iso(int *x, int *y, int z);
-void	isometric(t_fdf *fdf, int *x, int *y, int z);
-
+void	do_project(t_fdf *fdf, int *x, int *y, int z);
 
 #endif

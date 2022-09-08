@@ -18,31 +18,17 @@ LIBFT = -L./libft -lft
 MLX_FLAGS = -L./mlx -lmlx -framework OpenGL -framework AppKit
 RM = rm -f
 SRCS =	fdf.c readfile.c bresenham.c mlx.c draw.c util.c clear.c calc_proj.c calc_rotate.c
-SRCS_B = fdf.c
 OBJS = $(SRCS:.c=.o) 
-OBJS_B = $(SRCS_B:.c=.o) 
-ifdef V_BO
-	OBJ_FILES = $(OBJS_B)
-	V_INCS = $(INCS_B)
-else
-	OBJ_FILES = $(OBJS)
-	V_INCS = $(INCS)
-endif
 .c.o :
-	$(CC) $(CFLAGS) $(V_INCS) -c $< -o $@
-
+	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 all : $(NAME)
-
-$(NAME) : $(OBJ_FILES)
+bonus : all
+$(NAME) : $(OBJS)
 	make -C ./libft
-	$(CC) $(CFLAGS) $(V_INCS) $(LIBFT) $(MLX_FLAGS) $(OBJ_FILES) -o $@
-bonus :
-	$(RM) $(OBJS)
-	make V_BO=1 $(NAME)
+	$(CC) $(CFLAGS) $(INCS) $(LIBFT) $(MLX_FLAGS) $(OBJS) -o $@
 clean:
 	make -C ./libft clean
 	$(RM) $(OBJS)
-	$(RM) $(OBJS_B)
 fclean: clean
 	make -C ./libft fclean
 	$(RM) $(NAME)

@@ -1,3 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   HumanB.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/08 17:33:29 by seongtki          #+#    #+#             */
+/*   Updated: 2022/09/08 17:33:31 by seongtki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef HUMANB_HPP
+ #define HUMANB_HPP
+
 #include <iostream>
 #include "Weapon.hpp"
 
@@ -12,3 +27,4 @@ public:
     void    setWeapon(Weapon &club);
 };
 
+#endif

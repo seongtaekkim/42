@@ -11,16 +11,16 @@
 /* ************************************************************************** */
 
 #include <iostream>
-#include "Karen.hpp"
+#include "Harl.hpp"
 
 int main(void)
 {
-    Karen k;
-    k.complain("DEBUG");
-    k.complain("INFO");
-    k.complain("WARNING");
-    k.complain("ERROR");
-    k.complain("test");
+    Harl h;
+    h.complain("DEBUG");
+    h.complain("INFO");
+    h.complain("WARNING");
+    h.complain("ERROR");
+    h.complain("test");
 
     return (0);
 }

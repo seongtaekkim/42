@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Karen.hpp                                          :+:      :+:    :+:   */
+/*   Harl.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,20 +11,20 @@
 /* ************************************************************************** */
 
 
-#ifndef KAREN_HPP
- #define KAREN_HPP
+#ifndef HARL_HPP
+ #define HARL_HPP
 
-class Karen
+class Harl
 {
 private:
     void    debug(void);
     void    info(void);
     void    warning(void);
     void    error(void);
-    void (Karen::*_func[4])();
+    void (Harl::*_func[4])();
     std::string _level[4];
 public:
-    Karen();
+    Harl();
     void    complain(std::string level);
 };
 

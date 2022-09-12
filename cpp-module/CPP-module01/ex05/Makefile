@@ -10,12 +10,12 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = karen
+NAME = harl
 CC = clang++
 CFLAGS = -std=c++98 -Wall -Wextra -Werror
 RM = rm -f
 INCS = -I
-SRCS = main.cpp Karen.cpp
+SRCS = main.cpp Harl.cpp
 OBJS = $(SRCS:.cpp=.o) 
 .c.o :
 	$(CC) $(CFLAGS) -c $< -o $@

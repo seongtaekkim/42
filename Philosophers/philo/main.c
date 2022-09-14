@@ -28,38 +28,39 @@ static int	_atoi(const char *str, int *flag)
 	return (result * sign);
 }
 
-//static void init(int num, char  *argv[], t_option *o, t_info **info)
-static void init(int num, char  *argv[], t_data *data)
+static void init(int num, char  *argv[], t_option *o, t_info **info)
+//static void init(int num, char  *argv[], t_data *data)
 {
     int flag;
     int index;
 
     index = 0;
     flag = 1;
-    data->option.number_of_philo = _atoi(argv[1], &flag);
-    data->option.time_to_die = _atoi(argv[2], &flag);
-    data->option.time_to_eat = _atoi(argv[3], &flag);
-    data->option.time_to_sleep = _atoi(argv[4], &flag);
+    o->number_of_philo = _atoi(argv[1], &flag);
+    o->time_to_die = _atoi(argv[2], &flag);
+    o->time_to_eat = _atoi(argv[3], &flag);
+    o->time_to_sleep = _atoi(argv[4], &flag);
+    o->fork = (int *)malloc(sizeof(o->number_of_philo));
+    memset(o->fork, 0, o->number_of_philo);
     if (num == 6)
-        data->option.number_of_eat = _atoi(argv[5], &flag);
+        o->number_of_eat = _atoi(argv[5], &flag);
     if (flag == 0)
         exit(0);
-    data->info = (t_info *)malloc(sizeof(t_info) * (data->option.number_of_philo));
-    if (!(data->info))
+    *info = (t_info *)malloc(sizeof(t_info) * (o->number_of_philo));
+    if (!(*info))
         exit(1);
-    while (index < data->option.number_of_philo)
+    while (index < o->number_of_philo)
     {
-        (data->info)[index].id = index;
-        (data->info)[index].rfork = 0;
-        (data->info)[index].lfork = 0;
-        (data->info)[index].status = THINK;
+        (*info)[index].id = index;
+        (*info)[index].rfork = 0;
+        (*info)[index].lfork = 0;
+        (*info)[index].status = THINK;
         index++;
     }
 }
 
-int     check_time(double s_time, t_info *info)
+int     check_time(double s_time, t_option *o)
 {
-    //(void)info;
     struct timeval tv;
     double begin, end;
 
@@ -67,7 +68,11 @@ int     check_time(double s_time, t_info *info)
 
     gettimeofday(&tv, NULL);
     end = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-    return (end - begin + 1);
+    //printf("time : %lf\n", end - begin - o.time_to_die);
+    if (end - begin > o->time_to_die)
+        return (0);
+    else
+        return (1);
 }
 
 double cur_time()
@@ -82,39 +87,74 @@ double cur_time()
     return (begin);
 }
 
-void    *t_function(void *info)
+void    *t_function(void *data)
 {
-    printf("%d\n", ((t_info *)info)->id);
-    double s_time;
+    t_info      info;
+    t_option    *o;
+    double      s_time;
 
+    info  = ((t_data *)data)->info;
+    o = ((t_data *)data)->option;
+    printf("%d\n", info.id);
     s_time = cur_time();
     //printf("%lf\n",s_time);
     while (1)
     {
-        // 먹는 시간 체크
+        // 먹는 시간 체크 // 먹는시간 끝나면, 죽는시간 할당, 시작시간 재할당
+        if (info.status == THINK)
+        {
+            // N-1, N+1
+            int l = info.id - 1;
+            int r = info.id + 1;
+            if (info.id - 1 % o->number_of_philo < 0)
+            {
+                if (o->fork[o->number_of_philo - 1] == 0)
+                {
+                }
+            }
+             
+            o->fork[0] += 1;
+        }
         // 자는 시간 체크
+        if (info.status == SLEEP && check_time(s_time, o) == 0)
+        {
+            info.status = THINK;
+            write(1, "think\n", 6);
+        }
         // 생각하는 시간 체크
-        // 포크 도전
+        // 죽는시간 체크 // 죽으면 리턴
+        // 포크 도전 // 포크 성공하면 먹기 고고
         // 계속 체크
-        if (check_time(s_time, (t_info *)info))
+        if (check_time(s_time, o) == 0)
+        {
+            printf("die %d %d \n", info.id, o->fork[1]);
+            free(data);
             return (0);
+        }
     }
     return (0);
 }
 
-//void    do_eat(t_info *info, t_option o)
-void    do_eat(t_data data)
+void    do_eat(t_info *info, t_option o)
+//void    do_eat(t_data data)
 {
     int index;
     int status;
+    t_data *data;
 
     index = 0;
-    while (index < data.option.number_of_philo)
+    while (index < o.number_of_philo)
     {
         printf("index : %d\n",index);
         // 음식을 찾는다 => 큐 pop
         // 음식이 있으면 먹기시작한다.
-        if (pthread_create(&data.info[index].philo, NULL, t_function, (void *)&data.info[index]))
+        data = (t_data *)malloc(sizeof(t_data));
+        data->info = info[index];
+        //data.info.philo = info[index].philo;
+        data->option = &o;
+        //if (pthread_create(&info[index].philo, NULL, t_function, (void *)&info[index]))
+        //printf("data.info  : %d\n",data.info.id);
+        if (pthread_create(&info[index].philo, NULL, t_function, (void *)data))
             exit(1);
         // 먹고나서 생각한다
         // 생각하고나서 잔다. => 큐 push
@@ -122,26 +162,24 @@ void    do_eat(t_data data)
         // 죽는자가 나오면 종료한다.
         // 총 먹은 수를 만족하면 종료한다.
         index++;
+        //free(data);
     }
     index = 0;
-    while (index < data.option.number_of_philo)
+    while (index < o.number_of_philo)
     {
-        pthread_join(data.info[index].philo, (void *)&status);
+        pthread_join(info[index].philo, (void *)&status);
         index++;
     }
 }
 
 int main(int argc, char *argv[])
 {
-    t_data      data;
-   // t_option    option;
-    //t_info      *info;
+    t_option    option;
+    t_info      *info;
 
     if (argc != 5 && argc != 6)
         return (0);
-    //init(argc, argv, &option, &info);
-    init(argc, argv, &data);
-    //do_eat(info, option);
-    do_eat(data);
+    init(argc, argv, &option, &info);
+    do_eat(info, option);
     return (0);
 }

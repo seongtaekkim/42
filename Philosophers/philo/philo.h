@@ -33,12 +33,13 @@ typedef struct s_option
     int time_to_eat;
     int time_to_sleep;
     int number_of_eat;
+    int *fork;
 }   t_option;
 
 typedef struct s_data
 {
-    t_option    option;
-    t_info      *info;
+    t_option    *option;
+    t_info      info;
 }   t_data;
 
 #endif

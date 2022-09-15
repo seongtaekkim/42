@@ -34,6 +34,7 @@ typedef struct s_option
     int time_to_sleep;
     int number_of_eat;
     int *fork;
+    pthread_mutex_t mutex;
 }   t_option;
 
 typedef struct s_data

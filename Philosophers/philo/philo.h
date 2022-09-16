@@ -28,13 +28,15 @@ typedef struct s_info
 
 typedef struct s_option
 {
-    int number_of_philo;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int number_of_eat;
-    int *fork;
+    int     number_of_philo;
+    int     time_to_die;
+    int     time_to_eat;
+    int     time_to_sleep;
+    int     number_of_eat;
+    int     *fork;
+    double  start_time;
     pthread_mutex_t mutex;
+    pthread_mutex_t pmutex;
 }   t_option;
 
 typedef struct s_data
@@ -42,5 +44,8 @@ typedef struct s_data
     t_option    *option;
     t_info      info;
 }   t_data;
+
+char	*ft_itoa(int n);
+size_t	ft_strlen(const char *s);
 
 #endif

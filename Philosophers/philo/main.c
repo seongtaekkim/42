@@ -1,6 +1,43 @@
 
 #include "philo.h"
 
+int     check_time(double s_time, int sleep_time)
+{
+    struct timeval tv;
+    double begin, end;
+
+    begin = s_time;
+
+    gettimeofday(&tv, NULL);
+    end = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+    //printf("time : %lf\n", end - begin - o.time_to_die);
+    if (end - begin > sleep_time)
+        return (0);
+    else
+        return (1);
+}
+
+int  operate_time(double s_time)
+{
+    struct timeval tv;
+    double begin, end;
+
+    begin = s_time;
+    gettimeofday(&tv, NULL);
+    end = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+    return ((int)(end - begin));
+}
+
+double cur_time()
+{
+    struct timeval tv;
+    double begin;
+
+    gettimeofday(&tv, NULL);
+    begin = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+    return (begin);
+}
+
 static int	_atoi(const char *str, int *flag)
 {
 	long	result;
@@ -41,6 +78,7 @@ static void init(int num, char  *argv[], t_option *o, t_info **info)
     o->time_to_eat = _atoi(argv[3], &flag);
     o->time_to_sleep = _atoi(argv[4], &flag);
     o->fork = (int *)malloc(sizeof(o->number_of_philo));
+    o->start_time = cur_time();
     memset(o->fork, 0, o->number_of_philo);
     if (num == 6)
         o->number_of_eat = _atoi(argv[5], &flag);
@@ -58,34 +96,7 @@ static void init(int num, char  *argv[], t_option *o, t_info **info)
         index++;
     }
     pthread_mutex_init(&o->mutex, NULL);
-}
-
-int     check_time(double s_time, int sleep_time)
-{
-    struct timeval tv;
-    double begin, end;
-
-    begin = s_time;
-
-    gettimeofday(&tv, NULL);
-    end = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-    //printf("time : %lf\n", end - begin - o.time_to_die);
-    if (end - begin > sleep_time)
-        return (0);
-    else
-        return (1);
-}
-
-double cur_time()
-{
-    struct timeval tv;
-    double begin;
-
-    gettimeofday(&tv, NULL);
-    begin = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-
-    //printf("Execution time %f\n", (end - begin) / 1000);
-    return (begin);
+    pthread_mutex_init(&o->pmutex, NULL);
 }
 
 int findRight(t_option *o, int id)
@@ -103,15 +114,50 @@ int findRight(t_option *o, int id)
 int findLeft(t_option *o, int id)
 {
     int ret;
-
-    ret = -1;
-    if (id == 0)
+    (void)o;
+    /* ret = -1;
+    if (o->number_of_philo == 2)
+    {
+        ret = id;
+    }
+    else if (id == 0)
         ret = o->number_of_philo - 1;
     else
-        ret = (id - 1);
+        ret = (id); */
+
+    ret = id;
     return (ret);
 }
 
+
+// 시간 + id + 상태값
+void    sync_print(t_option *o, t_info info, char *msg)
+{
+    pthread_mutex_lock(&o->pmutex);
+    int time = operate_time(o->start_time);
+    char *a = ft_itoa(time);
+    char *b = ft_itoa(info.id);
+    write(1, a, ft_strlen(a));
+    write(1, "  ", 2);
+    write(1, b, ft_strlen(b));
+    write(1, "  ", 2);
+    write(1, msg, ft_strlen(msg));
+    write(1, "  ", 2);
+    char *l = ft_itoa(findLeft(o, info.id));
+    char *r = ft_itoa(findRight(o, info.id));
+    write(1, l, ft_strlen(l));
+    write(1, "  ", 2);
+    write(1, r, ft_strlen(r));
+    char *s = ft_itoa(o->fork[findLeft(o, info.id)]);
+    char *t = ft_itoa(o->fork[findRight(o, info.id)]);
+    write(1, "  ", 2);
+    write(1, s, ft_strlen(s));
+    write(1, "  ", 2);
+    write(1, t, ft_strlen(t));
+    write(1, "\n", 1);
+    pthread_mutex_unlock(&o->pmutex);
+
+}
 
 void    *t_function(void *data)
 {
@@ -121,31 +167,42 @@ void    *t_function(void *data)
 
     info  = ((t_data *)data)->info;
     o = ((t_data *)data)->option;
-    printf("%d\n", info.id);
     s_time = cur_time();
-    //printf("%lf\n",s_time);
-    while (1)
+    if (info.id % 2 == 0)
+       usleep(50);
+    //printf("inini : %d %d %d %d %d\n",  o->fork[0],o->fork[1],o->fork[2],o->fork[3],o->fork[4]);
+     while (1)
     {
-        // 먹는 시간 체크 // 먹는시간 끝나면, 죽는시간 할당, 시작시간 재할당
         if (info.status == THINK)
         {
-            // N-1, N+1
             int l = findLeft(o, info.id);
             int r = findRight(o, info.id);
-            pthread_mutex_lock(&o->mutex);
-            if (o->fork[l] == 0 && o->fork[r] == 0)
+            
+                pthread_mutex_lock(&o->mutex);
+            if (o->fork[l] == 0)
             {
-                printf("id : %d, l : %d, r : %d, fl : %d, fr : %d\n", info.id, l, r,o->fork[l],o->fork[r]);
-                info.lfork = 1;
-                info.rfork = 1;
                 o->fork[l] = 1;
-                o->fork[r] = 1;
+                if (o->fork[r] == 0)
+                {
+                    sync_print(o, info, "is taken a fork");
+                    //printf("id : %d, l : %d, r : %d, fl : %d, fr : %d\n", info.id, l, r,o->fork[l],o->fork[r]);
+                    
+                    info.lfork = 1;
+                    info.rfork = 1;
+                    o->fork[l] = 1;
+                    o->fork[r] = 1;
 
-                info.status = EATING;
-                s_time = cur_time();
-                write(1, "Eating\n", 7);
+                    info.status = EATING;
+                    s_time = cur_time();
+                    sync_print(o, info, "is eating");
+                }
+                else
+                {
+                    o->fork[l] = 0;
+                }
             }
-            pthread_mutex_unlock(&o->mutex);
+                pthread_mutex_unlock(&o->mutex);
+            
         }
         if (info.status == EATING)
         {
@@ -158,60 +215,50 @@ void    *t_function(void *data)
 
                 info.status = SLEEP;
                 s_time = cur_time();
-                write(1, "Sleep\n", 6);
+                sync_print(o, info, "is sleeping");
             }
-            // 먹는시간 체크 -> 지나면 sleep, 죽는시간 초기화.
         }
-        // 자는 시간 체크
-        if (info.status == SLEEP && check_time(s_time, o->time_to_sleep) == 0)
+        if (info.status == SLEEP)
         {
-            info.status = THINK;
-            write(1, "think\n", 6);
+            if (check_time(s_time, o->time_to_sleep) == 0)
+            {
+                info.status = THINK;
+                sync_print(o, info, "is thinking");
+            }
         }
-        // 생각하는 시간 체크
-        // 죽는시간 체크 // 죽으면 리턴
-        // 포크 도전 // 포크 성공하면 먹기 고고
-        // 계속 체크
+
         if (info.status != EATING && check_time(s_time, o->time_to_die) == 0)
         {
-            printf("die %d %d \n", info.id, o->fork[1]);
+            //printf("die %d %d \n", info.id, o->fork[1]);
             o->time_to_die = 0;
+            sync_print(o, info, "is died");
             free(data);
-            
-            return (0);
+            exit(1);
         }
-    }
+    } 
     return (0);
 }
 
 void    do_eat(t_info *info, t_option o)
-//void    do_eat(t_data data)
 {
     int index;
     int status;
     t_data *data;
 
     index = 0;
+    int i = 0;
+    while (i < o.number_of_philo)
+        o.fork[i++] = 0;
+
     while (index < o.number_of_philo)
     {
-        printf("index : %d\n",index);
-        // 음식을 찾는다 => 큐 pop
-        // 음식이 있으면 먹기시작한다.
         data = (t_data *)malloc(sizeof(t_data));
         data->info = info[index];
-        //data.info.philo = info[index].philo;
         data->option = &o;
-        //if (pthread_create(&info[index].philo, NULL, t_function, (void *)&info[index]))
-        //printf("data.info  : %d\n",data.info.id);
+        printf("inini2 : %d %d \n", data->option->fork[9], o.fork[9]);
         if (pthread_create(&info[index].philo, NULL, t_function, (void *)data))
             exit(1);
-        // 먹고나서 생각한다
-        // 생각하고나서 잔다. => 큐 push
-        // 먹을수 있으면 다시 먹는다./
-        // 죽는자가 나오면 종료한다.
-        // 총 먹은 수를 만족하면 종료한다.
         index++;
-        //free(data);
     }
     index = 0;
     while (index < o.number_of_philo)
@@ -220,7 +267,7 @@ void    do_eat(t_info *info, t_option o)
         index++;
     }
     pthread_mutex_destroy(&o.mutex);
-    printf("awegawegaeawegawegaweg\n");
+    pthread_mutex_destroy(&o.pmutex);
 }
 
 int main(int argc, char *argv[])

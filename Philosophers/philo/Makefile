@@ -14,7 +14,7 @@ NAME = philo
 CFLAGS = -Wall -Wextra -Werror
 INCS = -I ./philo.h
 RM = rm -f
-SRCS = main.c
+SRCS = main.c ft_itoa.c ft_strlen.c
 OBJS = $(SRCS:.c=.o) 
 .c.o :
 	$(CC) $(CFLAGS) $(INCS) -c $< -o $@

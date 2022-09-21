@@ -1,23 +1,7 @@
-#include "easyfind.hpp"
 #include <iostream>
 #include <vector>
-    using namespace std;
-
-template<typename T>
-typename std::vector<T>::iterator easyfind(std::vector<T> v, int n)
-{
-    try
-    {
-        typename std::vector<T>::iterator it  = std::find(v.begin(), v.end(), 4);
-        return (it);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-        throw;
-    }
-}
-
+#include <algorithm>
+#include "easyfind.hpp"
 
 int main(void)
 {
@@ -27,10 +11,17 @@ int main(void)
     v.push_back(1);
     v.push_back(2);
     v.push_back(6);
-    //easyfind(v, 3);
     std::vector<int>::iterator it  = std::find(v.begin(), v.end(), 4);
-    cout << *it << endl;
+    std::cout << *it << std::endl;
 
-    cout << *easyfind(v, 4) << endl;;
+    try
+    {
+        std::cout << *easyfind(v, 10) << std::endl;;
+        std::cout << *easyfind(v, 103) << std::endl;;
+    }
+    catch(FindException &e)
+    {
+        e.report();
+    }
     return (0);
 }

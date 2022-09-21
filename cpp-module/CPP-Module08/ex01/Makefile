@@ -10,12 +10,12 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = find
+NAME = span
 CC = c++
 CFLAGS =  -Wall -Wextra -Werror
 RM = rm -f
 INCS = -I
-SRCS = main.cpp
+SRCS = main.cpp Span.cpp
 OBJS = $(SRCS:.cpp=.o) 
 .c.o :
 	$(CC) $(CFLAGS) -c $< -o $@

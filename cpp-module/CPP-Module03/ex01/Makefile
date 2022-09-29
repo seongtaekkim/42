@@ -15,7 +15,7 @@ CC = c++
 CFLAGS =  -Wall -Wextra -Werror
 RM = rm -f
 INCS = -I
-SRCS = main.cpp ClapTrap.cpp
+SRCS = main.cpp ClapTrap.cpp ScavTrap.cpp
 OBJS = $(SRCS:.cpp=.o) 
 .c.o :
 	$(CC) $(CFLAGS) -c $< -o $@

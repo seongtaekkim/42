@@ -37,13 +37,13 @@ public:
     {
         std::cout << "now gate keeper mode" << std::endl;
     }
-    virtual std::ostream& print(std::ostream& out) const
+   /*  virtual std::ostream& print(std::ostream& out) const
     {
         out << "energyPoints : " << this->getEnergyPoints() << 
             " attackDamage : " << this->getAttackDamage() << 
             " hitPoints : " << this->getHitPoints();
         return (out);
-    }
+    } */
 };
 
 #endif

@@ -10,9 +10,9 @@ private:
     std::string _name;
 public:
     DiamondTrap(const std::string &name)
-        : ScavTrap(name), FragTrap(name)
+        : ScavTrap(name + "_clap_name"), FragTrap(name + "_clap_name")
     {
-        this->_name = name +" d";
+        this->_name = name;
         std::cout << "create DiamondTrap " << name << std::endl;
         //init(name, 100, 100, 30);
     }
@@ -36,17 +36,17 @@ public:
     {
         std::cout << this->_name << " " << this->getName() << std::endl;
     }
-    virtual std::ostream& print(std::ostream& out) const 
+    /* virtual std::ostream& print(std::ostream& out) const 
     {
         out << "energyPoints : " << this->getEnergyPoints() << 
             " attackDamage : " << this->getAttackDamage() << 
             " hitPoints : " << this->getHitPoints();
         return (out);
-    }
+    } */
 };
-std::ostream & operator << (std::ostream &out, const DiamondTrap &c)
+/* std::ostream & operator << (std::ostream &out, const DiamondTrap &c)
 {
     return (c.print(out));
 }
-
+ */
 #endif

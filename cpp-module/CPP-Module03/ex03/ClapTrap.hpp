@@ -18,7 +18,7 @@ public:
  }
  ClapTrap(const std::string &name)
  {
-   init(name, 10, 10, 0);
+   init(name + "_clap_name", 10, 10, 0);
    std::cout << "create " << this->_name << std::endl;
  }
  void init(const std::string &name, int hitPoints, int energyPoints, int attackDamage)
@@ -79,13 +79,13 @@ public:
  {
   return (this->_energyPoints);
  }
- virtual std::ostream& print(std::ostream& out) const
+/*  virtual std::ostream& print(std::ostream& out) const
  {
      out << "energyPoints : " << this->getEnergyPoints() << 
            " attackDamage : " << this->getAttackDamage() << 
            " hitPoints : " << this->getHitPoints();
       return (out);
- }
+ } */
 };
 
 // std::ostream & operator << (std::ostream &out, const ClapTrap &c)

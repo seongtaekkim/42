@@ -10,7 +10,7 @@ int main(void)
   //java.beRepaired(5);
   //java.highFivesGuys();
   java.whoAmI();
-  std::cout << java << std::endl;
+  //std::cout << java << std::endl;
 
   return (0);
 }

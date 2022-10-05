@@ -32,13 +32,13 @@ public:
     {
         std::cout << "lets high fives !" << std::endl;
     }
-    virtual std::ostream& print(std::ostream& out) const
+    /* virtual std::ostream& print(std::ostream& out) const
     {
         out << "energyPoints : " << this->getEnergyPoints() << 
             " attackDamage : " << this->getAttackDamage() << 
             " hitPoints : " << this->getHitPoints();
         return (out);
-    }
+    } */
 };
 
 #endif

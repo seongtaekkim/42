@@ -18,6 +18,7 @@ void	proc_parent_last(t_arg *arg, int i)
 		close(arg->pipe_odd[PIPE_R]);
 	else
 		close(arg->pipe_even[PIPE_R]);
+	wait(0);
 }
 
 int	proc_parent(int *pid, t_arg *arg, int i)
@@ -36,6 +37,8 @@ int	proc_parent(int *pid, t_arg *arg, int i)
 		close(arg->pipe_odd[PIPE_W]);
 		close(arg->pipe_even[PIPE_R]);
 	}
-	waitpid(*pid, NULL, WNOHANG);
+	(void)pid;
+
+	//waitpid(*pid, NULL, WNOHANG);
 	return (0);
 }

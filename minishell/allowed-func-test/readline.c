@@ -12,7 +12,19 @@
 
 /* add_history함수를 사용하기위한 헤더 */
 # include <readline/history.h>
+
+#include <termios.h>
+
 void signal_handler(int signum)
+{
+   // printf("signal is : %d\n", signum);
+    if (signum != SIGINT) // ctrl + c
+        return;
+    rl_on_new_line();
+    rl_replace_line("", 1); // 문자열 replace
+    rl_redisplay(); // 프롬프트 재 출력
+}
+void handler(int signum)
 {
    // printf("signal is : %d\n", signum);
     if (signum != SIGINT) // ctrl + c
@@ -32,7 +44,13 @@ int main(void)
 {
 /* readline함수의 리턴값을 저장하기위해 임의로 포인터를 하나 선언한다 */
     char *str;
-    ///signal(SIGINT, handler);
+    //struct termios term;
+    //tcgetattr(STDIN_FILENO, &term);
+    //term.c_lflag &= ~(ECHOCTL);
+    //term.c_lflag &= ~(ICANON | ECHO);
+    //tcsetattr(STDIN_FILENO, TCSANOW, &term);
+    
+    //signal(SIGINT, handler);
     setting_signal();
 /* 무한루프를 돌리면서 readline();함수를 반복적으로 호출할 것이다 */
     while(1)

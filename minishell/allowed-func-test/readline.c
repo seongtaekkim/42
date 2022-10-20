@@ -17,26 +17,34 @@
 
 void signal_handler(int signum)
 {
-   // printf("signal is : %d\n", signum);
-    if (signum != SIGINT) // ctrl + c
+    if (signum == SIGQUIT)
+    { printf("\033[14C");
+        return ;
+    }
+    if (signum == SIGINT)
+    {
+        //     if (rl_on_new_line() == -1) // readline으로 설정한 문자열을 한 번 출력한다?
+        // exit(1);
+        rl_on_new_line();
+        rl_replace_line("", 1); // 문자열 replace
+        rl_redisplay(); // 프롬프트 재 출력
+    }
+    else
         return;
-    rl_on_new_line();
-    rl_replace_line("", 1); // 문자열 replace
-    rl_redisplay(); // 프롬프트 재 출력
 }
-void handler(int signum)
-{
-   // printf("signal is : %d\n", signum);
-    if (signum != SIGINT) // ctrl + c
-        return;
-    rl_on_new_line();
-    rl_replace_line("", 1); // 문자열 replace
-    rl_redisplay(); // 프롬프트 재 출력
-}
+// void handler(int signum)
+// {
+//    // printf("signal is : %d\n", signum);
+//     if (signum != SIGINT) // ctrl + c
+//         return;
+//     rl_on_new_line();
+//     rl_replace_line("", 1); // 문자열 replace
+//     rl_redisplay(); // 프롬프트 재 출력
+// }
 void setting_signal()
 {
     signal(SIGINT, signal_handler);  // CTRL + C
-    signal(SIGTERM, signal_handler); // CTRL + D
+   // signal(SIGTERM, signal_handler); // CTRL + D
     signal(SIGQUIT, signal_handler); // CTRL + /
 }
 /* readline함수를 활용하여 간단한 프로그램 작성하기 */
@@ -44,11 +52,11 @@ int main(void)
 {
 /* readline함수의 리턴값을 저장하기위해 임의로 포인터를 하나 선언한다 */
     char *str;
-    //struct termios term;
-    //tcgetattr(STDIN_FILENO, &term);
-    //term.c_lflag &= ~(ECHOCTL);
+    struct termios term;
+    tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag &= ~(ECHOCTL);
     //term.c_lflag &= ~(ICANON | ECHO);
-    //tcsetattr(STDIN_FILENO, TCSANOW, &term);
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
     
     //signal(SIGINT, handler);
     setting_signal();

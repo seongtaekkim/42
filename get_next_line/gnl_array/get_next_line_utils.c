@@ -74,7 +74,6 @@ char	*ft_strnjoin(char *s1, char *s2, ssize_t n)
 	char	*result;
 	size_t	s1_len;
 	size_t	s2_len;
-
 	if (!s1 || !s2 || n <= 0)
 		return (NULL);
 	s1_len = ft_strlen(s1);
@@ -85,12 +84,14 @@ char	*ft_strnjoin(char *s1, char *s2, ssize_t n)
 		result[0] = '\0';
 		return (result);
 	}
+	
 	result = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
 	if (!result)
 		return (NULL);
 	ft_memcpy(result, s1, s1_len);
 	ft_memcpy(result + s1_len, s2, s2_len);
 	result[s1_len + s2_len] = '\0';
+	//printf("join : %s\n", result);
 	free(s1);
 	return (result);
 }

@@ -48,4 +48,14 @@ typedef struct s_data
 char	*ft_itoa(int n);
 size_t	ft_strlen(const char *s);
 
+int     findRight(t_option *o, int id);
+int     findLeft(t_option *o, int id);
+
+int     check_time(double s_time, int sleep_time);
+int     operate_time(double s_time);
+double  cur_time();
+
+void    sync_print(t_option *o, t_info info, char *msg);
+int     _atoi(const char *str, int *flag);
+
 #endif

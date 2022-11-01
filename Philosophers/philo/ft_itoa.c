@@ -55,7 +55,5 @@ char	*ft_itoa(int n)
 		if (number == 0)
 			break ;
 	}
-	//printf("%s, %zu\n", array, ft_strlen(array));
-	//write(1, array, ft_strlen(array));
 	return (array);
 }

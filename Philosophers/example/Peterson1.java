@@ -50,13 +50,3 @@ public class Peterson1 {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

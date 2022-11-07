@@ -49,5 +49,3 @@ int main(void)
 	pthread_join(tid2, NULL);
 	printf("sum = %d\n", sum);
 }
-
-

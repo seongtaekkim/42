@@ -5,17 +5,17 @@
 #include <semaphore.h>
 
 #define true 1
-#define BUFFER_SIZE 5
+#define BUFFER_SIZE 1
 
 int buffer[BUFFER_SIZE];
 
 pthread_mutex_t mutex;
-sem_t empty, full;
+sem_t *empty, *full;
 int in = 0, out = 0;
 
 void insert_item(int item)
 {
-    sem_wait(&empty);
+    sem_wait(empty);
     pthread_mutex_lock(&mutex);
 
     buffer[in] = item;
@@ -23,19 +23,19 @@ void insert_item(int item)
     printf("producer : inserted $%d\n", item);
 
     pthread_mutex_unlock(&mutex);
-    sem_post(&full);    
+    sem_post(full);    
 }
 
 void remove_item(int *item)
 {
-    sem_wait(&full);
+    sem_wait(full);
     pthread_mutex_lock(&mutex);
     *item = buffer[out];
     out = (out + 1) % BUFFER_SIZE;
     printf("customer: removed $%d$\n", *item);
 
     pthread_mutex_unlock(&mutex);
-    sem_post(&empty);
+    sem_post(empty);
 }
 
 void *producer(void *param) {
@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
     pthread_t tid;
 
     pthread_mutex_init(&mutex, NULL);
-    sem_init(&empty, 0, BUFFER_SIZE);
-    sem_init(&full, 0, 0);
+    empty = sem_open("empty", O_CREAT | O_EXCL, 0644, BUFFER_SIZE); 
+    full = sem_open("full", O_CREAT | O_EXCL, 0644, 0); 
     srand(time(0));
     // create the producers
     for (i = 0; i < numOfProducers ; i++)
@@ -71,7 +71,9 @@ int main(int argc, char *argv[])
         pthread_create(&tid, NULL, consumer, NULL);
 
     sleep(5);
+    sem_close(empty); 
+	sem_unlink("empty"); 
+    sem_close(full); 
+	sem_unlink("full"); 
     return(0);
 }
-
-

@@ -57,6 +57,7 @@ class CashBox {
         in = (in + 1) % buffer.length;
         count++;
         System.out.printf("여기있다, 용돈: %d원\n", money);
+        notify();
     }
 
     synchronized public int take() throws InterruptedException {

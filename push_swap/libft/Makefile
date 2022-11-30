@@ -53,6 +53,7 @@ RM		= rm -f
 LIBC	= ar -rcs
 CFLAGS	= -Wall -Wextra -Werror
 INCS	= .
+CC	= cc
 
 ifdef WITH_BONUS
 	OBJ_FILES = $(OBJS) $(OBJS_B)

@@ -3,63 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:14:51 by seongtki          #+#    #+#             */
-/*   Updated: 2022/09/07 17:56:40 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/12/29 21:55:12 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-static void	key_motion_move(int keycode, t_fdf *fdf)
-{
-	if (keycode == 123)
-		fdf->option.position.x -= 20;
-	if (keycode == 124)
-		fdf->option.position.x += 20;
-	if (keycode == 125)
-		fdf->option.position.y += 20;
-	if (keycode == 126)
-		fdf->option.position.y -= 20;
-	if (keycode == 35)
-	{
-		fdf->option.projection ^= 1;
-		fdf->option.rotate = 0;
-	}
-}
-
-static void	key_motion_rotate(int keycode, t_fdf *fdf)
-{
-	if (keycode == 15)
-		fdf->option.rotate += 5;
-	if (keycode == 17)
-		fdf->option.rotate -= 5;
-}
-
-static void	key_motion_zoom(int keycode, t_fdf *fdf)
-{
-	if (keycode == 69)
-		fdf->option.zoom += 2;
-	if (keycode == 78)
-		fdf->option.zoom -= 2;
-}
-
-static int	key_motion(int keycode, t_fdf *fdf)
-{
-	if (keycode == 53)
-		do_exit(fdf);
-	else
-	{
-		key_motion_move(keycode, fdf);
-		key_motion_rotate(keycode, fdf);
-		key_motion_zoom(keycode, fdf);
-		do_draw(fdf);
-		mlx_put_image_to_window(fdf->mlx.mlx,
-			fdf->mlx.win, fdf->mlx.image, 0, 0);
-	}
-	return (0);
-}
 
 void	do_mlx(t_fdf *fdf)
 {
@@ -77,6 +28,7 @@ void	do_mlx(t_fdf *fdf)
 				fdf->mlx.addr = mlx_get_data_addr(fdf->mlx.image,
 						&fdf->mlx.bpp, &fdf->mlx.size_line, &fdf->mlx.endian);
 				mlx_hook(fdf->mlx.win, 2, 0, key_motion, fdf);
+				mlx_hook(fdf->mlx.win, 17, 0, exit_motion, fdf);
 				do_draw(fdf);
 				mlx_put_image_to_window(fdf->mlx.mlx,
 					fdf->mlx.win, fdf->mlx.image, 0, 0);

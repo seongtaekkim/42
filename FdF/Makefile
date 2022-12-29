@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+         #
+#    By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/11 12:07:40 by seongtki          #+#    #+#              #
-#    Updated: 2022/08/31 16:52:21 by seongtki         ###   ########.fr        #
+#    Updated: 2022/12/29 21:54:56 by seongtki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ INCS = -I ./libft/libft.h -I ./fdf.h
 LIBFT = -L./libft -lft
 MLX_FLAGS = -L./mlx -lmlx -framework OpenGL -framework AppKit
 RM = rm -f
-SRCS =	fdf.c readfile.c bresenham.c mlx.c draw.c util.c clear.c calc_proj.c calc_rotate.c
+SRCS =	fdf.c readfile.c bresenham.c mlx.c draw.c util.c clear.c calc_proj.c calc_rotate.c event_motion.c
 OBJS = $(SRCS:.c=.o) 
 .c.o :
 	$(CC) $(CFLAGS) $(INCS) -c $< -o $@

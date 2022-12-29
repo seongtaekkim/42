@@ -6,7 +6,7 @@
 /*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 16:23:44 by seongtki          #+#    #+#             */
-/*   Updated: 2022/12/29 21:33:53 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/12/29 21:56:58 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void	free_map(t_map *map);
 void	free_arr2(char **arr);
 void	line_free(char **data, char *trim_line, char *line);
 float	degree_to_radian(int degree);
-
+void	exit_motion(t_fdf *fdf);
+int		key_motion(int keycode, t_fdf *fdf);
 void	rotate_x(int *y, int *z, float radian);
 void	rotate_y(int *x, int *z, float radian);
 void	rotate_z(int *x, int *y, float radian);

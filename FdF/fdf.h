@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 16:23:44 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/31 16:49:35 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/12/29 21:33:53 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,16 @@ void	put_pixel(t_mlx *mlx, int x, int y, int color);
 void	bresenham(t_fdf *fdf, t_point p0, t_point p1);
 int		_abs(int n);
 int		abs_one(int n);
-double	deg_to_rad(int degree);
 void	clear_image(t_mlx *mlx, int color);
 void	do_exit(t_fdf *fdf);
 void	free_map(t_map *map);
 void	free_arr2(char **arr);
 void	line_free(char **data, char *trim_line, char *line);
-double	degree_to_radian(int degree);
+float	degree_to_radian(int degree);
 
-void	rotate_x(int *y, int *z, double radian);
-void	rotate_y(int *x, int *z, double radian);
-void	rotate_z(int *x, int *y, double radian);
+void	rotate_x(int *y, int *z, float radian);
+void	rotate_y(int *x, int *z, float radian);
+void	rotate_z(int *x, int *y, float radian);
 void	do_project(t_fdf *fdf, int *x, int *y, int z);
 
 #endif

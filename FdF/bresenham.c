@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   bresenham.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:07:22 by seongtki          #+#    #+#             */
-/*   Updated: 2022/09/07 18:07:54 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/12/29 14:37:05 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	octagonal2378(t_fdf *fdf, t_point p0, t_point p1, t_bh bh)
+static void	octagonal2367(t_fdf *fdf, t_point p0, t_point p1, t_bh bh)
 {
 	int	f0;
 	int	f1;
@@ -66,5 +66,5 @@ void	bresenham(t_fdf *fdf, t_point p0, t_point p1)
 	if (bh.w > bh.h)
 		octagonal1458(fdf, p0, p1, bh);
 	else
-		octagonal2378(fdf, p0, p1, bh);
+		octagonal2367(fdf, p0, p1, bh);
 }

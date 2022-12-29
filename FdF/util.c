@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 19:27:01 by seongtki          #+#    #+#             */
-/*   Updated: 2022/09/07 17:42:55 by seongtki         ###   ########.fr       */
+/*   Updated: 2022/12/29 21:33:11 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	abs_one(int n)
 		return (1);
 }
 
-double	degree_to_radian(int degree)
+float	degree_to_radian(int degree)
 {
 	return (degree * 3.14159265F / 180.0F);
 }

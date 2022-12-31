@@ -60,7 +60,6 @@ void	bresenham(t_fdf *fdf, t_point p0, t_point p1)
 
 	bh.w = _abs(p1.x - p0.x);
 	bh.h = _abs(p1.y - p0.y);
-	put_pixel(&fdf->mlx, p0.x, p0.y, DEFAULT_COLOR);
 	bh.xbec = abs_one(p1.x > p0.x);
 	bh.ybec = abs_one(p1.y > p0.y);
 	if (bh.w > bh.h)

@@ -9,12 +9,12 @@ t_bool    sync_print(t_info *info, char *msg)
         return (false);
     if (cur_time(&s_time) == false)
         return (false);
-    /*char *a = ft_itoa((int)(s_time - info->option->start_time));
+    char *a = ft_itoa((int)(s_time - info->option->start_time));
     char *b = ft_itoa(info->id);
     write(STDOUT_FILENO, a, ft_strlen(a));
     write(STDOUT_FILENO, "  ", 2);
     write(STDOUT_FILENO, b, ft_strlen(b));
-    write(STDOUT_FILENO, " ", 1);*/
+    write(STDOUT_FILENO, " ", 1);
     write(STDOUT_FILENO, msg, ft_strlen(msg));
     write(STDOUT_FILENO, "\n", 1);
     //free(a);

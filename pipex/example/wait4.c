@@ -25,7 +25,7 @@ int	main(void)
 		if (WIFEXITED(status))
 			printf("parent : exited, exit code is %d, signal is %d\n",WEXITSTATUS(status), WTERMSIG(status));
 		else if(WIFSIGNALED(status))
-			printf("parent : signaled, exit code is $d, signal is %d\n",WEXITSTATUS(status), WTERMSIG(status));
+			printf("parent : signaled, exit code is %d, signal is %d\n",WEXITSTATUS(status), WTERMSIG(status));
 		else if (WIFSTOPPED(status))
 			printf("parent : stopped, exit code is %d, signal is %d\n", WSTOPSIG(status), WTERMSIG(status));
 		else if (WIFCONTINUED(status))

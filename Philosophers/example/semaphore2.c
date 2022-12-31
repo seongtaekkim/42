@@ -24,7 +24,7 @@ void *counter(void *param)
 int main() {
     pthread_t tid[5]; int i;
     //sem_init(&sem, 0, 1);
-    sem = sem_open("test_sem", O_CREAT | O_EXCL, 0644, 5); 
+    sem = sem_open("test_sem", O_CREAT | O_EXCL, 9888, 1);
     for (i = 0; i < 5; i++)
         pthread_create(&tid[i], NULL, counter, NULL);
     for (i = 0; i < 5; i++)

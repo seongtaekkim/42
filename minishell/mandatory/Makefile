@@ -10,6 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
+# cc -L/opt/homebrew/opt/readline/lib -lreadline -lhistory readline.c     
 NAME	= minishell
 CC		= cc
 CFLAGS 	= -Wall -Wextra -Werror
@@ -20,7 +21,8 @@ SRCS 	= shell.c lexer.c linkedlist.c astree.c parser.c free.c lex_func1.c	lex_fu
 		  common.c exit_process.c builtin.c \
 		  builtIn/ft_echo.c builtIn/ft_env.c builtIn/ft_exit.c builtIn/ft_export.c builtIn/ft_unset.c builtIn/ft_cd_pwd.c builtIn/built_in_util.c builtIn/ft_export_util.c
 OBJS 	= $(SRCS:.c=.o)
-RDLIB	= /Users/susong/.brew/opt/readline/
+# RDLIB	= /Users/susong/.brew/opt/readline/
+RDLIB = /opt/homebrew/opt/readline/
 LIBFT	= -L./libft -lft
 
 all : $(NAME)

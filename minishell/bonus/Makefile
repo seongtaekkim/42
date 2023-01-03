@@ -20,7 +20,7 @@ SRCS 	= shell_bonus.c lexer_bonus.c linkedlist_bonus.c astree_bonus.c parser_bon
 		  common_bonus.c exit_process_bonus.c builtin_bonus.c \
 		  builtIn/ft_echo_bonus.c builtIn/ft_env_bonus.c builtIn/ft_exit_bonus.c builtIn/ft_export_bonus.c builtIn/ft_unset_bonus.c builtIn/ft_cd_pwd_bonus.c builtIn/built_in_util_bonus.c builtIn/ft_export_util_bonus.c
 OBJS 	= $(SRCS:.c=.o)
-RDLIB	= /Users/susong/.brew/opt/readline/
+RDLIB = /opt/homebrew/opt/readline/
 LIBFT	= -L./libft -lft
 
 all : $(NAME)

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: staek <staek@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:27:31 by seongtki          #+#    #+#             */
-/*   Updated: 2022/07/11 14:38:14 by seongtki         ###   ########.fr       */
+/*   Updated: 2023/01/06 02:48:15 by staek            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static size_t	number_size(long number)
+static size_t	number_size(long long number)
 {
 	size_t	size;
 
@@ -30,16 +30,15 @@ static size_t	number_size(long number)
 	return (size);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long long n)
 {
-	long	number;
-	char	*array;
-	size_t	size;
+	long long	number;
+	char		*array;
+	size_t		size;
 
 	number = n;
 	size = number_size(n);
-	array = malloc(sizeof(char) * (size + 1));
-	if (!array)
+	if (!s_malloc((void **)&array, sizeof(char) * (size + 1)))
 		return (NULL);
 	if (number < 0)
 	{

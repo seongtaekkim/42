@@ -6,7 +6,7 @@
 /*   By: staek <staek@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 20:25:27 by staek             #+#    #+#             */
-/*   Updated: 2023/01/06 11:57:21 by staek            ###   ########.fr       */
+/*   Updated: 2023/01/08 22:00:13 by staek            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	*func_eating_t(void *data)
 		if (!take_fork(info))
 			pthread_mutex_unlock(&info->option->main_mutex);
 		sync_print(info, "is eating", EATING);
-		if (cur_time(&info->philo_time) == false)
+		if (cur_time(&(info->philo_time)) == false)
 			pthread_mutex_unlock(&info->option->main_mutex);
 		if (wait_time(info->option->time_to_eat) == false)
 			pthread_mutex_unlock(&info->option->main_mutex);
@@ -80,24 +80,30 @@ void	*func_monitor_t(void *data)
 {
 	t_info		*info; 
 	long long	s_time;
+	int			i;
 
 	info = (t_info *)data;
-	if (wait_time(info->option->time_to_die - 10) == false)
+	if (wait_time((&info[0])->option->time_to_die - 10) == false)
 		pthread_mutex_unlock(&info->option->main_mutex);
 	while (1)
 	{
-		if (cur_time(&s_time) == false)
-			pthread_mutex_unlock(&info->option->main_mutex);
-		if (s_time > (info->philo_time
-				+ (long long)info->option->time_to_die))
+		i = 0;
+		while (i < info[0].option->number_of_philo)
 		{
-			sync_print(info, "is died", DIE);
-			return (NULL);
-		}
-		if (info->option->num_of_eat_count_down == 0)
-		{
-			sync_print(info, "is completed", COMPLETED);
-			return (NULL);
+			if (cur_time(&s_time) == false)
+				pthread_mutex_unlock(&info->option->main_mutex);
+			if (s_time > (info[i].philo_time
+					+ (long long)info[i].option->time_to_die))
+			{
+				sync_print(&info[i], "is died", DIE);
+				return (NULL);
+			}
+			if (info[i].option->num_of_eat_count_down == 0)
+			{
+				sync_print(&info[i], "is completed", COMPLETED);
+				return (NULL);
+			}
+			i++;
 		}
 	}
 	return (NULL);
@@ -117,16 +123,16 @@ t_bool	do_eat(t_info *info, t_option *o)
 	index = 0;
 	while (index < o->number_of_philo)
 	{
-		if (cur_time(&info[index].philo_time) == false)
+		if (cur_time(&(info[index].philo_time)) == false)
 			pthread_mutex_unlock(&info->option->main_mutex);
-		if (pthread_create(&info[index].philo, NULL, func_eating_t
-				, &info[index]) || pthread_detach(info[index].philo))
-			return (false);
-		if (pthread_create(&info[index].monitor, NULL, func_monitor_t
-				, &info[index]) || pthread_detach(info[index].monitor))
+		if (pthread_create(&(info[index].philo), NULL, func_eating_t
+				, &(info[index])) || pthread_detach(info[index].philo))
 			return (false);
 		index++;
 	}
+	if (pthread_create(&o->monitor, NULL, func_monitor_t
+			, (void *)info) || pthread_detach(o->monitor))
+		return (false);
 	return (true);
 }
 

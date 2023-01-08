@@ -6,7 +6,7 @@
 /*   By: staek <staek@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 19:25:04 by staek             #+#    #+#             */
-/*   Updated: 2023/01/06 12:05:47 by staek            ###   ########.fr       */
+/*   Updated: 2023/01/08 21:08:08 by staek            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ typedef struct s_option
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	pmutex;
 	pthread_mutex_t	main_mutex;
+	pthread_t		monitor;
 	t_philo_endcode	endcode;
 }	t_option;
 
 typedef struct s_info
 {
 	pthread_t	philo;
-	pthread_t	monitor;
 	int			id;
 	int			rfork;
 	int			lfork;

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: staek <staek@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 20:25:48 by staek             #+#    #+#             */
-/*   Updated: 2023/01/06 16:44:01 by staek            ###   ########.fr       */
+/*   Updated: 2023/01/09 19:55:16 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
+#include <unistd.h>
 #include "philo.h"
 
 t_bool	cur_time(long long *begin)

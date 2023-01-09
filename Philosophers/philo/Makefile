@@ -3,29 +3,30 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: staek <staek@student.42.fr>                +#+  +:+       +#+         #
+#    By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/05 17:25:42 by seongtki          #+#    #+#              #
-#    Updated: 2023/01/06 12:06:02 by staek            ###   ########.fr        #
+#    Updated: 2023/01/09 13:51:02 by seongtki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-CFLAGS = -Wall -Wextra -Werror  # -fsanitize=address -g3
+CC		= cc
+CFLAGS = -Wall -Wextra -Werror
 INCS = -I ./philo.h
 RM = rm -f
-SRCS = main.c ft_itoa.c ft_strlen.c time.c print.c util.c exit_process.c philo_process.c
+SRCS = main.c ft_itoa.c ft_strlen.c time.c print.c util.c exit_process.c philo_process.c thread_func.c
 OBJS = $(SRCS:.c=.o) 
 .c.o :
 	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 all : $(NAME)
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS)  -pthread -o $@ $(INCS)
+	$(CC) $(CFLAGS) $(OBJS) -pthread -o $@ $(INCS)
 clean:
 	$(RM) $(OBJS)
 	$(RM) $(OBJS_B)
 fclean: clean
 	$(RM) $(NAME)
 	$(RM) $(BNAME)
-re:	clean all
+re:	fclean all
 .PHONY: all clean fclean re

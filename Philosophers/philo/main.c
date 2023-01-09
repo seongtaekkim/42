@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: staek <staek@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 20:25:27 by staek             #+#    #+#             */
-/*   Updated: 2023/01/08 22:00:13 by staek            ###   ########.fr       */
+/*   Updated: 2023/01/09 19:51:42 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,73 +40,15 @@ static t_bool	init(int num, char *argv[], t_option *o)
 		|| _atoi(argv[3], &o->time_to_eat) == false
 		|| _atoi(argv[4], &o->time_to_sleep) == false)
 		return (false);
-	if (num == 6&& (_atoi(argv[5], &o->number_of_eat) == false
+	if (o->number_of_philo == 0)
+		return (false);
+	if (num == 6 && (_atoi(argv[5], &o->number_of_eat) == false
 			|| o->number_of_eat == 0))
 		return (false);
 	o->num_of_eat_count_down = o->number_of_philo;
 	if (!init_mutax(o))
-		return (false);
+		return (free_mutex(o));
 	return (true);
-}
-
-void	*func_eating_t(void *data)
-{
-	t_info	*info;
-
-	info = (t_info *)data;
-	if (info->id % 2 == 0)
-		if (wait_time(50) == false)
-			pthread_mutex_unlock(&info->option->main_mutex);
-	while (1)
-	{
-		if (!take_fork(info))
-			pthread_mutex_unlock(&info->option->main_mutex);
-		sync_print(info, "is eating", EATING);
-		if (cur_time(&(info->philo_time)) == false)
-			pthread_mutex_unlock(&info->option->main_mutex);
-		if (wait_time(info->option->time_to_eat) == false)
-			pthread_mutex_unlock(&info->option->main_mutex);
-		if (!put_fork(info))
-			pthread_mutex_unlock(&info->option->main_mutex);
-		sync_print(info, "is sleeping", SLEEP);
-		if (wait_time(info->option->time_to_sleep) == false)
-			pthread_mutex_unlock(&info->option->main_mutex);
-		sync_print(info, "is thinking", THINK);
-	}
-	return (0);
-}
-
-void	*func_monitor_t(void *data)
-{
-	t_info		*info; 
-	long long	s_time;
-	int			i;
-
-	info = (t_info *)data;
-	if (wait_time((&info[0])->option->time_to_die - 10) == false)
-		pthread_mutex_unlock(&info->option->main_mutex);
-	while (1)
-	{
-		i = 0;
-		while (i < info[0].option->number_of_philo)
-		{
-			if (cur_time(&s_time) == false)
-				pthread_mutex_unlock(&info->option->main_mutex);
-			if (s_time > (info[i].philo_time
-					+ (long long)info[i].option->time_to_die))
-			{
-				sync_print(&info[i], "is died", DIE);
-				return (NULL);
-			}
-			if (info[i].option->num_of_eat_count_down == 0)
-			{
-				sync_print(&info[i], "is completed", COMPLETED);
-				return (NULL);
-			}
-			i++;
-		}
-	}
-	return (NULL);
 }
 
 t_bool	do_eat(t_info *info, t_option *o)
@@ -151,7 +93,7 @@ int	main(int argc, char *argv[])
 		return (0);
 	while (index < option.number_of_philo)
 	{
-		info[index].id = index;
+		info[index].id = index + 1;
 		info[index].lfork = index;
 		info[index].rfork = (index + 1) % option.number_of_philo;
 		info[index].philo_num_of_eat = 0;

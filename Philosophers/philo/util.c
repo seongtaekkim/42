@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: staek <staek@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 19:28:54 by staek             #+#    #+#             */
-/*   Updated: 2023/01/05 22:48:12 by staek            ###   ########.fr       */
+/*   Updated: 2023/01/09 12:59:27 by seongtki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_bool	_atoi(const char *str, int *output)
 
 	result = 0;
 	sign = 1;
-	if (*str == 0 || *str == '-')
+	if (*str == '-')
 		return (false);
 	if (*str == '+')
 		str++;

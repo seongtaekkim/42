@@ -15,12 +15,17 @@
 
 
 bool getlineContact(std::string str, std::string &attr) {
-	std::cout << str << " : ";
-	std::getline(std::cin, attr);
-	if (std::cin.eof())
-	{
-		std::cout << "EXIT" << std::endl;
-		return (false);
+	while (1) {
+		std::cout << str << " : ";
+		std::getline(std::cin, attr);
+		if (std::cin.eof()) {
+			std::cout << "EXIT" << std::endl;
+			return (false);
+		}
+		if (attr == "")
+			std::cout << "input your info" << std::endl;
+		else
+			break ;
 	}
 	return (true);
 }
@@ -66,7 +71,6 @@ int	main(void) {
 				break ;
 			if (index.size() > 1 || index.size() == 0)
 				continue;
-			std::cout << (char)index[0] << std::endl;
 			int d = index.at(0) - '0';
 			if (d > (phoneBook.getSize() -1) || d < 0)
 				continue;

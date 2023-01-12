@@ -21,9 +21,9 @@ void	toupperMessage(int &count, char **messages)
 	while (index < count)
 	{
 		jndex = 0;
-		while (jndex < strlen(messages[index]))
+		while (messages[index][jndex])
 		{
-			std::cout << char(toupper(messages[index][jndex]));
+			std::cout << char(std::toupper(messages[index][jndex]));
 			jndex++;
 		}
 		index++;
@@ -34,9 +34,8 @@ void	toupperMessage(int &count, char **messages)
 int	main(int argc, char **argv)
 {
 	if (argc == 1)
-		std::cout <<  "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
+		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
 	else
 		toupperMessage(argc, argv);
-	
 	return (0);
 }

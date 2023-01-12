@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
-#include <string>
 
 PhoneBook::PhoneBook()
     : size(0), oldestIndex(0) {}

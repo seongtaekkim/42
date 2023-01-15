@@ -5,8 +5,8 @@
 class Fixed
 {
 private:
-    int number;
-    static const int FRACTIONAL_BITS = 8;
+    int					number;
+    static const int	FRACTIONAL_BITS = 8;
 public:
     Fixed();
     Fixed(const int &input);

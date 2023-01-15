@@ -10,14 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.h"
+#include "Zombie.hpp"
 
 void    randomChump(const std::string &name)
 {
     Zombie *z = newZombie(name);
     z->announce();
-    try
-    {
+    try {
         delete (z);
     }
     catch (const std::bad_alloc &e)

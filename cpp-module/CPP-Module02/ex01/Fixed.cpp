@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <cmath>
 #include "Fixed.hpp"
 
 Fixed::Fixed()
@@ -23,7 +24,7 @@ Fixed::Fixed(const float &input)
     int raw;
 
     std::cout << "Float constructor called" << std::endl;
-    raw = (int)roundf((input * (1 << FRACTIONAL_BITS)));
+    raw = roundf((input * (1 << FRACTIONAL_BITS)));
     setRawBits(raw);
 }
 
@@ -40,7 +41,7 @@ Fixed::~Fixed()
 
 Fixed &Fixed::operator = (const Fixed &f)
 {
-    std::cout << "Assignment operator called" << std::endl;
+    std::cout << "Copy Assignment operator called" << std::endl;
     if (this == &f)
         return (*this);
     this->setRawBits(f.getRawBits());
@@ -61,9 +62,10 @@ void    Fixed::setRawBits(int const raw)
 // 반올림 추가 필요
 float   Fixed::toFloat(void) const
 {
-    float   ret = (float)this->number / (1 << (FRACTIONAL_BITS-1));
-    //std::cout << "test : " << ret << std::endl;
-    ret = (float)this->number / (1 << FRACTIONAL_BITS);
+    //float   ret = (float)this->number / (1 << (FRACTIONAL_BITS-1));
+	//std::cout << "tst2 : " << (1 << FRACTIONAL_BITS) << std::endl;
+    float ret = (float)this->number / (1 << FRACTIONAL_BITS);
+    // std::cout << "test : " << (this->number) << " " << ((double)(this->number) / (1 << FRACTIONAL_BITS)) << std::endl;
     return (ret);
 }
 

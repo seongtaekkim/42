@@ -1,5 +1,4 @@
 
-#include <iostream>
 #include "Fixed.hpp"
 
 Fixed::Fixed()

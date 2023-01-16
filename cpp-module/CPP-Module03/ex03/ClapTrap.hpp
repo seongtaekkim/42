@@ -26,18 +26,4 @@ public:
 	int getEnergyPoints() const;
 };
 
-
-/*  virtual std::ostream& print(std::ostream& out) const
- {
-     out << "energyPoints : " << this->getEnergyPoints() << 
-           " attackDamage : " << this->getAttackDamage() << 
-           " hitPoints : " << this->getHitPoints();
-      return (out);
- } */
-
-// std::ostream & operator << (std::ostream &out, const ClapTrap &c)
-// {
-//     return (c.print(out));
-// }
-
 #endif

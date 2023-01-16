@@ -3,7 +3,7 @@
 ScavTrap::ScavTrap(void) : ClapTrap() {}
 ScavTrap::ScavTrap(const std::string& name) : ClapTrap(name) {
 	std::cout << "create ScavTrap " << name << std::endl;
-	init(name, 100, 50, 20);
+	init(name, SCAV_HP, SCAV_EP, SCAV_AD);
 }
 
 ScavTrap::ScavTrap(const ScavTrap &s)
@@ -18,8 +18,7 @@ ScavTrap & ScavTrap::operator = (const ScavTrap& s) {
 	return (*this);
 }
 
-ScavTrap::~ScavTrap()
-{
+ScavTrap::~ScavTrap() {
 	std::cout << "die ScavTrap" << std::endl;
 }
 

@@ -3,40 +3,16 @@
 
 #include "ClapTrap.hpp"
 
-class ScavTrap : public ClapTrap
-{
+class ScavTrap : public ClapTrap {
+private:
+	ScavTrap(void);
 public:
-    ScavTrap(const std::string &name)
-        : ClapTrap(name)
-    {
-        std::cout << "create ScavTrap " << name << std::endl;
-        init(100, 50, 20);
-    }
-    ScavTrap & operator = (const ScavTrap & c)
-    {
-        ClapTrap::operator =(c);
-        std::cout << "assign copy ScavTrap " << c.getName() << std::endl;
-        return (*this);
-    }
-    ScavTrap(const ScavTrap &c)
-        : ClapTrap(c)
-    {
-        *this = c;
-        std::cout << "copy ScavTrap " << c.getName() << std::endl;
-    }
-    ~ScavTrap()
-    {
-        std::cout << "die ScavTrap" << std::endl;
-    }
-    virtual void attack(const std::string& target)
-    {
-        std::cout << "ScavTrap " << this->getName() << " attacks " << target << " causing " 
-        << this->getAttackDamage() << " points of damage!"<< std::endl;
-    }
-    void guardGate()
-    {
-        std::cout << "now gate keeper mode" << std::endl;
-    }
+    ScavTrap(const std::string& name);
+    ScavTrap& operator = (const ScavTrap& s);
+    ScavTrap(const ScavTrap& s);
+    ~ScavTrap();
+    virtual void attack(const std::string& target);
+    void guardGate();
 };
 
 #endif

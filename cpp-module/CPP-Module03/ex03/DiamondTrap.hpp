@@ -14,11 +14,11 @@ public:
     {
         this->_name = name;
         std::cout << "create DiamondTrap " << name << std::endl;
-        //init(name, 100, 100, 30);
+        init(name, FRAG_HP, SCAV_EP, FRAG_AD);
     }
     DiamondTrap & operator = (const DiamondTrap & c)
     {
-        //ClapTrap::operator =(c);
+        ClapTrap::operator =(c);
         // std::cout << "assign copy DiamondTrap " << c.getName() << std::endl;
         return (*this);
     }
@@ -36,17 +36,6 @@ public:
     {
         std::cout << this->_name << " " << this->getName() << std::endl;
     }
-    /* virtual std::ostream& print(std::ostream& out) const 
-    {
-        out << "energyPoints : " << this->getEnergyPoints() << 
-            " attackDamage : " << this->getAttackDamage() << 
-            " hitPoints : " << this->getHitPoints();
-        return (out);
-    } */
 };
-/* std::ostream & operator << (std::ostream &out, const DiamondTrap &c)
-{
-    return (c.print(out));
-}
- */
+
 #endif

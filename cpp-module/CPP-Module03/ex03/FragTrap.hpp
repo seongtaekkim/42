@@ -3,42 +3,19 @@
 
 #include "ClapTrap.hpp"
 
-class FragTrap : virtual public ClapTrap
-{
+class FragTrap : virtual public ClapTrap {
+private:
+	FragTrap(void);
+protected:
+	static const int FRAG_HP = 100;
+	static const int FRAG_EP = 100;
+	static const int FRAG_AD = 30;
 public:
-    FragTrap(const std::string &name)
-        : ClapTrap()
-    {
-        std::cout << "create FragTrap " << name << std::endl;
-        init(name, 100, 100, 30);
-    }
-    FragTrap & operator = (const FragTrap & c)
-    {
-        ClapTrap::operator =(c);
-        std::cout << "assign copy FragTrap " << c.getName() << std::endl;
-        return (*this);
-    }
-    FragTrap(const FragTrap &c)
-        : ClapTrap(c)
-    {
-        *this = c;
-        std::cout << "copy FragTrap " << c.getName() << std::endl;
-    }
-    ~FragTrap()
-    {
-        std::cout << "die FragTrap " << this->getName() << std::endl;
-    }
-    void highFivesGuys(void)
-    {
-        std::cout << "lets high fives !" << std::endl;
-    }
-    /* virtual std::ostream& print(std::ostream& out) const
-    {
-        out << "energyPoints : " << this->getEnergyPoints() << 
-            " attackDamage : " << this->getAttackDamage() << 
-            " hitPoints : " << this->getHitPoints();
-        return (out);
-    } */
+    FragTrap(const std::string& name);
+    FragTrap & operator = (const FragTrap& c);
+    FragTrap(const FragTrap& c);
+    ~FragTrap(void);
+    void highFivesGuys(void);
 };
 
 #endif

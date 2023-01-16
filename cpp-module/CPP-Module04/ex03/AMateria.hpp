@@ -1,31 +1,26 @@
 #ifndef AMATERIA_HPP
 # define AMATERIA_HPP
 
-#include <string>
-//#include <iomanip>
 #include <iostream>
-#include "Character.hpp"
+#include "ICharacter.hpp"
 
-#define W_SIZE		40
-#define AM_SIZE		4
+#define AMATERIA_SIZE		4
 
-class ICharacter; 
+class ICharacter;
 
 class AMateria
 {
-protected:
-	std::string _type;
-
-public:
-
+private:
+	std::string type;
 	AMateria(void);
-	AMateria(const AMateria& am);
+public:
+	AMateria(const AMateria& a);
 	AMateria(const std::string& type);
 	virtual ~AMateria(void);
-	AMateria& operator=(const AMateria& am);
+	AMateria& operator=(const AMateria& a);
 	const std::string& getType(void) const;
 	virtual AMateria* clone(void) const = 0;
-	virtual void use(const ICharacter& ic);
+	virtual void use(const ICharacter& i);
 };
 
 #endif

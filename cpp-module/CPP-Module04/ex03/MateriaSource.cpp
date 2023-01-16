@@ -1,96 +1,84 @@
 #include "MateriaSource.hpp"
 
-const AMateria* MateriaSource::getAMateria(int idx) const
-{
-	return (_am[idx]);
-}
-
-void MateriaSource::learnMateria(AMateria* am)
-{
-	if (!am)
-		return ;
-	for (int i = 0 ; i < AM_SIZE ; ++i)
-	{
-		if (!_am[i])
-		{
-			_am[i] = am;
-			std::cout << "learnMateria Function on MateriaSource " << am->getType() << std::endl;
-			return ;
-		}
-	}
-	std::cout << "learnMateria Function on MateriaSource" << am->getType() << " Failed (FULL)" << std::endl;
-}
-
-AMateria* MateriaSource::createMateria(const std::string& type)
-{
-	for (int i = 0 ; i < AM_SIZE ; ++i)
-	{
-		if (_am[i] && _am[i]->getType() == type)
-		{
-			std::cout << "createMateria Function on MateriaSource " << type << std::endl;
-			return (_am[i]->clone());
-		}
-	}
-	std::cout << "createMateria Function on MateriaSource " << type << " Failed (Not Found)" << std::endl;
-	return (NULL);
-}
-
-MateriaSource& MateriaSource::operator=(const MateriaSource& ms)
-{
-	const AMateria* temp;
-
-	if (this != &ms)
-	{
-		for (int i = 0 ; i < AM_SIZE ; ++i)
-		{
-			if (_am[i])
-			{
-				delete _am[i];
-				_am[i] = NULL;
-			}
-			temp = ms.getAMateria(i);
-			if (temp)
-				_am[i] = temp->clone();
-		}
-	}
-	std::cout << "Assignation on MateriaSource " << std::endl;
-	return (*this);
-}
-
 MateriaSource::MateriaSource(void)
 {
-	for (int i = 0 ; i < AM_SIZE ; ++i)
-		_am[i] = NULL;
-	std::cout << "Default Constructor on MateriaSource " << std::endl;
+	for (int i = 0 ; i < AMATERIA_SIZE ; i++)
+		this->amateria[i] = NULL;
+	std::cout << "Default Constructor MateriaSource " << std::endl;
 }
 
-MateriaSource::MateriaSource(const MateriaSource& ms)
+MateriaSource::MateriaSource(const MateriaSource& materiaSource)
+{
+	for (int i = 0 ; i < AMATERIA_SIZE ; i++)
+		this->amateria[i] = NULL;
+	std::cout << "Copy Constructor MateriaSource" << std::endl;
+	*this = materiaSource;
+}
+
+MateriaSource& MateriaSource::operator=(const MateriaSource& materiaSource)
 {
 	const AMateria* temp;
-
-	for (int i = 0 ; i < AM_SIZE ; ++i)
+	if (this == &materiaSource)
+		return (*this);
+	std::cout << "Copy Assignment MateriaSource " << std::endl;
+	for (int i = 0 ; i < AMATERIA_SIZE ; ++i)
 	{
-		if (_am[i])
+		if (this->amateria[i] != NULL)
 		{
-			delete _am[i];
-			_am[i] = NULL;
+			delete this->amateria[i];
+			this->amateria[i] = NULL;
 		}
-		temp = ms.getAMateria(i);
+		temp = materiaSource.getAMateria(i);
 		if (temp)
-			_am[i] = temp->clone();
+			this->amateria[i] = temp->clone();
 	}
-	std::cout << "Copy Constructor on MateriaSource" << " ]" << std::endl;
+	return (*this);
 }
 
 MateriaSource::~MateriaSource(void)
 {
-	for (int i = 0 ; i < AM_SIZE ; ++i)
+	for (int i = 0 ; i < AMATERIA_SIZE ; i++)
 	{
-		if (_am[i])
+		if (this->amateria[i])
 		{
-			delete _am[i];
-			_am[i] = NULL;
+			delete this->amateria[i];
+			this->amateria[i] = NULL;
 		}
 	}
-	std::cout << "Destructor on MateriaSource" << " ]" << std::endl;
+	std::cout << "Destruct MateriaSource" << std::endl;
+}
+
+const AMateria* MateriaSource::getAMateria(int idx) const
+{
+	return (this->amateria[idx]);
+}
+
+void MateriaSource::learnMateria(AMateria* amateria)
+{
+	if (amateria == NULL)
+		return ;
+	for (int i = 0 ; i < AMATERIA_SIZE ; i++)
+	{
+		if (this->amateria[i] == 0)
+		{
+			this->amateria[i] = amateria;
+			std::cout << "learnMateria : " << this->amateria[i]->getType() << std::endl;
+			return ;
+		}
+	}
+	std::cout << "learnMateria : " << amateria->getType() << " is FULL" << std::endl;
+}
+
+AMateria* MateriaSource::createMateria(const std::string& type)
+{
+	for (int i = 0 ; i < AMATERIA_SIZE ; ++i)
+	{
+		if (this->amateria[i] && this->amateria[i]->getType() == type)
+		{
+			std::cout << "createMateria Function on MateriaSource " << type << std::endl;
+			return (this->amateria[i]->clone());
+		}
+	}
+	std::cout << "createMateria Function on MateriaSource " << type << " Failed (Not Found)" << std::endl;
+	return (NULL);
 }

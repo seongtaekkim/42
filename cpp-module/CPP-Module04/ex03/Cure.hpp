@@ -4,13 +4,10 @@
 #include <string>
 #include "AMateria.hpp"
 
-#define C_NAME "cure"
-
 class Cure : public AMateria {
 public:
 	Cure(void);
-	Cure(const Cure& i);
-	Cure(const std::string& type);
+	Cure(const Cure& c);
 	virtual ~Cure(void);
 	Cure& operator=(const Cure& c);
 	AMateria* clone(void) const;

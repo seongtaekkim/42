@@ -7,13 +7,13 @@
 
 class Intern {
 private:
-	static Form* (*formFactory[3])(const std::string);
+	static AForm* (*formFactory[3])(const std::string);
 public:
 	Intern(void);
 	Intern(const Intern& i);
 	~Intern(void);
 	Intern& operator=(const Intern& i);
-	Form* makeForm(const std::string& formName, const std::string& name);
+	AForm* makeForm(const std::string& formName, const std::string& name);
 	class NoMatchingTypeException : public std::exception
 	{
 	public:

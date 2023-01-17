@@ -2,12 +2,12 @@
 # define SHRUBBERYCREATIONFORM_HPP
 
 #include <fstream>
-#include "Form.hpp"
+#include "AForm.hpp"
 
 #define SSIGN_GRADE 145
 #define SEXEC_GRADE 137
 
-class ShrubberyCreationForm : public Form {
+class ShrubberyCreationForm : public AForm {
 private:
 	ShrubberyCreationForm(void);
 public:
@@ -16,7 +16,7 @@ public:
 	ShrubberyCreationForm& operator=(const ShrubberyCreationForm& p);
 	~ShrubberyCreationForm(void);
 	virtual void execute(const Bureaucrat& executor) const;
-	static Form* selfFactory(const std::string name);
+	static AForm* selfFactory(const std::string name);
 };
 
 #endif

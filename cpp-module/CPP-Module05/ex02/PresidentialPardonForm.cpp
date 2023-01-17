@@ -1,16 +1,16 @@
 
 #include "PresidentialPardonForm.hpp"
 	
-PresidentialPardonForm::PresidentialPardonForm(void) : Form() {
+PresidentialPardonForm::PresidentialPardonForm(void) : AForm() {
 }
 PresidentialPardonForm::PresidentialPardonForm(const std::string& target)
-	: Form(target, PSIGN_GRADE, PEXEC_GRADE ){
+	: AForm(target, PSIGN_GRADE, PEXEC_GRADE ){
 }
 PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm& p)
-	: Form(p) {
+	: AForm(p) {
 }
 PresidentialPardonForm& PresidentialPardonForm::operator=(const PresidentialPardonForm& p) {
-	return (*(dynamic_cast<PresidentialPardonForm*>(&(Form::operator=(p)))));
+	return (*(dynamic_cast<PresidentialPardonForm*>(&(AForm::operator=(p)))));
 }
 PresidentialPardonForm::~PresidentialPardonForm(void) {}
 void PresidentialPardonForm::execute(const Bureaucrat& executor) const {

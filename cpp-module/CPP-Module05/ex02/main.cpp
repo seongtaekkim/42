@@ -7,9 +7,9 @@ int main(void)
 	Bureaucrat b1("seongtki", 1);
 	Bureaucrat b2("staek", 150);
 
-	Form* f1 = new ShrubberyCreationForm("s form name");
-	Form* f2 = new RobotomyRequestForm("r form name");
-	Form* f3 = new PresidentialPardonForm("p form name");
+	AForm* f1 = new ShrubberyCreationForm("s form name");
+	AForm* f2 = new RobotomyRequestForm("r form name");
+	AForm* f3 = new PresidentialPardonForm("p form name");
 
 	std::cout << b1 << std::endl << b2 << std::endl << std::endl;
 

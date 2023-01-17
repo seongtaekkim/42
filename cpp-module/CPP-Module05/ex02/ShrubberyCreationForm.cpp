@@ -1,17 +1,17 @@
 #include "ShrubberyCreationForm.hpp"
 	
-ShrubberyCreationForm::ShrubberyCreationForm(void) : Form() {
+ShrubberyCreationForm::ShrubberyCreationForm(void) : AForm() {
 
 }
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target)
-	: Form(target, SSIGN_GRADE, SEXEC_GRADE ){
+	: AForm(target, SSIGN_GRADE, SEXEC_GRADE ){
 
 }
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& p)
-	: Form(p) {
+	: AForm(p) {
 }
 ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm& p) {
-	return (*(dynamic_cast<ShrubberyCreationForm*>(&(Form::operator=(p)))));
+	return (*(dynamic_cast<ShrubberyCreationForm*>(&(AForm::operator=(p)))));
 }
 ShrubberyCreationForm::~ShrubberyCreationForm(void) { }
 void ShrubberyCreationForm::execute(const Bureaucrat& executor) const {
@@ -19,7 +19,7 @@ void ShrubberyCreationForm::execute(const Bureaucrat& executor) const {
 	const std::string& filename = executor.getName() + "_shrubbery";
 	std::ofstream ofs(filename.c_str());                        
 	if (ofs.fail())
-		throw Form::FileException();
+		throw AForm::FileException();
 	ofs << "88                                      " << std::endl
 	<< "MM88MMM 8b,dPPYba,  ,adPPYba,  ,adPPYba,  "<< std::endl
 	<< "88    88P'   \"Y8 a8P_____88 a8P_____88  "<< std::endl

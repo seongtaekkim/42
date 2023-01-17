@@ -1,12 +1,12 @@
 #ifndef PRESIDENTIALPARDONFORM_HPP
 # define PRESIDENTIALPARDONFORM_HPP
 
-#include "Form.hpp"
+#include "AForm.hpp"
 
 #define PSIGN_GRADE 25
 #define PEXEC_GRADE 5
 
-class PresidentialPardonForm : public Form {
+class PresidentialPardonForm : public AForm {
 private:
 	PresidentialPardonForm(void);
 public:
@@ -15,7 +15,7 @@ public:
 	PresidentialPardonForm& operator=(const PresidentialPardonForm& p);
 	~PresidentialPardonForm(void);
 	virtual void execute(const Bureaucrat& executor) const;
-	static Form* selfFactory(const std::string name);
+	static AForm* selfFactory(const std::string name);
 };
 
 #endif

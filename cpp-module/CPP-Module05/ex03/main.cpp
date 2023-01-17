@@ -7,9 +7,9 @@ int main(void)
 	Bureaucrat b1("seongtki", 1);
 	Bureaucrat b2("staek", 150);
  
-	Form* f1 = intern.makeForm("ShrubberyCreationForm", "SSSSName");
-	Form* f2 = intern.makeForm("RobotomyRequestForm", "RRRRName");
-	Form* f3 = intern.makeForm("PresidentialPardonForm", "PPPPName");
+	AForm* f1 = intern.makeForm("ShrubberyCreationForm", "SSSSName");
+	AForm* f2 = intern.makeForm("RobotomyRequestForm", "RRRRName");
+	AForm* f3 = intern.makeForm("PresidentialPardonForm", "PPPPName");
 	intern.makeForm("Wrong", "Wrong");
 	if (!f1 || !f2 || !f3)
 		return (1);

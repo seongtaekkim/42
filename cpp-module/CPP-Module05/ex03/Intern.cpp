@@ -13,13 +13,13 @@ Intern& Intern::operator=(const Intern& i) {
 	static_cast<void>(i);
 	return (*this);
 }
-Form* (*Intern::formFactory[3])(const std::string) =
+AForm* (*Intern::formFactory[3])(const std::string) =
 {
 	&ShrubberyCreationForm::selfFactory
 	, &RobotomyRequestForm::selfFactory
 	, &PresidentialPardonForm::selfFactory
 };
-Form* Intern::makeForm(const std::string& formName, const std::string& name) {
+AForm* Intern::makeForm(const std::string& formName, const std::string& name) {
 	std::string typeList[3] = {"ShrubberyCreationForm", "RobotomyRequestForm", "PresidentialPardonForm"};
 	try
 	{

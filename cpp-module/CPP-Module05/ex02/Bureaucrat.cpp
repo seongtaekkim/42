@@ -6,9 +6,9 @@ Bureaucrat::Bureaucrat(void) {
 Bureaucrat::Bureaucrat(const std::string &name, int grade)
 	: name(name) {
 	if (grade < 1)
-		throw Form::GradeTooLowException();
+		throw AForm::GradeTooLowException();
 	else if (grade > 150)
-		throw Form::GradeTooHighException();
+		throw AForm::GradeTooHighException();
 	else
 		this->grade = grade;
 }
@@ -33,23 +33,23 @@ const int& Bureaucrat::getGrade() const {
 }
 void Bureaucrat::increment() {
 	if (this->grade == 150)
-		throw Form::GradeTooHighException();
+		throw AForm::GradeTooHighException();
 	(this->grade)++;
 }
 void Bureaucrat::decrement() {
 	if (this->grade == 1)
-		throw Form::GradeTooLowException();
+		throw AForm::GradeTooLowException();
 	(this->grade)--;
 }
-void Bureaucrat::signForm(const Form& f) const {
+void Bureaucrat::signForm(const AForm& f) const {
 	try {
-		(*const_cast<Form*>(&f)).beSigned(*this);
+		(*const_cast<AForm*>(&f)).beSigned(*this);
 		std::cout << this->name << " signed " << f.getName() << std::endl;
 	} catch (std::exception& e) {
 		std::cerr << this->name << " couldn't sign " << f.getName() << " because " << e.what() << std::endl;
 	}
 }
-void Bureaucrat::executeForm(const Form &form) {
+void Bureaucrat::executeForm(const AForm &form) {
 	try {
 		form.execute(*this);
 		std::cout << this->name << " executed " << form.getName() << std::endl;

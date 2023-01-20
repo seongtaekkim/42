@@ -1,19 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   megaphone.cpp                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/26 09:51:10 by seongtki          #+#    #+#             */
-/*   Updated: 2022/08/29 10:47:15 by seongtki         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <iostream>
 
-void	toupperMessage(int &count, char **messages)
-{
+void toupperMessage(int &count, char **messages) {
 	int		index;
 	size_t	jndex;
 
@@ -31,8 +18,7 @@ void	toupperMessage(int &count, char **messages)
 	std::cout << std::endl;
 }
 
-int	main(int argc, char **argv)
-{
+int	main(int argc, char **argv) {
 	if (argc == 1)
 		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
 	else

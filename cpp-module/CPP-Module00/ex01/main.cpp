@@ -1,18 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: staek <staek@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/09 18:21:52 by staek             #+#    #+#             */
-/*   Updated: 2023/01/10 19:29:02 by staek            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "PhoneBook.hpp"
-#include <string>
-
 
 bool getlineContact(std::string str, std::string &attr) {
 	while (1) {
@@ -69,11 +55,15 @@ int	main(void) {
 			phoneBook.listAll();
 			if (!getlineContact("index", index))
 				break ;
-			if (index.size() > 1 || index.size() == 0)
+			if (index.size() > 1 || index.size() == 0) {
+				std::cerr << "Please enter a value between 0 and " << (index.size() - 1) << std::endl;
 				continue;
-			int d = index.at(0) - '0';
-			if (d > (phoneBook.getSize() -1) || d < 0)
+			}
+			int d = static_cast<int>(std::strtod(index.c_str(), NULL));
+			if (d > (phoneBook.getSize() -1) || d < 0) {
+				std::cerr << "out of range !" << std::endl;
 				continue;
+			}
 			phoneBook.getContact(d).toString();
 		}
 		else if (command == "EXIT")	

@@ -1,22 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Contact.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: staek <staek@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/09 18:12:44 by staek             #+#    #+#             */
-/*   Updated: 2023/01/10 19:29:20 by staek            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CONTACT_HPP
  #define CONTACT_HPP
 
-# include <iostream>
+#include <iostream>
 
-class Contact
-{
+class Contact {
 private:
 	int			index;
 	std::string firstName;

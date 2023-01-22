@@ -56,12 +56,15 @@ int	main(void) {
 			if (!getlineContact("index", index))
 				break ;
 			if (index.size() > 1 || index.size() == 0) {
-				std::cerr << "Please enter a value between 0 and " << (index.size() - 1) << std::endl;
+				std::cerr << "Please enter a index between 0 and 7" << std::endl;
 				continue;
 			}
 			int d = static_cast<int>(std::strtod(index.c_str(), NULL));
 			if (d > (phoneBook.getSize() -1) || d < 0) {
-				std::cerr << "out of range !" << std::endl;
+				if (phoneBook.getSize() == 0)
+					std::cerr << "not data" << std::endl;
+				else
+					std::cerr << "Please enter a index between 0 and " << (phoneBook.getSize() - 1) << std::endl;
 				continue;
 			}
 			phoneBook.getContact(d).toString();

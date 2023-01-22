@@ -2,18 +2,22 @@
 
 PhoneBook::PhoneBook()
     : size(0), oldestIndex(0) {}
+
 void PhoneBook::sizeUp() {
 	if (this->size < 8)
 		this->size += 1;
 }
+
 bool PhoneBook::isFull() const {
 	if (this->size == 8)
 		return (true);
 	return (false);
 }
+
 int PhoneBook::getSize() const {
     return (this->size);
 }
+
 bool PhoneBook::registContact(Contact c) {
 	if (this->size == 8)
 	{
@@ -26,11 +30,13 @@ bool PhoneBook::registContact(Contact c) {
 	this->sizeUp();
 	return (true);
 }
+
 int PhoneBook::getNextIndex() const {
 	if (this->isFull())
 		return (this->size - 1);
 	return (size);
 }
+
 void PhoneBook::printWithPadding(std::string str) const {
 	int padding = 10 - str.length();
 	for (int i = 0 ; i < padding ; i++)
@@ -54,4 +60,4 @@ void PhoneBook::listAll() const {
 		printWithPadding(this->contact[i].getNickname());
 		std::cout << std::endl;
 	}
-};
+}

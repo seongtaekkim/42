@@ -59,6 +59,10 @@ int	main(void) {
 				std::cerr << "Please enter a index between 0 and 7" << std::endl;
 				continue;
 			}
+			if (!std::isdigit(index.at(0))) {
+				std::cerr << "please input number" << std::endl;
+				continue;
+			}
 			int d = static_cast<int>(std::strtod(index.c_str(), NULL));
 			if (d > (phoneBook.getSize() -1) || d < 0) {
 				if (phoneBook.getSize() == 0)

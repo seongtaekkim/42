@@ -24,8 +24,7 @@ std::string Contact::getNickname() const {
 }
 
 void Contact::toString() {
-	std::cout << "index : " << this->index << std::endl
-			<< "firstName : " << this->firstName << std::endl
+	std::cout << "firstName : " << this->firstName << std::endl
 			<< "lastName : " << this->lastName << std::endl
 			<< "nickname : " << this->nickname << std::endl
 			<< "phoneNumber : " << this->phoneNumber << std::endl

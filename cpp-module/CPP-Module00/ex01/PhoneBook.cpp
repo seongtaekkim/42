@@ -23,11 +23,12 @@ bool PhoneBook::registContact(Contact c) {
 	{
 		this->contact[this->oldestIndex] = c;
 		this->contact[this->oldestIndex].setIndex(this->oldestIndex);
-		this->oldestIndex %= 8;
 		this->oldestIndex++;
+		this->oldestIndex %= 8;
+	} else {
+		this->contact[c.getIndex()] = c;
+		this->sizeUp();
 	}
-	this->contact[c.getIndex()] = c;
-	this->sizeUp();
 	return (true);
 }
 

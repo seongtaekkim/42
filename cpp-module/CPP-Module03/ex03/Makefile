@@ -1,6 +1,6 @@
 NAME		= claptrap
 CXX 		= c++
-CXXFLAGS 	= -Wall -Wextra -Werror -std=c++98
+CXXFLAGS 	=  -std=c++98
 RM			= rm -f
 INCS		= -I
 SRCS		= main.cpp ClapTrap.cpp ScavTrap.cpp FragTrap.cpp DiamondTrap.cpp

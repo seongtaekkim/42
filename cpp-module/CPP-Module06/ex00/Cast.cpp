@@ -5,7 +5,12 @@ Cast::Cast(const std::string& raw) : raw(raw) {
 		this->dNum  = std::stod(raw);
 		std::cout << *this;
 	} catch(std::exception& e) {
-		std::cerr << "fail conversion !" << std::endl;
+		if (raw.size() == 1) {
+			this->dNum = static_cast<char>(raw.c_str()[0]);
+			std::cout << *this;
+		}
+		else
+			std::cerr << "fail conversion !" << std::endl;
 	}
 }
 
@@ -47,26 +52,17 @@ std::ostream& operator<<(std::ostream& out, const Cast& c) {
 
 	out << "char: ";
 	if (std::isnan(c.getDNum()) || std::isinf(c.getDNum()))
-	{
-		out << C_NP << std::endl;
-	}
+		out << D_IMPOSSIBLE << std::endl;
 	else if (std::isprint(c.asChar()))
-	{
 		out << "'" << c.asChar() << "'" << std::endl;
-	}
 	else
-	{
-		out << C_ND << std::endl;
-	}
+		out << D_NON_DESPLAYABLE << std::endl;
+	
 	out << "int: ";
 	if (std::isnan(c.getDNum()) || std::isinf(c.getDNum()))
-	{
-		out << C_NP << std::endl;
-	}
+		out << D_IMPOSSIBLE << std::endl;
 	else
-	{
 		out << c.asInt() << std::endl;
-	}
 
 	if (std::isnan(c.getDNum()) || std::isinf(c.getDNum()))
 	{

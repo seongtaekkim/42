@@ -18,7 +18,7 @@ public:
 		, const std::string s1, const std::string s2);
 	int readFile(std::string &dest);
 	int replace();
-	int saveFile();
+	int saveFile(); 
 };
 
 #endif

@@ -2,7 +2,8 @@
 
 Replace::Replace(const std::string fileName
 	, const std::string s1, const std::string s2)
-	: fileName(fileName), s1(s1), s2(s2) {}
+	: fileName(fileName), s1(s1), s2(s2) {
+	}
 
 int Replace::readFile(std::string& dest) {
 	this->in.open(this->fileName.c_str());
@@ -18,7 +19,7 @@ int Replace::readFile(std::string& dest) {
 				dest.append("\n");
 		}
 	}
-	return (0);
+	return (0); 
 }
 
 int Replace::saveFile() {
@@ -33,6 +34,11 @@ int Replace::replace() {
 	std::size_t pos = 0;
 	std::size_t ret = 0;
 	std::string dest;
+
+	if (this->s1.size() == 0) {
+		errno = EINVAL;
+		return (errno);
+	}
 
 	errno = readFile(dest);
 	if (errno != 0)

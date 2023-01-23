@@ -2,24 +2,35 @@
 #include "DiamondTrap.hpp"
 int main(void)
 {
-	DiamondTrap d("java");
+	// DiamondTrap d("java");
 
-	std::cout << std::endl;
-	d.whoAmI();
-	std::cout << std::endl;
+	// std::cout << std::endl;
+	// d.whoAmI();
+	// std::cout << std::endl;
 
-	std::cout << "HP is " << d.getHitPoints() << std::endl;;
-	std::cout << std::endl;
+	// std::cout << "HP is " << d.getHitPoints() << std::endl;;
+	// std::cout << std::endl;
 
-	std::cout << "EP is " << d.getEnergyPoints() << std::endl;;
-	std::cout << std::endl;
+	// std::cout << "EP is " << d.getEnergyPoints() << std::endl;;
+	// std::cout << std::endl;
 
-	std::cout << "AD is " << d.getAttackDamage() << std::endl;;
-	std::cout << std::endl;
+	// std::cout << "AD is " << d.getAttackDamage() << std::endl;;
+	// std::cout << std::endl;
 
-	std::cout << std::endl;
-	d.attack(d.getName());
-	std::cout << std::endl;
+	// std::cout << std::endl;
+	// d.attack(d.getName());
+	// std::cout << std::endl;
+
+
+ClapTrap *c;
+{
+	c = new DiamondTrap("e");
+	c->attack("e");
+delete c;
+}
+
+std::cout << "ewf " << std::endl;
+	// delete c;
 
 	return (0);
 

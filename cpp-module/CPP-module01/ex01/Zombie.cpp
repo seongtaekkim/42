@@ -1,25 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Zombie.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42seoul.>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/06 14:03:28 by seongtki          #+#    #+#             */
-/*   Updated: 2022/09/06 14:03:32 by seongtki         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <iostream>
-#include "Zombie.h"
+#include "Zombie.hpp"
 
 Zombie::Zombie() {
-        std::cout << "constructor : " << std::endl;
+        std::cout << "constructor zombie" << std::endl;
 }
-Zombie::Zombie(const std::string name)
-    : name(name) {
-    
-    }
 Zombie::~Zombie()
 {
     std::cout << this->name << " is die." << std::endl;

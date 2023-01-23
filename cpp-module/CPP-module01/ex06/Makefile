@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: staek <staek@student.42.fr>                +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/09/06 14:03:19 by seongtki          #+#    #+#              #
-#    Updated: 2023/01/11 14:07:14 by staek            ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME 		= harlFilter
 CXX 		= c++
 CXXFLAGS 	= -Wall -Wextra -Werror -std=c++98
@@ -27,4 +15,4 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 re:	clean all
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re

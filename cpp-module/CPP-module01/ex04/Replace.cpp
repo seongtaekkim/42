@@ -2,10 +2,10 @@
 
 Replace::Replace(const std::string fileName
 	, const std::string s1, const std::string s2)
-	: fileName(fileName), s1(s1), s2(s2) {
-	}
+	: fileName(fileName), s1(s1), s2(s2) {}
 
-int Replace::readFile(std::string& dest) {
+int Replace::readFile(std::string& dest)
+{
 	this->in.open(this->fileName.c_str());
 	if (errno)
 		return (errno);
@@ -22,7 +22,8 @@ int Replace::readFile(std::string& dest) {
 	return (0); 
 }
 
-int Replace::saveFile() {
+int Replace::saveFile()
+{
 	std::string outfile = this->fileName + ".replace";
 	this->of.open(outfile.c_str());
 	if (errno)
@@ -30,12 +31,14 @@ int Replace::saveFile() {
 	return (0);
 }
 
-int Replace::replace() {
+int Replace::replace()
+{
 	std::size_t pos = 0;
 	std::size_t ret = 0;
 	std::string dest;
 
-	if (this->s1.size() == 0) {
+	if (this->s1.size() == 0)
+	{
 		errno = EINVAL;
 		return (errno);
 	}
@@ -43,11 +46,15 @@ int Replace::replace() {
 	errno = readFile(dest);
 	if (errno != 0)
 		return (errno);
-	while(true) {
+	while(true)
+	{
 		ret = dest.find(s1, pos);
-		if(ret == std::string::npos) {
+		if(ret == std::string::npos)
+		{
 			break ;
-		} else {
+		}
+		else
+		{
 			pos = ret;
 			dest.erase(pos, s1.size());
 			dest.insert(pos, s2);

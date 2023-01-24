@@ -3,13 +3,12 @@
 
 #include <iostream>
 
-class ClapTrap
-{
+class ClapTrap {
 protected:
 	std::string _name;
-	int _hitPoints; // 체력 공격받으면-attackDamage 수리하면+amount
-	int _energyPoints; // 공격,수리 시 -1
-	int _attackDamage; // 공격력
+	int _hitPoints;
+	int _energyPoints;
+	int _attackDamage;
 	ClapTrap(void);
 public:
 	ClapTrap(const std::string& name);

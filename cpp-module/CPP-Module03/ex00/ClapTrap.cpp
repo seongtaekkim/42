@@ -20,7 +20,7 @@ ClapTrap::~ClapTrap() {
 	std::cout << "die " << this->_name << std::endl;
 }
 
-ClapTrap& ClapTrap::operator = (const ClapTrap & c) {
+ClapTrap& ClapTrap::operator = (const ClapTrap& c) {
 	if (this == &c)
 		return (*this);
 	this->_name = c._name;
@@ -49,7 +49,7 @@ void ClapTrap::beRepaired(unsigned int amount) {
 		(this->_energyPoints)--;
 		std::cout << this->_name << " recovered " << amount << " hit point." << std::endl;
 	} else 
-		std::cout << "not enough energe" << std::endl;
+		std::cout << "not enough energe ! " << std::endl;
 }
  
 std::string ClapTrap::getName() const {

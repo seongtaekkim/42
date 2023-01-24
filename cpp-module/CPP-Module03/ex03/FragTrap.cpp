@@ -1,5 +1,9 @@
 #include "FragTrap.hpp"
 
+const int FragTrap::FRAG_HP = 100;
+const int FragTrap::FRAG_EP = 100;
+const int FragTrap::FRAG_AD = 30;
+
 FragTrap::FragTrap(void) : ClapTrap() {}
 
 FragTrap::FragTrap(const std::string& name) : ClapTrap() {
@@ -23,5 +27,5 @@ FragTrap::~FragTrap(void) {
 }
 
 void FragTrap::highFivesGuys(void) {
-	std::cout << "lets high fives !" << std::endl;
+	std::cout << "lets high fivxes !" << std::endl;
 }

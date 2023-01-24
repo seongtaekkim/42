@@ -20,7 +20,7 @@ ScavTrap & ScavTrap::operator = (const ScavTrap& s) {
 
 ScavTrap::~ScavTrap()
 {
-	std::cout << "die ScavTrap" << std::endl;
+	std::cout << "die ScavTrap" << this->_name << std::endl;
 }
 
 void ScavTrap::attack(const std::string& target)

@@ -5,9 +5,9 @@
 
 class FragTrap : virtual public ClapTrap {
 protected:
-	static const int FRAG_HP = 100;
-	static const int FRAG_EP = 100;
-	static const int FRAG_AD = 30;
+	static const int FRAG_HP;
+	static const int FRAG_EP;
+	static const int FRAG_AD;
 	FragTrap(void);
 public:
     FragTrap(const std::string& name);

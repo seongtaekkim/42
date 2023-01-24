@@ -1,5 +1,9 @@
 #include "ScavTrap.hpp"
 
+const int ScavTrap::SCAV_HP = 100;
+const int ScavTrap::SCAV_EP = 50;
+const int ScavTrap::SCAV_AD = 20;
+
 ScavTrap::ScavTrap(void) : ClapTrap() {}
 ScavTrap::ScavTrap(const std::string& name) : ClapTrap(name) {
 	std::cout << "create ScavTrap " << name << std::endl;
@@ -19,7 +23,7 @@ ScavTrap & ScavTrap::operator = (const ScavTrap& s) {
 }
 
 ScavTrap::~ScavTrap() {
-	std::cout << "die ScavTrap" << std::endl;
+	std::cout << "die ScavTrap" << this->_name << std::endl;
 }
 
 void ScavTrap::attack(const std::string& target)

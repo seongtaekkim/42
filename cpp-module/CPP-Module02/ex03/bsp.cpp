@@ -16,23 +16,6 @@ bool bsp(const Point a, const Point b, const Point c, const Point point) {
 	Point ac = c - a;
 	Point ap = point - a;
 
-
-/*
-	std::cout << std::endl;
-	std::cout << "ab : " << ba << std::endl;
-	std::cout << "pb : " << bp << std::endl;
-
-	std::cout << "bc : " << cb << std::endl;
-	std::cout << "pc : " << cp << std::endl;
-	
-	std::cout << "ca : " << ac << std::endl;
-	std::cout << "pa : " << ap << std::endl;
-
-	std::cout << std::endl;
-	std::cout << "ab * pb : " << (ba * bp) << " " << (ba * bp).toFloat() <<  std::endl;
-	std::cout << "bc * pc : " << (cb * cp) << " " << (cb * cp).toFloat() <<  std::endl;
-	std::cout << "ca * pa : " << ac * ap << " " << (ac * ap).toFloat() <<  std::endl;
-*/
 	Fixed det_b(ba * bp);
 	Fixed det_a(ac * ap);
 	Fixed det_c(cb * cp);

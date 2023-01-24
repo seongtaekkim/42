@@ -1,9 +1,6 @@
 #include "Fixed.hpp"
 
-Fixed::Fixed()
-    : number(0)
-{
-}
+Fixed::Fixed() : number(0) {}
 
 Fixed::Fixed(const int &input)
 {
@@ -27,9 +24,7 @@ Fixed::Fixed(const Fixed &f)
     *this = f;
 }
 
-Fixed::~Fixed()
-{
-}
+Fixed::~Fixed() {}
 
 Fixed &Fixed::operator = (const Fixed &f)
 {

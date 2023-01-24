@@ -52,6 +52,8 @@ const std::string& Character::getName(void) const {
 }
 
 void Character::equip(AMateria* a) {
+	if (a == NULL)
+		return ;
 	for (int i = 0 ; i < INVENTORY_SIZE ; i++) {
 		if (this->inventory[i] == 0) {
 			this->inventory[i] = a->clone();

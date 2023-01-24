@@ -5,18 +5,18 @@ Animal::Animal() {
     std::cout << "Animal Default constructor called" << std::endl;
 }
 
-Animal::Animal(const Animal &f) {
+Animal::Animal(const Animal &a) {
     std::cout << "Copy constructor called" << std::endl;
-    *this = f;
+    *this = a;
 }
 
 Animal::~Animal() {
     std::cout << "Animal Destructor called" << std::endl;
 }
 
-Animal &Animal::operator = (const Animal &f) {
+Animal &Animal::operator = (const Animal &a) {
     std::cout << "Copy Assignment operator called" << std::endl;
-    if (this == &f)
+    if (this == &a)
         return (*this);
     return (*this);
 }

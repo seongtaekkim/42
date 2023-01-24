@@ -4,13 +4,13 @@
 #include <iostream>
 #include "ICharacter.hpp"
 
-#define AMATERIA_SIZE		4
+#define AMATERIA_SIZE 4
 
 class ICharacter;
 
 class AMateria
 {
-private:
+protected:
 	std::string type;
 	AMateria(void);
 public:

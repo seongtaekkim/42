@@ -13,10 +13,12 @@ int main() {
 	}
 	for (int i = 0 ; i< 100 ; i++)
 		delete animal[i];
-
+	std::cout << "=======================" << std::endl;
 	Cat origin;
+	std::cout << "=======================" << std::endl;
 	{
 		Cat copy(origin);
+		std::cout << "=======================" << std::endl;
 		copy = origin;
 		std::cout << origin.getIdeas()[0] << std::endl; 
 	}
@@ -29,7 +31,7 @@ int main() {
 		std::cout << origin2.getIdeas()[0] << std::endl; 
 	}
 	std::cout << origin2.getIdeas()[0] << std::endl; 
-	system("leaks animal");
+	// system("leaks animal");
 	return 0;
 
 }

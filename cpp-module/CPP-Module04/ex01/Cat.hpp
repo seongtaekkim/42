@@ -9,9 +9,9 @@ private:
 	Brain *b;
 public:
     Cat();
-	Cat(const Cat &cat);
+	Cat(const Cat& cat);
     virtual ~Cat();
-    Cat &operator = (const Cat &f);
+    Cat& operator = (const Cat& c);
 	virtual void makeSound() const;
 	const std::string *getIdeas() const;
 };

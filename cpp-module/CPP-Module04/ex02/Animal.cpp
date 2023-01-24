@@ -4,9 +4,9 @@ Animal::Animal() {
     std::cout << "Animal Default constructor called" << std::endl;
 }
 
-Animal::Animal(const Animal &f) {
+Animal::Animal(const Animal &a) {
     std::cout << "Copy constructor called" << std::endl;
-    *this = f;
+    *this = a;
 }
 
 Animal::~Animal() {
@@ -18,10 +18,6 @@ Animal &Animal::operator = (const Animal &a) {
     if (this == &a)
         return (*this);
     return (*this);
-}
-
-void Animal::makeSound() const {
-	std::cout << "Anmimal sound" << std::endl;
 }
 
 std::string Animal::getType() const {

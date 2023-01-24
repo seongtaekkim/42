@@ -17,7 +17,7 @@ Cat::~Cat() {
     std::cout << "Cat Destructor called" << std::endl;
 }
 
-Cat &Cat::operator = (const Cat &c) {
+Cat& Cat::operator = (const Cat& c) {
     std::cout << "Cat Copy Assignment operator called" << std::endl;
     if (this == &c)
         return (*this);

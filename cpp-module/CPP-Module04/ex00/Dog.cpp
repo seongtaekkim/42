@@ -1,4 +1,3 @@
-
 #include "Dog.hpp"
 
 Dog::Dog() {
@@ -6,18 +5,18 @@ Dog::Dog() {
     std::cout << "Dog constructor called" << std::endl;
 }
 
-Dog::Dog(const Dog &f) {
+Dog::Dog(const Dog& d) {
     std::cout << "Copy constructor called" << std::endl;
-    *this = f;
+    *this = d;
 }
 
 Dog::~Dog() {
     std::cout << "Dog Destructor called" << std::endl;
 }
 
-Dog &Dog::operator = (const Dog &f) {
+Dog& Dog::operator = (const Dog& d) {
     std::cout << "Copy Assignment operator called" << std::endl;
-    if (this == &f)
+    if (this == &d)
         return (*this);
     return (*this);
 }

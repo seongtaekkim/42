@@ -16,7 +16,7 @@ Brain::~Brain() {
     std::cout << "Brain Destructor called" << std::endl;
 }
 
-Brain &Brain::operator = (const Brain &b) {
+Brain &Brain::operator = (const Brain& b) {
     std::cout << "Brain Copy Assignment operator called" << std::endl;
     if (this == &b)
         return (*this);
@@ -24,5 +24,5 @@ Brain &Brain::operator = (const Brain &b) {
 }
 
 const std::string *Brain::getIdeas() {
-	return ideas;
+	return (ideas);
 }

@@ -1,7 +1,7 @@
 #ifndef WRONGANIMAL_HPP
 # define WRONGANIMAL_HPP
 
-# include <iostream>
+#include <iostream>
 
 class WrongAnimal {
 protected:
@@ -10,7 +10,7 @@ public:
     WrongAnimal();
     WrongAnimal(const WrongAnimal &animal);
     virtual ~WrongAnimal();
-    WrongAnimal &operator = (const WrongAnimal &f);
+    WrongAnimal& operator = (const WrongAnimal &w);
 	void makeSound() const;
 	std::string getType() const;
 };

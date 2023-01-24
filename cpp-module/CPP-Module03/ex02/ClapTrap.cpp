@@ -6,7 +6,7 @@ ClapTrap::ClapTrap(void) {
 
 ClapTrap::ClapTrap(const std::string &name) {
 	this->_name = name;
-	init(name + "_clap_name", 10, 10, 0);
+	init(this->_name, 10, 10, 0);
 	std::cout << "create " << this->_name << std::endl;
 }
 

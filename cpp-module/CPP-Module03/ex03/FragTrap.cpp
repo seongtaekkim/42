@@ -4,7 +4,9 @@ const int FragTrap::FRAG_HP = 100;
 const int FragTrap::FRAG_EP = 100;
 const int FragTrap::FRAG_AD = 30;
 
-FragTrap::FragTrap(void) : ClapTrap() {}
+FragTrap::FragTrap(void) : ClapTrap() {
+	std::cout << "create default flagtrap" << std::endl;
+}
 
 FragTrap::FragTrap(const std::string& name) : ClapTrap() {
 	std::cout << "create FragTrap " << name << std::endl;

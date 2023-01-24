@@ -8,7 +8,7 @@ private:
 	FragTrap(void);
 public:
     FragTrap(const std::string& name);
-    FragTrap & operator = (const FragTrap& c);
+    FragTrap& operator = (const FragTrap& c);
     FragTrap(const FragTrap& c);
     virtual ~FragTrap(void);
     void highFivesGuys(void);

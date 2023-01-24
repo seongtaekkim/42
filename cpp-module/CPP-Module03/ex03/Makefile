@@ -1,6 +1,6 @@
-NAME		= claptrap
+NAME		= diamondtrap
 CXX 		= c++
-CXXFLAGS 	=  -std=c++98
+CXXFLAGS 	= -Wall -Wextra -Werror -std=c++98
 RM			= rm -f
 INCS		= -I
 SRCS		= main.cpp ClapTrap.cpp ScavTrap.cpp FragTrap.cpp DiamondTrap.cpp
@@ -17,4 +17,4 @@ fclean: clean
 re:
 	make fclean
 	make all
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re

@@ -1,7 +1,7 @@
 #include "ClapTrap.hpp"
 
 ClapTrap::ClapTrap(void) {
-	std::cout << "create ClapTrap " << std::endl;
+	std::cout << "create ClapTrap" << std::endl;
 }
 
 ClapTrap::ClapTrap(const std::string &name) {

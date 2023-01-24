@@ -13,9 +13,9 @@ class AMateria
 protected:
 	std::string type;
 	AMateria(void);
-public:
-	AMateria(const AMateria& a);
 	AMateria(const std::string& type);
+	AMateria(const AMateria& a);
+public:
 	virtual ~AMateria(void);
 	AMateria& operator=(const AMateria& a);
 	const std::string& getType(void) const;

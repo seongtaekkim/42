@@ -9,6 +9,7 @@ class Fixed
 private:
     int					number;
     static const int	FRACTIONAL_BITS = 8;
+	float doDiv (const float& numerator, const float& denominator) const;
 public:
     Fixed();
     Fixed(const int &input);
@@ -21,10 +22,10 @@ public:
     int     toInt(void) const;
     float   toFloat(void) const;
 
-	static Fixed *fmin(Fixed *lhs, Fixed *rhs);
-	static Fixed *fmax(Fixed *lhs, Fixed *rhs);
-	static const Fixed &fmin(const Fixed &lhs, const Fixed &rhs);
-	static const Fixed &fmax(const Fixed &lhs, const Fixed &rhs);
+	static Fixed &min(Fixed &l, Fixed &r);
+	static Fixed &max(Fixed &l, Fixed &r);
+	static const Fixed &min(const Fixed &l, const Fixed &r);
+	static const Fixed &max(const Fixed &l, const Fixed &r);
 
 	bool operator>(const Fixed &f);
 	bool operator<(const Fixed &f);

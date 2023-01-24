@@ -60,10 +60,23 @@ int Fixed::toInt(void) const
     return (this->number >> FRACTIONAL_BITS);
 }
 
+float Fixed::doDiv (const float& numerator, const float& denominator) const {
+    if (denominator == 0)
+        throw std::overflow_error("Divide by zero exception");
+    return (numerator / denominator);
+}
+
 Fixed Fixed::operator+ (const Fixed &f) { return (this->toFloat() + f.toFloat()); };
 Fixed Fixed::operator- (const Fixed &f) { return (this->toFloat() - f.toFloat()); };
 Fixed Fixed::operator* (const Fixed &f) { return (this->toFloat() * f.toFloat()); };
-Fixed Fixed::operator/ (const Fixed &f) { return (this->toFloat() / f.toFloat()); };
+Fixed Fixed::operator/ (const Fixed &f) {
+    try {
+		return (doDiv (this->toFloat(), f.toFloat()));
+	} catch (std::overflow_error &e) {
+        std::cout << e.what() << std::endl;
+		return (Fixed());
+    }
+};
 
 Fixed &Fixed::operator++ ()
 {
@@ -125,25 +138,27 @@ bool Fixed::operator!= (const Fixed &f)
 	return (false);
 }
 
-Fixed *Fixed::fmin(Fixed *lhs, Fixed *rhs) {
-	if (lhs > rhs)
-		return (rhs);
-	return (lhs);
+Fixed &Fixed::min(Fixed &l, Fixed &r) {
+	if (l > r)
+		return (r);
+	return (l);
 }
-Fixed *Fixed::fmax(Fixed *lhs, Fixed *rhs) {
-	if (lhs > rhs)
-		return (lhs);
-	return (rhs);
+
+Fixed &Fixed::max(Fixed &l, Fixed &r) {
+	if (l > r)
+		return (l);
+	return (r);
 }
-const Fixed &Fixed::fmin(const Fixed &lhs, const Fixed &rhs) {
-	if (lhs.getRawBits() > rhs.getRawBits())
-		return (rhs);
-	return (lhs);
+
+const Fixed &Fixed::min(const Fixed &l, const Fixed &r) {
+	if (l.getRawBits() > r.getRawBits())
+		return (r);
+	return (l);
 }
-const Fixed &Fixed::fmax(const Fixed &lhs, const Fixed &rhs) {
-	if (lhs.getRawBits() > rhs.getRawBits())
-		return (lhs);
-	return (rhs);
+const Fixed &Fixed::max(const Fixed &l, const Fixed &r) {
+	if (l.getRawBits() > r.getRawBits())
+		return (l);
+	return (r);
 }
 
 std::ostream& operator<< (std::ostream &out, const Fixed &f)

@@ -12,15 +12,14 @@ int main(void) {
   std::cout << "Point c is " << c << std::endl;
   std::cout << "Point k1 is " << k1 << std::endl;
   std::cout << "Point k2 is " << k2 << std::endl;
-  std::cout << std::endl;
 
   if (bsp(a, b, c, k1) == true)
-	std::cout << "k1 : inside!" << std::endl;
+	  std::cout << "k1 : inside!" << std::endl;
   else
   	std::cout << "k1 : outside!" << std::endl;
 
   if (bsp(a, b, c, k2) == true)
-	std::cout << "k2 : inside!" << std::endl;
+	  std::cout << "k2 : inside!" << std::endl;
   else
   	std::cout << "k2 : outside!" << std::endl;
 

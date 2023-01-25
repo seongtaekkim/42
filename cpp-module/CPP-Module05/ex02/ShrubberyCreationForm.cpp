@@ -1,19 +1,18 @@
 #include "ShrubberyCreationForm.hpp"
 	
-ShrubberyCreationForm::ShrubberyCreationForm(void) : AForm() {
+ShrubberyCreationForm::ShrubberyCreationForm(void) : AForm() {}
 
-}
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target)
-	: AForm(target, SSIGN_GRADE, SEXEC_GRADE ){
+	: AForm(target, SSIGN_GRADE, SEXEC_GRADE ){}
 
-}
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& p)
-	: AForm(p) {
-}
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& p) : AForm(p) {}
+
 ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm& p) {
 	return (*(dynamic_cast<ShrubberyCreationForm*>(&(AForm::operator=(p)))));
 }
-ShrubberyCreationForm::~ShrubberyCreationForm(void) { }
+
+ShrubberyCreationForm::~ShrubberyCreationForm(void) {}
+
 void ShrubberyCreationForm::execute(const Bureaucrat& executor) const {
 	valid_execute(executor);
 	const std::string& filename = executor.getName() + "_shrubbery";

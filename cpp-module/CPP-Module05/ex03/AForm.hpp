@@ -13,9 +13,10 @@ private :
 	const int			signGrade;
 	const int			execGrade;
 	bool				isSigned;
-public :
+protected :
 	AForm(void);
 	AForm(const std::string &name, const int sGrade, const int eGrade);
+public :
 	AForm(const AForm& b);
 	virtual ~AForm(void);
 	AForm& operator=(const AForm& f);

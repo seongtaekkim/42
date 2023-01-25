@@ -14,6 +14,7 @@ int main(void)
 	std::cout << b1 << std::endl << b2 << std::endl << std::endl;
 
 	std::cout << *f1 << std::endl;
+	std::cout << *f2 << std::endl;
 	std::cout << *f3 << std::endl << std::endl;
 
 	b2.signForm(*f1);

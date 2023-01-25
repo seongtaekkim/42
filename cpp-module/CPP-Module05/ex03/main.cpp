@@ -11,12 +11,9 @@ int main(void)
 	AForm* f2 = intern.makeForm("RobotomyRequestForm", "RRRRName");
 	AForm* f3 = intern.makeForm("PresidentialPardonForm", "PPPPName");
 	intern.makeForm("Wrong", "Wrong");
-	if (!f1 || !f2 || !f3)
-		return (1);
 	std::cout << std::endl;
 
-	std::cout << b1 << std::endl
-		<< b2 << std::endl;
+	std::cout << b1 << std::endl << b2 << std::endl;
 	std::cout << std::endl;
 
 	std::cout << *f1 << std::endl

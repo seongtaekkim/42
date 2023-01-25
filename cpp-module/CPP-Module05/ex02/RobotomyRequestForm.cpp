@@ -1,21 +1,17 @@
 #include "RobotomyRequestForm.hpp"
 	
-RobotomyRequestForm::RobotomyRequestForm(void)
-	: AForm() {
+RobotomyRequestForm::RobotomyRequestForm(void) : AForm() {}
 
-}
 RobotomyRequestForm::RobotomyRequestForm(const std::string& target)
-	: AForm(target, RSIGN_GRADE, REXEC_GRADE ) {
+	: AForm(target, RSIGN_GRADE, REXEC_GRADE ) {}
 
-}
-RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& p)
-	: AForm(p) {
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& p) : AForm(p) {}
 
-}
 RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& p) {
 	return (*(dynamic_cast<RobotomyRequestForm*>(&(AForm::operator=(p)))));
 }
-RobotomyRequestForm::~RobotomyRequestForm(void) { }
+
+RobotomyRequestForm::~RobotomyRequestForm(void) {}
 
 void RobotomyRequestForm::execute(const Bureaucrat& executor) const {
 	valid_execute(executor);

@@ -1,24 +1,27 @@
 #include "Intern.hpp"
 
-Intern::Intern(void) {
+Intern::Intern(void) {}
 
-}
 Intern::Intern(const Intern& i) {
 	*this = i;
 }
+
 Intern::~Intern(void) {}
+
 Intern& Intern::operator=(const Intern& i) {
 	if (this == &i)
 		return (*this);
 	static_cast<void>(i);
 	return (*this);
 }
+
 AForm* (*Intern::formFactory[3])(const std::string) =
 {
 	&ShrubberyCreationForm::selfFactory
 	, &RobotomyRequestForm::selfFactory
 	, &PresidentialPardonForm::selfFactory
 };
+
 AForm* Intern::makeForm(const std::string& formName, const std::string& name) {
 	std::string typeList[3] = {"ShrubberyCreationForm", "RobotomyRequestForm", "PresidentialPardonForm"};
 	try
@@ -40,7 +43,7 @@ AForm* Intern::makeForm(const std::string& formName, const std::string& name) {
 		return (NULL);
 	}
 }
-const char* Intern::NoMatchingTypeException::what(void) const throw()
-{
+
+const char* Intern::NoMatchingTypeException::what(void) const throw() {
 	return ("NoMatchingTypeException !!");
 }

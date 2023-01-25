@@ -9,8 +9,6 @@ void testcase2(void) {
 	try {
 		staek.decrement();
 		std::cout << staek << std::endl;
-		staek.increment();
-		staek.increment();
 	}
 	catch (std::exception& e) {
 		std::cerr << e.what() << std::endl;
@@ -18,8 +16,6 @@ void testcase2(void) {
 	try {
 		seongtki.increment();
 		std::cout << seongtki << std::endl;
-		seongtki.decrement();
-		seongtki.decrement();
 	}
 	catch (std::exception& e) {
 		std::cerr << e.what() << std::endl;

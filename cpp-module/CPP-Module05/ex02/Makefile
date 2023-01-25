@@ -1,4 +1,4 @@
-NAME 		= bureaucrat
+NAME 		= aform
 CXX 		= c++
 CXXFLAGS 	= -Wall -Wextra -Werror -std=c++98
 RM 			= rm -f
@@ -18,4 +18,4 @@ fclean: clean
 re:
 	make fclean
 	make all
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re

@@ -13,7 +13,7 @@ public:
     virtual ~Cat();
     Cat& operator = (const Cat& c);
 	virtual void makeSound() const;
-	const std::string *getIdeas() const;
+	const Brain* getIdeas() const;
 };
 
 #endif

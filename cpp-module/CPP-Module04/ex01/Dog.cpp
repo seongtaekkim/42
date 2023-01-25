@@ -31,6 +31,6 @@ void Dog::makeSound() const {
 	std::cout << "bark" << std::endl;
 }
 
-const std::string *Dog::getIdeas() const {
-	return (this->b->getIdeas());
+const Brain* Dog::getIdeas() const {
+	return (this->b);
 }

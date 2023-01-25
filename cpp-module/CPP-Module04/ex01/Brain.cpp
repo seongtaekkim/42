@@ -23,6 +23,12 @@ Brain &Brain::operator = (const Brain& b) {
     return (*this);
 }
 
-const std::string *Brain::getIdeas() {
-	return (ideas);
+std::string Brain::getIdeas(const int& i) const {
+	return (ideas[i]);
+}
+
+std::ostream& operator<< (std::ostream& out, const Brain& b) {
+    for (int i = 0 ; i < 100 ; i++)
+        out << b.getIdeas(i) << " ";
+    return (out);
 }

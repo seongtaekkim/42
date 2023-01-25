@@ -27,3 +27,8 @@ void WrongAnimal::makeSound() const {
 std::string WrongAnimal::getType() const {
 	return (this->type);
 }
+
+std::ostream& operator<< (std::ostream& out, const WrongAnimal& a) {
+    out << a.getType();
+    return (out);
+}

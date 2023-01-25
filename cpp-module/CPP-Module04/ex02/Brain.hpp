@@ -11,7 +11,9 @@ class Brain {
 		Brain(const Brain& b);
 	    ~Brain();
 	    Brain& operator = (const Brain& b);
-		const std::string *getIdeas();
+		std::string getIdeas(const int& i) const;
 };
+
+std::ostream& operator<< (std::ostream& out, const Brain& a);
 
 #endif

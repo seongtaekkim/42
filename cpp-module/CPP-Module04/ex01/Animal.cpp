@@ -27,3 +27,8 @@ void Animal::makeSound() const {
 std::string Animal::getType() const {
 	return (this->type);
 }
+
+std::ostream& operator<< (std::ostream& out, const Animal& a) {
+    out << a.getType();
+    return (out);
+}

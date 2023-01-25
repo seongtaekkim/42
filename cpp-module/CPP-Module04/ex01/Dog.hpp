@@ -13,7 +13,7 @@ public:
     virtual ~Dog();
     Dog& operator = (const Dog& d);
 	virtual void makeSound() const;
-	const std::string *getIdeas() const;
+	const Brain* getIdeas() const;
 };
 
 #endif

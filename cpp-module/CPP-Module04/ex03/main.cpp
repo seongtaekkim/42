@@ -29,6 +29,5 @@ int main() {
 	delete bob;
 	delete me;
 	delete src;
-	// system("leaks game");
 	return (0);
 }

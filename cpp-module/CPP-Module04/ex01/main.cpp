@@ -20,18 +20,9 @@ int main() {
 		Cat copy(origin);
 		std::cout << "=======================" << std::endl;
 		copy = origin;
-		std::cout << origin.getIdeas()[0] << std::endl; 
+		std::cout << *origin.getIdeas() << std::endl; 
 	}
-	std::cout << origin.getIdeas()[0] << std::endl; 
+	std::cout << *origin.getIdeas() << std::endl; 
 	std::cout << "=======================" << std::endl;
-	Dog origin2;
-	{
-		Dog copy(origin2);
-		copy = origin2;
-		std::cout << origin2.getIdeas()[0] << std::endl; 
-	}
-	std::cout << origin2.getIdeas()[0] << std::endl; 
-	// system("leaks animal");
 	return 0;
-
 }

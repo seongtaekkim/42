@@ -15,4 +15,6 @@ public:
 	std::string getType() const;
 };
 
+std::ostream& operator<< (std::ostream& out, const Animal& a);
+
 #endif

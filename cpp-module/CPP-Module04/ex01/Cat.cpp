@@ -31,6 +31,6 @@ void Cat::makeSound() const {
 	std::cout << "mewww" << std::endl;
 }
 
-const std::string *Cat::getIdeas() const {
-	return (this->b->getIdeas());
+const Brain* Cat::getIdeas() const {
+	return (this->b);
 }

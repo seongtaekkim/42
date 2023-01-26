@@ -28,14 +28,17 @@ char Cast::asChar(void) const {
 	char c = static_cast<char>(this->dNum);
 	return (c);
 }
+
 int Cast::asInt(void) const {
 	int i = static_cast<int>(this->dNum);
 	return (i);
 }
+
 float Cast::asFloat(void) const {
 	float f = static_cast<float>(this->dNum);
 	return (f);
 }
+ 
 double Cast::asDouble(void) const {
 	double d = static_cast<double>(this->dNum);
 	return (d);
@@ -44,6 +47,7 @@ double Cast::asDouble(void) const {
 const double& Cast::getDNum(void) const {
 	return (this->dNum);
 }
+
 const std::string& Cast::getRaw(void) const {
 	return (this->raw);
 }

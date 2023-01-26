@@ -1,9 +1,9 @@
-NAME 		= convert
+NAME 		= serialize
 CXX 		= c++
 CXXFLAGS 	= -Wall -Wextra -Werror -std=c++98
 RM 			= rm -f
 INCS 		= -I
-SRCS 		= main.cpp Cast.cpp
+SRCS 		= main.cpp Data.cpp
 OBJS 		= $(SRCS:.cpp=.o)
 .c.o :
 	$(CXX) $(CXXFLAGS) -c $< -o $@

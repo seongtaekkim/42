@@ -23,13 +23,8 @@ public:
 	double asDouble(void) const;
 	const double& getDNum(void) const;
 	const std::string& getRaw(void) const;
-	// class ConvertException : public std::exception {
-	// 	public:
-	// 		const char* what(void) const throw();
-	// 		static ConvertException impossible();
-	// };
-
 };
+
 std::ostream& operator<<(std::ostream& out, const Cast& c);
 
 #endif

@@ -20,9 +20,11 @@ public:
 			this->m_data[i] = a.m_data[i];
 		}
 	}
+
     ~Array() {
         reset();
-    }
+	}
+
 	Array& operator=(const Array& a)
 	{
 		if (this == &a)
@@ -36,27 +38,31 @@ public:
 			this->m_data[i] = a[i];
 		return (*this);
 	}
+
     void reset() {
         delete[] this->m_data;
         this->m_data = NULL;
         this->m_length = 0;
     }
+
     T& operator[] (unsigned int index) {
 		if (index >= this->m_length) {
 			throw OutOfRange();
 		}
         return (this->m_data[index]);
-    };
+    }
+
 	const T& operator[] (unsigned int index) const {
 		if (index >= this->m_length) {
 			throw OutOfRange();
 		}
 		return (this->m_data[index]);
 	}
-    unsigned int size() const
-    {
+
+    unsigned int size() const {
         return (m_length);
     }
+
 	class OutOfRange : public std::exception {
 		public:
 			const char* what(void) const throw() {

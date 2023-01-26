@@ -1,7 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
 #include "easyfind.hpp"
+#include <vector>
 
 int main(void)
 {

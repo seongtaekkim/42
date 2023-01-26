@@ -1,3 +1,6 @@
+#include <iostream>
+#include <algorithm>
+
 class FindException {
 public:
     void report() const {

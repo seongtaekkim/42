@@ -40,10 +40,6 @@ void identify(Base* p) {
 		std::cerr << "this instance hasn't A,B,C" << std::endl;
 }
 
-/*
-	Dynamic Casts with References 
-	https://www.ibm.com/docs/en/i/7.2?topic=operator-dynamic-casts-references
-*/
 static bool checkIdentifyRef(Base& p, std::string type) {
 	try {
 		if (type == "A")

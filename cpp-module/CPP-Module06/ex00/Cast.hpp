@@ -6,6 +6,7 @@
 
 #define D_NON_DESPLAYABLE	"Non displayable"
 #define D_IMPOSSIBLE		"impossible"
+#define D_INT_OVERFLOW		"overflow"
 
 class Cast {
 private:

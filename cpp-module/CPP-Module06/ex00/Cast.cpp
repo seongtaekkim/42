@@ -2,7 +2,10 @@
 
 Cast::Cast(const std::string& raw) : raw(raw) {
 	try {
-		this->dNum  = std::stod(raw);
+		char *ptr = NULL;
+    	*(const_cast<double*>(&this->dNum)) = std::strtod(raw.c_str(), &ptr);
+    	if (*ptr && std::strcmp(ptr, "f") != 0)
+      		throw std::bad_alloc();
 		std::cout << *this;
 	} catch(std::exception& e) {
 		if (raw.size() == 1) {
@@ -65,6 +68,8 @@ std::ostream& operator<<(std::ostream& out, const Cast& c) {
 	out << "int: ";
 	if (std::isnan(c.getDNum()) || std::isinf(c.getDNum()))
 		out << D_IMPOSSIBLE << std::endl;
+	else if (c.getDNum() > INT_MAX || c.getDNum() < INT_MIN)
+		out << D_INT_OVERFLOW << std::endl;
 	else
 		out << c.asInt() << std::endl;
 
@@ -76,8 +81,12 @@ std::ostream& operator<<(std::ostream& out, const Cast& c) {
 	else {
 		if (c.asFloat() == static_cast<int>(c.asFloat()))
 			out << "float: " << c.asFloat() << ".0f" << std::endl;
-		else
-			out << "float: " << c.asFloat() << "f" << std::endl;
+		else {
+			out << "float: ";
+			if (std::isnan(c.asFloat()) || std::isinf(c.asFloat()))
+				out << std::showpos;
+			out << c.asFloat() << "f" << std::endl;
+		}
 		if (c.asDouble() == static_cast<int>(c.asDouble()))
 			out << "double: " << c.asDouble() << ".0" << std::endl;
 		else

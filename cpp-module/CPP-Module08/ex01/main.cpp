@@ -73,7 +73,6 @@ int main(void)
 
 	std::cout << "========== iterator test2 ==========" << std::endl;
 	std::vector<int> v;
-	srand(time(NULL));
 	for (int i = 0 ; i < 10000 ; i++)
 		v.push_back(rand());
 	Span sp4 = Span(10000);
@@ -84,8 +83,6 @@ int main(void)
 	} catch (std::exception& e) {
 		std::cerr << e.what() << std::endl;
 	}
-
-	
 
     return (0);
 }

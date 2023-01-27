@@ -60,7 +60,7 @@ public:
 	}
 
     unsigned int size() const {
-        return (m_length);
+        return (this->m_length);
     }
 
 	class OutOfRange : public std::exception {

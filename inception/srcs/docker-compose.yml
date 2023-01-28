@@ -1,10 +1,10 @@
-version: 3.0
+version: "3.0"
 
 services:
   mariadb:
     build: ./mariadb/
     container_name: mariadb
-    enviroment:
+    environment:
       - HOST_NAME=${HOST_NAME}
       - HOST_IPV4=${HOST_IPV4}
       - HOST_IPV6=${HOST_IPV6}
@@ -13,6 +13,7 @@ services:
       - MARIADB_PWD=${MARIADB_PWD}
       - MARIADB_ADMIN_USER=${MARIADB_ADMIN_USER}
       - MARIADB_ADMIN_PWD=${MARIADB_ADMIN_PWD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ADMIN_PWD}
     image: mariadb
     networks:
       - network-mariadb

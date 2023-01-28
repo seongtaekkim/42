@@ -2,7 +2,7 @@ FROM	debian:11
 
 RUN	apt-get update && \
 	apt-get install mariadb-server -y && \
-	apt-get install dumb-init && \ # 실행파일 위치 고정인가 ?
+	apt-get install dumb-init && \ 
         chmod +x /usr/bin/dumb-init && \
         mkdir -p /run/mysqld /var/lib/mysql && \
         mariadb-install-db --datadir=/var/lib/mysql --auth-root-authentication-method=normal && \

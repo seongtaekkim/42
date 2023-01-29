@@ -1,27 +1,22 @@
 # !/bin/sh
 
-# Check Whether Already Set Up or Not by Custom File
+# mark : for only one setting
 cat .setup 2> /dev/null
 
-# If Not Set Up Yet
 if [ $? -ne 0 ]; then
-  # Execute MariaDB Daemon as a Background Process to Set Up
+  # execute background to setting
   /usr/bin/mysqld_safe --datadir=/var/lib/mysql &
-  # Change Config to Use Not Only Socket But Also Network
-  sed -i "s/skip-networking/# skip-networking/g" /etc/my.cnf.d/mariadb-server.cnf
-  # Change Config to Allow Every Host
   sed -i "s/.*bind-address\s*=.*/bind-address=0.0.0.0\nport=3306/g" /etc/mysql/mariadb.conf.d/50-server.cnf
-  # Check Server Status Whether Configuration File Applied Well or Not
-  if ! mysqladmin --wait=30 ping; then
+  # check : mysqld is alive
+  if ! mysqladmin --wait=10 ping; then
     printf "MariaDB Daemon Unreachable\n"
     exit 1
   fi
-  # Read Query with Deleting New Lines and Embracing Quotes and Eval with Env Variables
+
   eval "echo \"$(cat /install/init_query.sql)\"" | mariadb
-  # Terminate MariaDB Daemon
   pkill mariadb
-  # Mark as Set Up Finished
   touch .setup
 fi
 
+# execute foreground
 /usr/bin/mysqld_safe --datadir=/var/lib/mysql

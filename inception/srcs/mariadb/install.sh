@@ -17,7 +17,7 @@ if [ $? -ne 0 ]; then
     exit 1
   fi
   # Read Query with Deleting New Lines and Embracing Quotes and Eval with Env Variables
-  eval "echo \"$(cat /tmp/init_query.sql)\"" | mariadb
+  eval "echo \"$(cat /install/init_query.sql)\"" | mariadb
   # Terminate MariaDB Daemon
   pkill mariadb
   # Mark as Set Up Finished

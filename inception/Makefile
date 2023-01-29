@@ -1,6 +1,5 @@
 NAME	= inception
 
-.PHONY	: all
 all	: $(NAME)
 
 $(NAME)	:
@@ -12,11 +11,9 @@ ifeq ("$(wildcard .setup)", "")
 endif
 	sudo docker-compose -f srcs/docker-compose.yml up --force-recreate --build -d
 
-.PHONY	: clean
 clean	:
 	sudo docker-compose -f srcs/docker-compose.yml down -v --rmi all --remove-orphans
 
-.PHONY	: fclean
 fclean	: clean
 	sudo rm -rf ${HOME}/data
 	sudo rm -f .setup
@@ -24,10 +21,9 @@ fclean	: clean
 	sudo docker network prune --force
 	sudo docker volume prune --force
 
-.PHONY	: re
 re	: fclean all
 
-.PHONY	: restart
+.PHONY	: all clean fclean restart
 restart	:
 	sudo docker-compose -f srcs/docker-compose.yml restart
 

@@ -4,6 +4,7 @@ all	: $(NAME)
 
 $(NAME)	:
 	sudo mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb ${HOME}/data/site ${HOME}/data/monitor
+
 ifeq ("$(wildcard .setup)", "")
 	sudo chmod 777 /etc/hosts
 	sudo echo "127.0.0.1 seongtki.42.fr" >> /etc/hosts
@@ -23,14 +24,10 @@ fclean	: clean
 
 re	: fclean all
 
-.PHONY	: all clean fclean restart
 restart	:
 	sudo docker-compose -f srcs/docker-compose.yml restart
 
-.PHONY	: log
 log	:
 	sudo docker-compose -f srcs/docker-compose.yml logs -f
 
-.PHONY	: ps
-ps	:
-	sudo docker-compose -f srcs/docker-compose.yml ps
+.PHONY	: all clean fclean restart log

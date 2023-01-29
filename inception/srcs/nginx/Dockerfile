@@ -15,7 +15,7 @@ COPY        setting.sh /install/setting.sh
 
 RUN         chmod +x /install/setting.sh
 
-# Explicitly Specify to Expose the Port to the Public though Using Bridge
+# expose though using bridge
 EXPOSE      443
 
 ENTRYPOINT  [ "/usr/bin/dumb-init", "--" ]

@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
   # Change Config to Use Not Only Socket But Also Network
   sed -i "s/skip-networking/# skip-networking/g" /etc/my.cnf.d/mariadb-server.cnf
   # Change Config to Allow Every Host
-  sed -i "s/.*bind-address\s*=.*/bind-address=0.0.0.0\nport=3306/g" /etc/my.cnf.d/mariadb-server.cnf
+  sed -i "s/.*bind-address\s*=.*/bind-address=0.0.0.0\nport=3306/g" /etc/mysql/mariadb.conf.d/50-server.cnf
   # Check Server Status Whether Configuration File Applied Well or Not
   if ! mysqladmin --wait=30 ping; then
     printf "MariaDB Daemon Unreachable\n"
@@ -24,5 +24,4 @@ if [ $? -ne 0 ]; then
   touch .setup
 fi
 
-# Run by Dumb Init
 /usr/bin/mysqld_safe --datadir=/var/lib/mysql

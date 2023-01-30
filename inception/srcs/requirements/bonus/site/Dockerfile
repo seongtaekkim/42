@@ -2,24 +2,29 @@ FROM	debian:11 as builder
 
 WORKDIR	/app
 
+COPY	tools/app/package.json /app
+RUN	apt-get update && apt-get install nodejs -y && apt-get install npm -y
+COPY	tools/app/ /app
+RUN	npm install
+RUN	npm install -g react-scripts
+RUN	npm run build
+
+FROM	debian:11 as server
+
 RUN	apt-get update && \
         apt-get install nginx -y && \
 	apt-get install dumb-init -y && \
         chmod +x /usr/bin/dumb-init && \
-        mkdir -p /etc/nginx/tls /var/run/nginx && \
-            openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /etc/nginx/tls/seongtki.42.fr.crt -keyout /etc/nginx/tls/seongtki.42.fr.key -subj "/C=KR/ST=Seoul/L=Songpa-gu/O=42/OU=42Seoul/CN=seongtki.42.fr" && \
-            ln -sf /dev/stdout /var/log/nginx/access.log && \
-            ln -sf /dev/stderr /var/log/nginx/error.log && \
-            rm -rf /etc/nginx/conf.d/default.conf
+        mkdir -p /var/run/nginx /etc/nginx/conf.d && \ 
+	rm -rf /etc/nginx/conf.d/default.conf
 
-COPY        conf/nginx.conf /install/nginx.conf
-COPY        tools/setting.sh /install/setting.sh
+COPY	--from=builder /app/build /var/www/html
+COPY	conf/nginx.conf /install/nginx.conf
+COPY	tools/script.sh /install/script.sh
 
-RUN         chmod +x /install/setting.sh
+RUN         chmod +x /install/script.sh
 
-# expose though using bridge
-EXPOSE      443
 
 ENTRYPOINT  [ "/usr/bin/dumb-init", "--" ]
 
-CMD         [ "sh", "-c", "/install/setting.sh" ]
+CMD         [ "sh", "-c", "/install/script.sh"]

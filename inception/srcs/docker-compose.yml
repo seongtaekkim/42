@@ -64,9 +64,7 @@ services:
     image: site
     networks:
       - network-nginx
-    ports:
-      - "5000:5000"
-    restart: alwaays
+    restart: always
     volumes:
       - volume-site:/var/www/html
 networks:

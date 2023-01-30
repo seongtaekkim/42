@@ -13,11 +13,10 @@ if [ ! -f "/var/www/wordpress/wp-config.php" ]; then
     printf "mariadb can't login\n"
     exit 1
   fi
-# WordPress Stuffs
-  #wp core install --url="$WP_URL" --title="$WP_TITLE" --admin_user="$WP_ADMIN_USER" --admin_password="$WP_ADMIN_PWD" --admin_email="$WP_ADMIN_EMAIL" --skip-email --path=/var/www/wordpress
+  wp core install --url="$WP_URL" --title="$WP_TITLE" --admin_user="$WP_ADMIN_USER" --admin_password="$WP_ADMIN_PWD" --admin_email="$WP_ADMIN_EMAIL" --skip-email --path=/var/www/wordpress
   #wp plugin install redis-cache --activate --path=/var/www/wordpress
   #wp plugin update --all --path=/var/www/wordpress
-  #wp user create $WP_USER $WP_USER_EMAIL --role=author --user_pass=$WP_USER_PWD --path=/var/www/wordpress
+  wp user create $WP_USER $WP_USER_EMAIL --role=author --user_pass=$WP_USER_PWD --path=/var/www/wordpress
   #wp redis enable --path=/var/www/wordpress
 fi
 

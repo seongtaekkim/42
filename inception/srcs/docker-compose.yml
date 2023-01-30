@@ -58,6 +58,17 @@ services:
     restart: always
     volumes:
       - volume-wordpress:/var/www/wordpress
+  site:
+    build: ./requirements/bonus/site/
+    container_name: site
+    image: site
+    networks:
+      - network-nginx
+    ports:
+      - "5000:5000"
+    restart: alwaays
+    volumes:
+      - volume-site:/var/www/html
 networks:
   network-mariadb:
     driver: bridge
@@ -80,3 +91,10 @@ volumes:
       o: bind
       type: volume
     name: volume-wordpress
+  volume-site:
+    driver: local
+    driver_opts:
+      device: ${VOLUME_PATH}/site
+      o: bind
+      type: volume
+    name: volume-site

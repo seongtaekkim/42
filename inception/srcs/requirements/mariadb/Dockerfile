@@ -8,8 +8,8 @@ RUN	apt-get update && \
         mariadb-install-db --datadir=/var/lib/mysql --auth-root-authentication-method=normal && \
         chown -R mysql:mysql /var/lib/mysql /run/mysqld
 
-COPY	init_query.sql /install/init_query.sql
-COPY	install.sh /install/install.sh
+COPY	conf/init_query.sql /install/init_query.sql
+COPY	tools/install.sh /install/install.sh
 
 RUN	chmod +x /install/install.sh
 

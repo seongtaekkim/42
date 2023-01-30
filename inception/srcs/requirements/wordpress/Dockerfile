@@ -13,8 +13,8 @@ RUN	apt-get update && \
 	apt-get install tar -y && \
 	tar -xvzf /tmp/wordpress.tar.gz -C /var/www/wordpress --strip 1
 
-COPY        wp-config.php /install/wp-config.php
-COPY        script.sh /install/script.sh
+COPY        conf/wp-config.php /install/wp-config.php
+COPY        tools/script.sh /install/script.sh
 
 RUN         chmod +x /install/script.sh
 

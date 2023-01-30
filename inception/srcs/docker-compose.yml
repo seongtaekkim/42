@@ -2,7 +2,7 @@ version: "3.0"
 
 services:
   mariadb:
-    build: ./mariadb/
+    build: ./requirements/mariadb/
     container_name: mariadb
     environment:
       - HOST_NAME=${HOST_NAME}
@@ -21,7 +21,7 @@ services:
     volumes:
       - volume-mariadb:/var/lib/mysql
   nginx:
-    build: ./nginx/
+    build: ./requirements/nginx/
     container_name: nginx
     image: nginx
     depends_on:
@@ -34,7 +34,7 @@ services:
     volumes:
       - volume-wordpress:/var/www/wordpress
   wordpress:
-    build: ./wordpress/
+    build: ./requirements/wordpress/
     container_name: wordpress
     environment:
       - WP_URL=${WP_URL}

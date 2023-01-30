@@ -10,8 +10,8 @@ RUN	apt-get update && \
             ln -sf /dev/stderr /var/log/nginx/error.log && \
             rm -rf /etc/nginx/conf.d/default.conf
 
-COPY        nginx.conf /install/nginx.conf
-COPY        setting.sh /install/setting.sh
+COPY        conf/nginx.conf /install/nginx.conf
+COPY        tools/setting.sh /install/setting.sh
 
 RUN         chmod +x /install/setting.sh
 

@@ -84,6 +84,27 @@ services:
       - "21:21"
     volumes:
       - volume-wordpress:/var/www/wordpress
+  site:
+    build: ./requirements/bonus/site/
+    container_name: site
+    image: site
+    networks:
+      - network-nginx
+    restart: always
+    volumes:
+      - volume-site:/var/www/html
+  adminer:
+    build: ./requirements/bonus/adminer/
+    container_name: adminer
+    depends_on:
+      - mariadb
+    image: adminer
+    networks:
+      - network-mariadb
+      - network-nginx
+    restart: always
+    volumes:
+      - volume-wordpress:/var/www/wordpress
   grafana:
     build: ./requirements/bonus/grafana/
     container_name: grafana

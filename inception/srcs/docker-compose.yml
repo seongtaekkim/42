@@ -33,6 +33,13 @@ services:
       - "443:443"
     volumes:
       - volume-wordpress:/var/www/wordpress
+  redis:
+    build: ./requirements/bonus/redis/
+    container_name: redis
+    image: redis
+    networks:
+      - network-redis
+    restart: always
   wordpress:
     build: ./requirements/wordpress/
     container_name: wordpress
@@ -49,24 +56,61 @@ services:
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PWD=${MARIADB_PWD}
       - MARIADB_DB=${MARIADB_DB}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_CON_TIMEOUT=${REDIS_CON_TIMEOUT}
+      - REDIS_READ_TIMEOUT=${REDIS_READ_TIMEOUT}
+      - REDIS_DB_INDEX=${REDIS_DB_INDEX}
     image: wordpress
     depends_on:
       - mariadb
     networks:
       - network-mariadb
       - network-nginx
+      - network-redis
     restart: always
     volumes:
       - volume-wordpress:/var/www/wordpress
-  site:
-    build: ./requirements/bonus/site/
-    container_name: site
-    image: site
+  vsftpd:
+    build: ./requirements/bonus/vsftpd/
+    container_name: vsftpd
+    environment:
+      - FTP_ROOT_DIR=${FTP_ROOT_DIR}
+      - FTP_USER=${FTP_USER}
+      - FTP_PWD=${FTP_PWD}
+    image: vsftpd
+    restart: always
+    ports:
+      - "21:21"
+    volumes:
+      - volume-wordpress:/var/www/wordpress
+  grafana:
+    build: ./requirements/bonus/grafana/
+    container_name: grafana
+    image: grafana
     networks:
       - network-nginx
+      - network-monitor
     restart: always
     volumes:
-      - volume-site:/var/www/html
+      - volume-monitor:/monitor
+  cadvisor:
+    build: ./requirements/bonus/cadvisor/
+    container_name: cadvisor
+    environment:
+      - CADVISOR_PORT=${CADVISOR_PORT}
+      - CADVISOR_URL_BASE_PREFIX=${CADVISOR_URL_BASE_PREFIX}
+    image: cadvisor
+    networks:
+      - network-monitor
+    privileged: true
+    restart: always
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
 networks:
   network-mariadb:
     driver: bridge
@@ -74,6 +118,15 @@ networks:
   network-nginx:
     driver: bridge
     name: network-nginx
+  network-redis:
+    driver: bridge
+    name: network-redis
+  network-vsftpd:
+    driver: bridge
+    name: network-vsftpd
+  network-monitor:
+    driver: bridge
+    name: network-monitor
 volumes:
   volume-mariadb:
     driver: local
@@ -96,3 +149,10 @@ volumes:
       o: bind
       type: volume
     name: volume-site
+  volume-monitor:
+    driver: local
+    driver_opts:
+      device: ${VOLUME_PATH}/monitor
+      o: bind
+      type: volume
+    name: volume-monitor

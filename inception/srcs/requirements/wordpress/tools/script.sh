@@ -6,6 +6,12 @@ echo "env[MARIADB_USER] = \$MARIADB_USER" >> /etc/php/7.4/fpm/pool.d/www.conf
 echo "env[MARIADB_PWD] = \$MARIADB_PWD" >> /etc/php/7.4/fpm/pool.d/www.conf
 echo "env[MARIADB_DB] = \$MARIADB_DB" >> /etc/php/7.4/fpm/pool.d/www.conf
 
+echo "env[REDIS_HOST] = \$REDIS_HOST" >> /etc/php/7.4/fpm/pool.d/www.conf
+echo "env[REDIS_PORT] = \$REDIS_PORT" >> /etc/php/7.4/fpm/pool.d/www.conf
+echo "env[REDIS_CON_TIMEOUT] = \$REDIS_CON_TIMEOUT" >> /etc/php/7.4/fpm/pool.d/www.conf
+echo "env[REDIS_READ_TIMEOUT] = \$REDIS_READ_TIMEOUT" >> /etc/php/7.4/fpm/pool.d/www.conf
+echo "env[REDIS_DB_INDEX] = \$REDIS_DB_INDEX" >> /etc/php/7.4/fpm/pool.d/www.conf
+
 if [ ! -f "/var/www/wordpress/wp-config.php" ]; then
   cp /install/wp-config.php /var/www/wordpress/wp-config.php # copy my setting file
   sleep 5; # wait maridb to be runed
@@ -13,11 +19,11 @@ if [ ! -f "/var/www/wordpress/wp-config.php" ]; then
     printf "mariadb can't login\n"
     exit 1
   fi
-  wp core install --url="$WP_URL" --title="$WP_TITLE" --admin_user="$WP_ADMIN_USER" --admin_password="$WP_ADMIN_PWD" --admin_email="$WP_ADMIN_EMAIL" --skip-email --path=/var/www/wordpress
-  #wp plugin install redis-cache --activate --path=/var/www/wordpress
-  #wp plugin update --all --path=/var/www/wordpress
-  wp user create $WP_USER $WP_USER_EMAIL --role=author --user_pass=$WP_USER_PWD --path=/var/www/wordpress
-  #wp redis enable --path=/var/www/wordpress
+  wp core install --url="$WP_URL" --title="$WP_TITLE" --admin_user="$WP_ADMIN_USER" --admin_password="$WP_ADMIN_PWD" --admin_email="$WP_ADMIN_EMAIL" --skip-email --path=/var/www/wordpress --allow-root
+  wp plugin install redis-cache --activate --path=/var/www/wordpress --allow-root
+  wp plugin update --all --path=/var/www/wordpress --allow-root
+  wp user create $WP_USER $WP_USER_EMAIL --role=author --user_pass=$WP_USER_PWD --path=/var/www/wordpress --allow-root
+  wp redis enable --path=/var/www/wordpress --allow-root
 fi
 
 # after run dumb init

@@ -9,9 +9,15 @@ RUN	apt-get update && \
 	chmod +x /usr/bin/dumb-init && \
         mkdir -p /var/www/wordpress && \
         apt-get install wget -y  && \
-	wget -O /tmp/wordpress.tar.gz "http://wordpress.org/latest.tar.gz" && \ 
+	#wget -O /tmp/wordpress.tar.gz "http://wordpress.org/latest.tar.gz" && \ 
 	apt-get install tar -y && \
-	tar -xvzf /tmp/wordpress.tar.gz -C /var/www/wordpress --strip 1
+	#tar -xvzf /tmp/wordpress.tar.gz -C /var/www/wordpress --strip 1 && \
+	curl -s -L https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --output /usr/bin/wp && \	
+	#curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+	#chmod +x wp-cli.phar && \
+	chmod +x /usr/bin/wp && \
+	#mv wp-cli.phar /usr/local/bin/wp && \ 
+	wp core download --path=/var/www/wordpress --allow-root
 
 COPY        conf/wp-config.php /install/wp-config.php
 COPY        tools/script.sh /install/script.sh

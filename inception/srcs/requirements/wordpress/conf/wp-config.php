@@ -23,22 +23,26 @@
 // ** Redis settings - You can get this info from your web host ** //
 
 /** Redis hostname */
-//define( 'WP_REDIS_HOST', getenv('REDIS_HOST') );
+
+#define('WP_REDIS_MAXTTL','86400');
+
+define( 'WP_REDIS_HOST', getenv('REDIS_HOST') );
 
 /** Redis port */
-//define( 'WP_REDIS_PORT', getenv('REDIS_PORT') );
+define( 'WP_REDIS_PORT', getenv('REDIS_PORT') );
 
 /** The timeout seconds for connection on redis */
-//define( 'WP_REDIS_TIMEOUT', getenv('REDIS_CONNECTION_TIMEOUT_SECONDS') );
+define( 'WP_REDIS_TIMEOUT', getenv('REDIS_CON_TIMEOUT') );
 
 /** The timeout seconds for read on redis */
-//define( 'WP_REDIS_READ_TIMEOUT', getenv('REDIS_READ_TIMEOUT_SECONDS') );
+define( 'WP_REDIS_READ_TIMEOUT', getenv('REDIS_READ_TIMEOUT') );
 
 /** The logical database index on redis */
-//define( 'WP_REDIS_DATABASE', getenv('REDIS_DB_INDEX') );
+define( 'WP_REDIS_DATABASE', getenv('REDIS_DB_INDEX') );
 
 /** True if do caching */
 define( 'WP_CACHE', true );
+#define('WP_CACHE_KEY_SALT', 'seongtki.42.fr');
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */

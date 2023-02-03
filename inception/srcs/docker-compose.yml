@@ -108,9 +108,28 @@ services:
   grafana:
     build: ./requirements/bonus/grafana/
     container_name: grafana
+    environment:
+      - PROMETHEUS_HOST=${PROMETHEUS_HOST}
+      - PROMETHEUS_PORT=${PROMETHEUS_PORT}
+      - GF_AUTH_DISABLE_LOGIN_FORM=${GF_AUTH_DISABLE_LOGIN_FORM}
+      - GF_AUTH_ANONYMOUS_ENABLED=${GF_AUTH_ANONYMOUS_ENABLED}
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=${GF_AUTH_ANONYMOUS_ORG_ROLE}
     image: grafana
     networks:
       - network-nginx
+      - network-monitor
+    restart: always
+    volumes:
+      - volume-monitor:/monitor
+  prometheus:
+    build: ./requirements/bonus/prometheus/
+    container_name: prometheus
+    image: prometheus
+    environment:
+      - CADVISOR_HOST=${CADVISOR_HOST}
+      - CADVISOR_PORT=${CADVISOR_PORT}
+      - PROMETHEUS_PORT=${PROMETHEUS_PORT}
+    networks:
       - network-monitor
     restart: always
     volumes:

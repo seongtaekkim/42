@@ -3,7 +3,9 @@ FROM	debian:11 as builder
 WORKDIR	/app
 
 COPY	tools/app/package.json /app
-RUN	apt-get update && apt-get install nodejs -y && apt-get install npm -y
+RUN		apt-get update && \
+		apt-get install curl -y && curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+		apt-get install nodejs -y
 COPY	tools/app/ /app
 RUN	npm install
 RUN	npm install -g react-scripts

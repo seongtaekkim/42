@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_element2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: susong <susong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 20:02:08 by susong            #+#    #+#             */
-/*   Updated: 2023/02/03 17:56:29 by seongtki         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:22:52 by susong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	set_attr_sphere(t_sphere *new, char **data, char **point)
 	new->color = vec3(ft_atoi(point[0], &b) / 255.0,
 			ft_atoi(point[1], &b) / 255.0, ft_atoi(point[2], &b) / 255.0);
 	new->next = NULL;
+	free2(point);
 	if (b == 1)
 		ft_exit(3);
 }
@@ -52,7 +53,6 @@ void	make_sphere(t_scene *out, char *line)
 	data = ft_split(line, ' ');
 	point = ft_split(data[1], ',');
 	set_attr_sphere(new, data, point);
-	free2(point);
 	free2(data);
 	if (out->objects.sphere == NULL)
 		out->objects.sphere = new;
@@ -88,6 +88,7 @@ static void	set_attr_sylinder(t_cylinder *new, char **data, char **point)
 	new->color = vec3(ft_atoi(point[0], &b) / 255.0,
 			ft_atoi(point[1], &b) / 255.0, ft_atoi(point[2], &b) / 255.0);
 	new->next = NULL;
+	free2(point);
 	if (b == 1)
 		ft_exit(3);
 }
@@ -105,7 +106,6 @@ void	make_cylinder(t_scene *out, char *line)
 	data = ft_split(line, ' ');
 	point = ft_split(data[1], ',');
 	set_attr_sylinder(new, data, point);
-	free2(point);
 	free2(data);
 	if (out->objects.cylinder == NULL)
 		out->objects.cylinder = new;

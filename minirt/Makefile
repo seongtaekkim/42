@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+         #
+#    By: susong <susong@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 19:13:16 by susong            #+#    #+#              #
-#    Updated: 2023/02/03 20:53:41 by seongtki         ###   ########.fr        #
+#    Updated: 2023/02/05 11:24:43 by susong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ CFLAGS	= -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): ${OBJS}
-	$(CC) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME) $(OBJS)
+	$(CC) ${CFLAGS} -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME) $(OBJS)
 
 .c.o :
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I ${HEADER} -I mlx

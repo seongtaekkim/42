@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: susong <susong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 15:04:10 by susong            #+#    #+#             */
-/*   Updated: 2023/02/04 15:23:22 by seongtki         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:27:07 by susong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "./mlx/mlx.h"
 # include "./library/lib.h"
-# include <stdio.h>
-# include <errno.h>
 # include <math.h>
 # include <fcntl.h>
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_element.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongtki <seongtki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: susong <susong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 20:02:08 by susong            #+#    #+#             */
-/*   Updated: 2023/02/04 15:13:47 by seongtki         ###   ########.fr       */
+/*   Updated: 2023/02/05 11:23:30 by susong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ static void	set_attr_plane(t_plane *new, char **data, char **point)
 	valid_parse_data(point, 3);
 	new->color = vec3(ft_atoi(point[0], &b) / 255.0,
 			ft_atoi(point[1], &b) / 255.0, ft_atoi(point[2], &b) / 255.0);
+	free2(point);
 	if (b == 1)
 		ft_exit(3);
 }
@@ -131,7 +132,6 @@ void	make_plane(t_scene *out, char *line)
 	data = ft_split(line, ' ');
 	point = ft_split(data[1], ',');
 	set_attr_plane(new, data, point);
-	free2(point);
 	free2(data);
 	new->next = NULL;
 	if (out->objects.plane == 0)

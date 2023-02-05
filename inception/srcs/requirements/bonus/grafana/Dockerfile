@@ -12,16 +12,14 @@ RUN	apt-get update && \
   	mkdir -p /monitor/grafana && \
 	mv /usr/share/grafana/* /monitor/grafana && \
 	apt-get install dumb-init -y && \
-        chmod +x /usr/bin/dumb-init 
+    chmod +x /usr/bin/dumb-init 
 
 COPY	conf/grafana.ini /monitor/grafana/conf/custom.ini
-#COPY	conf/grafana.ini /usr/share/grafana/conf/defaults.ini
 COPY	tools/script.sh /install/script.sh
 COPY    conf/datasource.yml /monitor/grafana/conf/provisioning/datasources/datasource.yml
 COPY    conf/dashboard.yml /monitor/grafana/conf/provisioning/dashboards/dashboard.yml
 COPY	conf/monitoring.json /monitor/grafana/dashboards/monitoring.json
 
-#WORKDIR	/usr/share/grafana
 WORKDIR	/monitor/grafana
 
 RUN         chmod +x /install/script.sh

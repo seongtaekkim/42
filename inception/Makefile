@@ -1,15 +1,9 @@
 NAME	= inception
-
 all	: $(NAME)
-
 $(NAME)	:
 	sudo mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb ${HOME}/data/site ${HOME}/data/monitor
-
-ifeq ("$(wildcard .setup)", "")
 	sudo chmod 777 /etc/hosts
 	sudo echo "127.0.0.1 seongtki.42.fr" >> /etc/hosts
-	touch .setup
-endif
 	sudo docker-compose -f srcs/docker-compose.yml up --force-recreate --build -d
 
 clean	:
@@ -27,7 +21,4 @@ re	: fclean all
 restart	:
 	sudo docker-compose -f srcs/docker-compose.yml restart
 
-log	:
-	sudo docker-compose -f srcs/docker-compose.yml logs -f
-
-.PHONY	: all clean fclean restart log
+.PHONY	: all clean fclean restart 

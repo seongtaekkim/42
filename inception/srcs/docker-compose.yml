@@ -161,9 +161,6 @@ networks:
   network-redis:
     driver: bridge
     name: network-redis
-  network-vsftpd:
-    driver: bridge
-    name: network-vsftpd
   network-monitor:
     driver: bridge
     name: network-monitor

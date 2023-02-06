@@ -11,7 +11,6 @@ clean	:
 
 fclean	: clean
 	sudo rm -rf ${HOME}/data
-	sudo rm -f .setup
 	sudo docker system prune --volumes --all --force
 	sudo docker network prune --force
 	sudo docker volume prune --force

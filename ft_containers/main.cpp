@@ -112,5 +112,7 @@ int main(int argc, char** argv) {
 		std::cout << *it;
 	}
 	std::cout << std::endl;
+
+	// std::vector<std::string> *ptr = new std::vector<std::string>(2);
 	return (0);
 }

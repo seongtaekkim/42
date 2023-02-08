@@ -68,6 +68,6 @@ int main(void) {
 	// enable_if && is_integral test
 	test(1);	// int
 	test(false);	// bool
-	test('c');	// char
+	test('c');// char
 	return (0);
 }

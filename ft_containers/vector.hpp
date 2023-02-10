@@ -5,39 +5,12 @@
 #include <iostream>
 #include "iterator_base_type.hpp"
 #include "iterator_base_func.hpp"
+#include "./type_traits.hpp"
+#include "iterator.hpp"
 
 namespace ft
 {
 /*
-template <typename _T, typename _Allocator = std::allocator<_T>()>
-struct __vector_base {
- public:
-  typedef _Allocator allocator_type;
-
- protected:
-  typedef _T value_type;
-  typedef typename allocator_type::reference reference;
-  typedef typename allocator_type::const_reference const_reference;
-  typedef typename allocator_type::size_type size_type;
-  typedef typename allocator_type::difference_type difference_type;
-  typedef typename allocator_type::pointer pointer;
-  typedef typename allocator_type::const_pointer const_pointer;
-
-  pointer __begin_;
-  pointer __end_;
-  pointer __end_cap_;
-  allocator_type __a_;
-
-  __vector_base() throw();
-  __vector_base(const allocator_type& a) throw();
-  __vector_base(size_type n);
-  __vector_base(size_type n, const allocator_type& alloc);
-  ~__vector_base() throw() {
-    if (__begin_) __a_.deallocate(__begin_, __capacity());
-  }
-};
-*/
-
 template <class _Tp, class _Allocator, bool _IsStatic>
 class _Vector_alloc_base {
 public:
@@ -94,94 +67,258 @@ struct _Vector_base : public _Vector_alloc_base<_Tp, _Alloc, _Alloc_traits<_Tp, 
     _M_finish = _M_start;
     _M_end_of_storage = _M_start + __n;
   }
-
+b 
   ~_Vector_base() { _M_deallocate(_M_start, _M_end_of_storage - _M_start); }
+};
+*/
+
+template <typename _T, typename _Allocator = std::allocator<_T>()>
+struct __vector_base {
+
+ public:
+  typedef _Allocator								allocator_type;
+
+ protected:
+  typedef _T										value_type;
+  typedef size_t									size_type;
+  typedef ptrdiff_t   								difference_type;
+  typedef typename allocator_type::reference 		reference;
+  typedef typename allocator_type::const_reference 	const_reference;
+  typedef typename allocator_type::pointer 			pointer;
+  typedef typename allocator_type::const_pointer 	const_pointer;
+
+  pointer			__begin_;
+  pointer			__end_;
+  pointer			__end_cap_;
+  allocator_type	__a_;
+
+  __vector_base() throw();
+  __vector_base(const allocator_type& a) throw();
+  __vector_base(size_type n);
+  __vector_base(size_type n, const allocator_type& alloc);
+  ~__vector_base() throw() {
+    if (__begin_) __a_.deallocate(__begin_, __end_cap_ - __begin_);
+  }
+
+  size_type __capacity() const throw() {
+    return static_cast<size_type>(__end_cap_ - __begin_);
+  }
+
+  size_type __check_length(size_type __n) {
+    if (__n >= __a_.max_size())
+		__throw_length_error("vector: size is too big");
+    return __n;
+  }
+
+  void __destruct_storage() throw();
+  pointer __construct_storage(size_type __n) {
+    return __n == 0 ? pointer() : __a_.allocate(__n);
+  };
+
+  void __copy_data(__vector_base const& _other) throw();
+  void __copy_data(pointer const& __new_begin_, pointer const& __new_end, pointer const& __new_end_cap_) throw();
+  void __swap_data(__vector_base& _other) throw();
+
+  void __throw_length_error(const char* msg) const {
+    throw std::length_error(msg);
+  }
+  void __throw_out_of_range(const char* msg) const {
+    throw std::out_of_range(msg);
+  }
+
+ private:
+  __vector_base(const __vector_base& other) { (void)other; }
+  __vector_base& operator=(const __vector_base& other) { (void)other; }
+};
+
+
+// This iterator adapter is @a normal in the sense that it does not
+// change the semantics of any of the operators of its iterator
+// parameter.  Its primary purpose is to convert an iterator that is
+// not a class, e.g. a pointer, into an iterator that is a class.
+// The _Container parameter exists solely so that different containers
+// using this template can instantiate different types, even if the
+// _Iterator parameter is the same.
+template<typename _Iterator, typename _Container>
+class __normal_iterator
+{
+protected:
+	_Iterator _M_current;
+	typedef ft::iterator_traits<_Iterator>				__traits_type;
+
+public:
+	typedef _Iterator									iterator_type;
+	typedef typename __traits_type::iterator_category	iterator_category;
+	typedef typename __traits_type::value_type  		value_type;
+	typedef typename __traits_type::difference_type 	difference_type;
+	typedef typename __traits_type::reference 			reference;
+	typedef typename __traits_type::pointer   			pointer;
+
+
+	const __normal_iterator() throw()
+	: _M_current(_Iterator()) {}
+
+	__normal_iterator(const _Iterator& __i) throw()
+	: _M_current(__i) {}
+
+	// Allow iterator to const_iterator conversion
+	template<typename _Iter>
+	__normal_iterator(const __normal_iterator<_Iter,
+			typename ft::enable_if<(std::__are_same<_Iter
+								, typename _Container::pointer>::__value), _Container>::__type>& __i) throw()
+	: _M_current(__i.base()) { }
+
+	// Forward iterator requirements
+	reference operator*() const throw()
+	{ return *_M_current; }
+
+	pointer operator->() const throw()
+	{ return _M_current; }
+
+	__normal_iterator& operator++() throw()
+	{
+		++_M_current;
+		return *this;
+	}
+
+	__normal_iterator operator++(int) throw()
+	{
+		return __normal_iterator(_M_current++);
+	}
+
+	// Bidirectional iterator requirements
+	__normal_iterator& operator--() throw()
+	{
+		--_M_current;
+		return *this;
+	}
+
+	__normal_iterator operator--(int) throw()
+	{ return __normal_iterator(_M_current--); }
+
+	// Random access iterator requirements
+	reference operator[](difference_type __n) const throw()
+	{ return _M_current[__n]; }
+
+	__normal_iterator& operator+=(difference_type __n) throw()
+	{ _M_current += __n; return *this; }
+
+	__normal_iterator operator+(difference_type __n) const throw()
+	{ return __normal_iterator(_M_current + __n); }
+
+	__normal_iterator& operator-=(difference_type __n) throw()
+	{ _M_current -= __n; return *this; }
+
+	__normal_iterator operator-(difference_type __n) const throw()
+	{ return __normal_iterator(_M_current - __n); }
+
+	const _Iterator& base() const throw()
+	{ return _M_current; }
 };
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 template <class _Tp, class _Alloc = std::allocator<_Tp> >
-class vector : protected _Vector_base<_Tp, _Alloc>
+class vector : protected __vector_base<_Tp, _Alloc>
 {
-  // concept requirements
-  __glibcpp_class_requires(_Tp, _SGIAssignableConcept)
-
 private:
-  typedef _Vector_base<_Tp, _Alloc> _Base;
-  typedef vector<_Tp, _Alloc> vector_type;
+  typedef __vector_base<_Tp, _Alloc> 					_Base;
+  typedef vector<_Tp, _Alloc> 							vector_type;
 public:
-  typedef _Tp 						value_type;
-  typedef value_type* 					pointer;
-  typedef const value_type* 				const_pointer;
-  typedef __gnu_cxx::__normal_iterator<pointer, vector_type> 	iterator;
-  typedef __gnu_cxx::__normal_iterator<const_pointer, vector_type>
-                                                        const_iterator;
-  typedef value_type& 					reference;
-  typedef const value_type& 				const_reference;
-  typedef size_t 					size_type;
-  typedef ptrdiff_t 					difference_type;
+  typedef _Tp 											value_type;
+  typedef value_type* 									pointer;
+  typedef const value_type* 							const_pointer;
+  typedef __normal_iterator<pointer, vector_type> 		iterator;
+  typedef __normal_iterator<const_pointer, vector_type>	const_iterator;
+  typedef value_type& 									reference;
+  typedef const value_type& 							const_reference;
+  typedef size_t 										size_type;
+  typedef ptrdiff_t 									difference_type;
 
-  typedef typename _Base::allocator_type allocator_type;
-  allocator_type get_allocator() const { return _Base::get_allocator(); }
+  typedef reverse_iterator<const_iterator>				const_reverse_iterator;
+  typedef reverse_iterator<iterator>					reverse_iterator;
 
-  typedef reverse_iterator<const_iterator> const_reverse_iterator;
-  typedef reverse_iterator<iterator> reverse_iterator;
+  typedef typename _Base::allocator_type				allocator_type;
+//   allocator_type get_allocator() const { return _Base::get_allocator(); }
 
 protected:
-  using _Base::_M_allocate;
-  using _Base::_M_deallocate;
-  using _Base::_M_start;
-  using _Base::_M_finish;
-  using _Base::_M_end_of_storage;
+//   using _Base::_M_allocate;
+//   using _Base::_M_deallocate;
+//   using _Base::_M_start;
+//   using _Base::_M_finish;
+//   using _Base::_M_end_of_storage;
 
 protected:
   void _M_insert_aux(iterator __position, const _Tp& __x);
   void _M_insert_aux(iterator __position);
 
+  void __throw_length_error(const char* msg) const {
+    throw std::length_error(msg);
+  }
+  void __throw_out_of_range(const char* msg) const {
+    throw std::out_of_range(msg);
+  }
+
 public:
   
-  iterator begin() { return iterator (_M_start); }
-  const_iterator begin() const { return const_iterator (_M_start); }
-  iterator end() { return iterator (_M_finish); }
-  const_iterator end() const { return const_iterator (_M_finish); }
+  iterator begin() { return iterator (this->__begin_); }
+  const_iterator begin() const { return const_iterator (this->__begin_); }
+  iterator end() { return iterator (this->__end_); }
+  const_iterator end() const { return const_iterator (this->__end_); }
   reverse_iterator rbegin() { return reverse_iterator(end()); }
   const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
   reverse_iterator rend() { return reverse_iterator(begin()); }
   const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
-
   size_type size() const { return size_type(end() - begin()); }
-
   size_type max_size() const { return size_type(-1) / sizeof(_Tp); }
-
-  size_type capacity() const { return size_type(const_iterator(_M_end_of_storage) - begin()); }
+  size_type capacity() const { return size_type(const_iterator(this->__end_cap_) - begin()); }
 
   bool empty() const { return begin() == end(); }
 
   reference operator[](size_type __n) { return *(begin() + __n); }
   const_reference operator[](size_type __n) const { return *(begin() + __n); }
 
-  void _M_range_check(size_type __n) const {
-    if (__n >= this->size())
-      __throw_out_of_range("vector");
+  reference at(size_type __n) {
+	if (__n >= this->size())
+		this->__throw_out_of_range("vector: out of range");
+	return (*this)[__n];
   }
 
-  reference at(size_type __n)
-    { _M_range_check(__n); return (*this)[__n]; }
+  const_reference at(size_type __n) const {
+	if (__n >= this->size())
+		this->__throw_out_of_range("vector: out of range");
+	return (*this)[__n];
+  }
 
-  const_reference at(size_type __n) const
-    { _M_range_check(__n); return (*this)[__n]; }
+  /*
+	===========================================
+	constructor
+	===========================================
+  */
+  explicit vector(const allocator_type& __a = allocator_type()) : _Base(__a) {}
 
-  explicit vector(const allocator_type& __a = allocator_type())
-    : _Base(__a) {}
+  vector(size_type __n, const _Tp& __value, const allocator_type& __a = allocator_type()) : _Base(__n, __a) { 
+	_M_finish = uninitialized_fill_n(this->__begin_, __n, __value);
+  }
 
-  vector(size_type __n, const _Tp& __value,
-         const allocator_type& __a = allocator_type())
-    : _Base(__n, __a)
-    { _M_finish = uninitialized_fill_n(_M_start, __n, __value); }
-
-  explicit vector(size_type __n)
-    : _Base(__n, allocator_type())
-    { _M_finish = uninitialized_fill_n(_M_start, __n, _Tp()); }
+  explicit vector(size_type __n) : _Base(__n, allocator_type()) {
+  	_M_finish = uninitialized_fill_n(_M_start, __n, _Tp());
+  }
 
   vector(const vector<_Tp, _Alloc>& __x)
     : _Base(__x.size(), __x.get_allocator())
@@ -189,16 +326,15 @@ public:
 
   // Check whether it's an integral type.  If so, it's not an iterator.
   template <class _InputIterator>
-    vector(_InputIterator __first, _InputIterator __last,
-           const allocator_type& __a = allocator_type())
+    vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a = allocator_type())
 	: _Base(__a)
 	{
-      typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
+      typedef typename is_integral<_InputIterator>::_Integral _Integral;
       _M_initialize_aux(__first, __last, _Integral());
     }
 
   template <class _Integer>
-    void _M_initialize_aux(_Integer __n, _Integer __value, __true_type)
+    void _M_initialize_aux(_Integer __n, _Integer __value, true_type)
 	{
       _M_start = _M_allocate(__n);
       _M_end_of_storage = _M_start + __n;
@@ -207,31 +343,18 @@ public:
 
   template<class _InputIterator>
     void
-	_M_initialize_aux(_InputIterator __first, _InputIterator __last, __false_type)
+	_M_initialize_aux(_InputIterator __first, _InputIterator __last, false_type)
 	{
 	  typedef typename iterator_traits<_InputIterator>::iterator_category _IterCategory;
 	  _M_range_initialize(__first, __last, _IterCategory());
 	}
 
-  ~vector()
-  { _Destroy(_M_start, _M_finish); }
+  ~vector() {
+	_Destroy(this->__begin_, _M_finish);
+  }
 
   vector<_Tp, _Alloc>& operator=(const vector<_Tp, _Alloc>& __x);
 
-  /**
-   *  @brief  Attempt to preallocate enough memory for specified number of
-   *          elements.
-   *  @param  n  Number of elements required
-   *
-   *  This function attempts to reserve enough memory for the vector to hold
-   *  the specified number of elements.  If the number requested is more than
-   *  max_size() length_error is thrown.
-   *
-   *  The advantage of this function is that if optimal code is a necessity
-   *  and the user can determine the number of elements that will be required
-   *  the user can reserve the memory and thus prevent a possible
-   *  reallocation of memory and copy of vector data.
-  */
   void reserve(size_type __n) {
     if (capacity() < __n) {
       const size_type __old_size = size();
@@ -244,22 +367,6 @@ public:
     }
   }
 
-  // assign(), a generalized assignment member function.  Two
-  // versions: one that takes a count, and one that takes a range.
-  // The range version is a member template, so we dispatch on whether
-  // or not the type is an integer.
-
-  /**
-   *  @brief  Assigns a given value or range to a vector.
-   *  @param  n  Number of elements to be assigned.
-   *  @param  val  Value to be assigned.
-   *
-   *  This function can be used to assign a range to a vector or fill it
-   *  with a specified number of copies of the given value.
-   *  Note that the assignment completely changes the vector and that the
-   *  resulting vector's size is the same as the number of elements assigned.
-   *  Old data may be lost.
-  */
   void assign(size_type __n, const _Tp& __val) { _M_fill_assign(__n, __val); }
   void _M_fill_assign(size_type __n, const _Tp& __val);
 
@@ -267,18 +374,18 @@ public:
     void
     assign(_InputIterator __first, _InputIterator __last)
     {
-      typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
+      typedef typename is_integral<_InputIterator>::_Integral _Integral;
       _M_assign_dispatch(__first, __last, _Integral());
     }
 
   template<class _Integer>
     void
-     _M_assign_dispatch(_Integer __n, _Integer __val, __true_type)
+     _M_assign_dispatch(_Integer __n, _Integer __val, true_type)
      { _M_fill_assign((size_type) __n, (_Tp) __val); }
 
   template<class _InputIter>
     void
-    _M_assign_dispatch(_InputIter __first, _InputIter __last, __false_type)
+    _M_assign_dispatch(_InputIter __first, _InputIter __last, false_type)
     {
       typedef typename iterator_traits<_InputIter>::iterator_category _IterCategory;
       _M_assign_aux(__first, __last, _IterCategory());
@@ -294,28 +401,12 @@ public:
     _M_assign_aux(_ForwardIterator __first, _ForwardIterator __last,
 		  forward_iterator_tag);
 
-  /**
-   *  Returns a read/write reference to the data at the first element of the
-   *  vector.
-  */
   reference front() { return *begin(); }
 
-  /**
-   *  Returns a read-only (constant) reference to the data at the first
-   *  element of the vector.
-  */
   const_reference front() const { return *begin(); }
 
-  /**
-   *  Returns a read/write reference to the data at the last element of the
-   *  vector.
-  */
   reference back() { return *(end() - 1); }
 
-  /**
-   *  Returns a read-only (constant) reference to the data at the first
-   *  element of the vector.
-  */
   const_reference back() const { return *(end() - 1); }
 
 
@@ -365,20 +456,20 @@ public:
     void
 	insert(iterator __pos, _InputIterator __first, _InputIterator __last)
 	{
-      typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
+      typedef typename is_integral<_InputIterator>::_Integral _Integral;
       _M_insert_dispatch(__pos, __first, __last, _Integral());
     }
 
   template <class _Integer>
     void
-	_M_insert_dispatch(iterator __pos, _Integer __n, _Integer __val, __true_type)
+	_M_insert_dispatch(iterator __pos, _Integer __n, _Integer __val, true_type)
     { _M_fill_insert(__pos, static_cast<size_type>(__n), static_cast<_Tp>(__val)); }
 
   template<class _InputIterator>
     void
 	_M_insert_dispatch(iterator __pos,
                        _InputIterator __first, _InputIterator __last,
-                       __false_type)
+                       false_type)
 	{
 	  typedef typename iterator_traits<_InputIterator>::iterator_category _IterCategory;
       _M_range_insert(__pos, __first, __last, _IterCategory());
@@ -389,34 +480,11 @@ public:
 
   void _M_fill_insert (iterator __pos, size_type __n, const _Tp& __x);
 
-  /**
-   *  @brief  Removes last element from vector.
-   *
-   *  This is a typical stack operation. It allows us to shrink the vector by
-   *  one.
-   *
-   *  Note that no data is returned and if last element's data is needed it
-   *  should be retrieved before pop_back() is called.
-  */
   void pop_back() {
     --_M_finish;
     _Destroy(_M_finish);
   }
 
-  /**
-   *  @brief  Remove element at given position
-   *  @param  position  Iterator pointing to element to be erased.
-   *  @return  Doc Me! (Iterator pointing to new element at old location?)
-   *
-   *  This function will erase the element at the given position and thus
-   *  shorten the vector by one.
-   *
-   *  Note This operation could be expensive and if it is frequently used the
-   *  user should consider using std::list.  The user is also cautioned that
-   *  this function only erases the element, and that if the element is itself
-   *  a pointer, the pointed-to memory is not touched in any way.  Managing
-   *  the pointer is the user's responsibilty.
-  */
   iterator erase(iterator __position) {
     if (__position + 1 != end())
       copy(__position + 1, end(), __position);
@@ -425,21 +493,6 @@ public:
     return __position;
   }
 
-  /**
-   *  @brief  Remove a range of elements from a vector.
-   *  @param  first  Iterator pointing to the first element to be erased.
-   *  @param  last  Iterator pointing to the last element to be erased.
-   *  @return  Doc Me! (Iterator pointing to new element at old location?)
-   *
-   *  This function will erase the elements in the given range and shorten the
-   *  vector accordingly.
-   *
-   *  Note This operation could be expensive and if it is frequently used the
-   *  user should consider using std::list.  The user is also cautioned that
-   *  this function only erases the elements, and that if the elements
-   *  themselves are pointers, the pointed-to memory is not touched in any
-   *  way.  Managing the pointer is the user's responsibilty.
-  */
   iterator erase(iterator __first, iterator __last) {
     iterator __i(copy(__last, end(), __first));
     _Destroy(__i, end());
@@ -447,16 +500,6 @@ public:
     return __first;
   }
 
-  /**
-   *  @brief  Resizes the vector to the specified number of elements.
-   *  @param  new_size  Number of elements the vector should contain.
-   *  @param  x  Data with which new elements should be populated.
-   *
-   *  This function will resize the vector to the specified number of
-   *  elements.  If the number is smaller than the vector's current size the
-   *  vector is truncated, otherwise the vector is extended and new elements
-   *  are populated with given data.
-  */
   void resize(size_type __new_size, const _Tp& __x) {
     if (__new_size < size())
       erase(begin() + __new_size, end());
@@ -516,6 +559,30 @@ protected:
                        forward_iterator_tag);
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 template <class _Tp, class _Alloc>
 inline bool
 operator==(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
@@ -561,6 +628,7 @@ inline bool
 operator>=(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y) {
   return !(__x < __y);
 }
+
 
 template <class _Tp, class _Alloc>
 vector<_Tp,_Alloc>&

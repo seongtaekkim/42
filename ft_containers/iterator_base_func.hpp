@@ -25,7 +25,7 @@ template<typename _InputIterator>
 template<typename _RandomAccessIterator>
 	inline typename iterator_traits<_RandomAccessIterator>::differnce_type
 	__distance(_RandomAccessIterator __first, _RandomAccessIterator __last,
-				rendom_access_iterator_tag)
+				random_access_iterator_tag)
 	{
 		//    __glibcpp_function_requires(_RandomAccessIteratorConcept<_RandomAccessIterator>)
 		return (__last - __first);

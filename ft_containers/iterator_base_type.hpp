@@ -40,10 +40,10 @@ namespace ft
 			typedef _Tp&						reference;
 		};
 
-//   template<typename _Iter>
-//     inline typename iterator_traits<_Iter>::iterator_category
-//     __iterator_category(const _Iter&)
-//     { return typename iterator_traits<_Iter>::iterator_category(); }
+  template<typename _Iter>
+    inline typename iterator_traits<_Iter>::iterator_category
+    __iterator_category(const _Iter&)
+    { return typename iterator_traits<_Iter>::iterator_category(); }
 
 } // namespace ft
 

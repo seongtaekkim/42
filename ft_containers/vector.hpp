@@ -8,6 +8,7 @@
 #include "./type_traits.hpp"
 #include "iterator.hpp"
 
+
 namespace ft
 {
 /*
@@ -305,6 +306,10 @@ public:
 	return (*this)[__n];
   }
 
+
+
+
+
   /*
 	===========================================
 	constructor
@@ -320,6 +325,7 @@ public:
   	_M_finish = uninitialized_fill_n(_M_start, __n, _Tp());
   }
 
+// 지우셈
   vector(const vector<_Tp, _Alloc>& __x)
     : _Base(__x.size(), __x.get_allocator())
     { _M_finish = uninitialized_copy(__x.begin(), __x.end(), _M_start); }
@@ -353,6 +359,14 @@ public:
 	_Destroy(this->__begin_, _M_finish);
   }
 
+
+
+
+
+
+
+
+
   vector<_Tp, _Alloc>& operator=(const vector<_Tp, _Alloc>& __x);
 
   void reserve(size_type __n) {
@@ -366,6 +380,7 @@ public:
       _M_end_of_storage = _M_start + __n;
     }
   }
+
 
   void assign(size_type __n, const _Tp& __val) { _M_fill_assign(__n, __val); }
   void _M_fill_assign(size_type __n, const _Tp& __val);
@@ -413,7 +428,8 @@ public:
   void push_back(const _Tp& __x)
   {
     if (_M_finish != _M_end_of_storage) {
-      _Construct(_M_finish, __x);
+		this->__a_.construct(this->__end_, __x);
+      	//_Construct(this->__end_, __x);
       ++_M_finish;
     }
     else
@@ -485,6 +501,20 @@ public:
     _Destroy(_M_finish);
   }
 
+  template <class _Tp>
+  void _Destroy(_Tp *_pointer){
+	_pointer->~_Tp();
+  }
+
+  void _Destroy(iterator _first, iterator _last) {
+	iterator it = _first;
+	for (; it!=_last; ++it){
+		this.__a_.destroy(&(*it));
+	}
+  }
+
+
+
   iterator erase(iterator __position) {
     if (__position + 1 != end())
       copy(__position + 1, end(), __position);
@@ -519,13 +549,14 @@ protected:
   {
     pointer __result = _M_allocate(__n);
     try {
-      uninitialized_copy(__first, __last, __result);
+      std::uninitialized_copy(__first, __last, __result);
       return __result;
     }
     catch(...)
       {
-	_M_deallocate(__result, __n);
-	__throw_exception_again;
+		_M_deallocate(__result, __n);
+		// __throw_exception_again;
+		throw std::exception("");
       }
   }
 
@@ -628,6 +659,17 @@ inline bool
 operator>=(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y) {
   return !(__x < __y);
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 template <class _Tp, class _Alloc>
@@ -801,9 +843,9 @@ void vector<_Tp, _Alloc>::_M_fill_insert(iterator __position, size_type __n,
         fill(__position, __position + __n, __x_copy);
       }
       else {
-        uninitialized_fill_n(_M_finish, __n - __elems_after, __x_copy);
+        std::uninitialized_fill_n(_M_finish, __n - __elems_after, __x_copy);
         _M_finish += __n - __elems_after;
-        uninitialized_copy(__position, __old_finish, _M_finish);
+        std::uninitialized_copy(__position, __old_finish, _M_finish);
         _M_finish += __elems_after;
         fill(__position, __old_finish, __x_copy);
       }
@@ -814,10 +856,10 @@ void vector<_Tp, _Alloc>::_M_fill_insert(iterator __position, size_type __n,
       iterator __new_start(_M_allocate(__len));
       iterator __new_finish(__new_start);
       try {
-        __new_finish = uninitialized_copy(begin(), __position, __new_start);
-        __new_finish = uninitialized_fill_n(__new_finish, __n, __x);
+        __new_finish = std::uninitialized_copy(begin(), __position, __new_start);
+        __new_finish = std::uninitialized_fill_n(__new_finish, __n, __x);
         __new_finish
-          = uninitialized_copy(__position, end(), __new_finish);
+          = std::uninitialized_copy(__position, end(), __new_finish);
       }
       catch(...)
 	{

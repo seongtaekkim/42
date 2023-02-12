@@ -253,8 +253,8 @@ class reverse_iterator
   reference operator[](difference_type __n) const { return *(*this + __n); }
 };
 
-// non-member function overloads
 
+// non-member function overloads
 template <typename _Iter1, typename _Iter2>
 bool operator==(const reverse_iterator<_Iter1> &__lhs,
                 const reverse_iterator<_Iter2> &__rhs) {
@@ -315,8 +315,7 @@ inline typename iterator_traits<_InputIterator>::difference_type __distance(
 
 template <typename _RandIterator>
 inline typename iterator_traits<_RandIterator>::difference_type __distance(
-    _RandIterator __first, _RandIterator __last,
-    ft::random_access_iterator_tag) {
+    _RandIterator __first, _RandIterator __last, ft::random_access_iterator_tag) {
   return __last - __first;
 }
 

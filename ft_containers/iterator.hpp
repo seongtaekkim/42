@@ -117,7 +117,7 @@ struct iterator_traits<_T *> {
 template <typename _T>
 struct iterator_traits<const _T *> {
   typedef random_access_iterator_tag iterator_category;
-  typedef typename remove_cv<_T>::type value_type;
+  typedef _T value_type;
   typedef ptrdiff_t difference_type;
   typedef const _T *pointer;
   typedef const _T &reference;
@@ -328,4 +328,4 @@ inline typename iterator_traits<_InputIterator>::difference_type distance(
 }
 
 }  // namespace ft
-#endif
+#endif 

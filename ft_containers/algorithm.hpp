@@ -36,7 +36,7 @@ bool lexicographical_compare(InIterator1 first1, InIterator1 last1, InIterator2 
 
 
 template<typename InIterator1, typename InIterator2>
-const bool equal(InIterator1 first1, InIterator1 last1, InIterator2 first2)
+bool equal(InIterator1 first1, InIterator1 last1, InIterator2 first2)
 {
     for (; first1 != last1; ++first1, ++first2)
         if (!(*first1 == *first2))
@@ -45,11 +45,8 @@ const bool equal(InIterator1 first1, InIterator1 last1, InIterator2 first2)
     return true;
 }
 
-/*
-const 붙여야 하나 ?????????????
-*/
 template<typename InIterator1, typename InIterator2, typename BinaryPredicate>
-const bool equal(InIterator1 first1, InIterator1 last1, InIterator2 first2, BinaryPredicate p)
+bool equal(InIterator1 first1, InIterator1 last1, InIterator2 first2, BinaryPredicate p)
 {
     for (; first1 != last1; ++first1, ++first2)
         if (!p(*first1, *first2))

@@ -1,13 +1,13 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
-	#include <iostream>
-	#include <vector>
-	//#include "vector.hpp"
+#include <iostream>
+#include "vector.hpp"
+
 namespace ft
 {
 
-template <class _Tp, class _Container= std::vector<_Tp> >
+template <class _Tp, class _Container= ft::vector<_Tp> >
 class stack
 {
 public:

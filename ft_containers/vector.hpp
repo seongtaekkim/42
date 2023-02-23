@@ -1,9 +1,9 @@
 
-#ifndef VECTOR
-#define VECTOR
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 
 
-#include <memory>
+// #include <memory>
 #include <iostream>
 // #include "type_traits.hpp"
 #include "iterator.hpp"
@@ -449,7 +449,7 @@ public:
   typedef reverse_iterator<iterator>					reverse_iterator;
 
   typedef typename _Base::allocator_type				allocator_type;
-  allocator_type get_allocator() const { return _Base::get_allocator(); }
+  allocator_type get_allocator() const { return this->__a_;}
 
 // protected:
 //   using _Base::_M_allocate;
@@ -508,33 +508,33 @@ public:
   explicit vector(const allocator_type& __a = allocator_type()) : _Base(__a) {}
 
   vector(size_type __n, const _Tp& __value, const allocator_type& __a = allocator_type()) : _Base(__n, __a) { 
-	this->__end_ = uninitialized_fill_n(this->__begin_, __n, __value);
+	this->__end_ = std::uninitialized_fill_n(this->__begin_, __n, __value);
   }
 
   explicit vector(size_type __n) : _Base(__n, allocator_type()) {
-  	this->__end_ = uninitialized_fill_n(this->__begin_, __n, _Tp());
+  	this->__end_ = std::uninitialized_fill_n(this->__begin_, __n, _Tp());
   }
 
 // 지우셈
   vector(const vector<_Tp, _Alloc>& __x)
     : _Base(__x.size(), __x.get_allocator())
-    { this->__end_ = uninitialized_copy(__x.begin(), __x.end(), this->__begin_); }
+    { this->__end_ = std::uninitialized_copy(__x.begin(), __x.end(), this->__begin_); }
 
   // Check whether it's an integral type.  If so, it's not an iterator.
   template <class _InputIterator>
     vector(_InputIterator __first, _InputIterator __last, const allocator_type& __a = allocator_type())
 	: _Base(__a)
 	{
-      typedef typename is_integral<_InputIterator>::_Integral _Integral;
+      typedef typename is_integral<_InputIterator>::type _Integral;
       _M_initialize_aux(__first, __last, _Integral());
     }
 
   template <class _Integer>
     void _M_initialize_aux(_Integer __n, _Integer __value, true_type)
 	{
-      this->__begin_ = _M_allocate(__n);
+      this->__begin_ = this->__a_.allocate(__n);
       this->__end_cap_ = this->__begin_ + __n;
-      this->__end_ = uninitialized_fill_n(this->__begin_, __n, __value);
+      this->__end_ = std::uninitialized_fill_n(this->__begin_, __n, __value);
     }
 
   template<class _InputIterator>
@@ -552,7 +552,7 @@ public:
 
   template <class _Tp2>
   void _Destroy(_Tp2 *_pointer){
-	_pointer->~_Tp();
+	_pointer->~_Tp2();
   }
 
   void _Destroy(iterator _first, iterator _last) {
@@ -582,39 +582,39 @@ public:
   }
 
 
-  void assign(size_type __n, const _Tp& __val) { _M_fill_assign(__n, __val); }
-  void _M_fill_assign(size_type __n, const _Tp& __val);
+	void assign(size_type __n, const _Tp& __val) {
+		_M_fill_assign(__n, __val);
+	}
+	
+	void _M_fill_assign(size_type __n, const _Tp& __val);
 
-  template<class _InputIterator>
+	template<class _InputIterator>
     void
-    assign(_InputIterator __first, _InputIterator __last)
-    {
-      typedef typename is_integral<_InputIterator>::_Integral _Integral;
+    assign(_InputIterator __first, _InputIterator __last) {
+      typedef typename is_integral<_InputIterator>::type _Integral;
       _M_assign_dispatch(__first, __last, _Integral());
     }
 
-  template<class _Integer>
+  	template<class _Integer>
     void
-     _M_assign_dispatch(_Integer __n, _Integer __val, true_type)
-     { _M_fill_assign((size_type) __n, (_Tp) __val); }
+    _M_assign_dispatch(_Integer __n, _Integer __val, true_type) {
+		_M_fill_assign((size_type) __n, (_Tp) __val);
+	}
 
-  template<class _InputIter>
+	template<class _InputIter>
     void
-    _M_assign_dispatch(_InputIter __first, _InputIter __last, false_type)
-    {
-      typedef typename iterator_traits<_InputIter>::iterator_category _IterCategory;
-      _M_assign_aux(__first, __last, _IterCategory());
+    _M_assign_dispatch(_InputIter __first, _InputIter __last, false_type) {
+    	typedef typename iterator_traits<_InputIter>::iterator_category _IterCategory;
+    	_M_assign_aux(__first, __last, _IterCategory());
     }
 
-  template <class _InputIterator>
-    void 
-    _M_assign_aux(_InputIterator __first, _InputIterator __last,
-		  input_iterator_tag);
+	template <class _InputIterator>
+	void 
+	_M_assign_aux(_InputIterator __first, _InputIterator __last, input_iterator_tag);
 
-  template <class _ForwardIterator>
-    void 
-    _M_assign_aux(_ForwardIterator __first, _ForwardIterator __last,
-		  forward_iterator_tag);
+	template <class _ForwardIterator>
+	void 
+	_M_assign_aux(_ForwardIterator __first, _ForwardIterator __last, forward_iterator_tag);
 
   reference front() { return *begin(); }
 
@@ -629,7 +629,6 @@ public:
   {
     if (this->__end_ != this->__end_cap_) {
 		this->__a_.construct(this->__end_, __x);
-      	//_Construct(this->__end_, __x);
       ++this->__end_;
     }
     else
@@ -640,26 +639,27 @@ public:
   {
     std::swap(this->__begin_, __x.__begin_);
     std::swap(this->__end_, __x.__end_);
-    std::swap(this->__begin_, __x.__end_cap_);
+    std::swap(this->__end_cap_, __x.__end_cap_);
   }
 
   iterator insert(iterator __position, const _Tp& __x)
   {
     size_type __n = __position - begin();
     if (this->__end_ != this->__end_cap_ && __position == end()) {
-      _Construct(this->__end_, __x);
+      this->__a_.construct(this->__end_, __x);
       ++this->__end_;
     }
     else
       _M_insert_aux(iterator(__position), __x);
     return begin() + __n;
+	
   }
 
   iterator insert(iterator __position)
   {
     size_type __n = __position - begin();
     if (this->__end_ != this->__end_cap_ && __position == end()) {
-      _Construct(this->__end_);
+      this->__a_(this->__end_);
       ++this->__end_;
     }
     else
@@ -672,7 +672,7 @@ public:
     void
 	insert(iterator __pos, _InputIterator __first, _InputIterator __last)
 	{
-      typedef typename is_integral<_InputIterator>::_Integral _Integral;
+      typedef typename is_integral<_InputIterator>::type _Integral;
       _M_insert_dispatch(__pos, __first, __last, _Integral());
     }
 
@@ -712,7 +712,7 @@ public:
   }
 
   iterator erase(iterator __first, iterator __last) {
-    iterator __i(copy(__last, end(), __first));
+    iterator __i(std::copy(__last, end(), __first));
     _Destroy(__i, end());
     this->__end_ = this->__end_ - (__last - __first);
     return __first;
@@ -742,7 +742,7 @@ protected:
     }
     catch(...)
       {
-		_M_deallocate(__result, __n);
+		this->__a_.deallocate(__result, __n);
 		// __throw_exception_again;
 		throw std::runtime_error("runtime err");
       }
@@ -761,10 +761,10 @@ protected:
   void _M_range_initialize(_ForwardIterator __first,
                            _ForwardIterator __last, forward_iterator_tag)
   {
-    size_type __n = distance(__first, __last);
+    size_type __n = ft::distance(__first, __last);
     this->__begin_ = this->__a_.allocate(__n);
     this->__end_cap_ = this->__begin_ + __n;
-    this->__end_ = uninitialized_copy(__first, __last, this->__begin_);
+    this->__end_ = std::uninitialized_copy(__first, __last, this->__begin_);
   }
 
   template <class _InputIterator>
@@ -807,14 +807,14 @@ inline bool
 operator==(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
 {
   return __x.size() == __y.size() &&
-         equal(__x.begin(), __x.end(), __y.begin());
+         ft::equal(__x.begin(), __x.end(), __y.begin());
 }
 
 template <class _Tp, class _Alloc>
 inline bool
 operator<(const vector<_Tp, _Alloc>& __x, const vector<_Tp, _Alloc>& __y)
 {
-  return lexicographical_compare(__x.begin(), __x.end(),
+  return ft::lexicographical_compare(__x.begin(), __x.end(),
                                  __y.begin(), __y.end());
 }
 
@@ -874,12 +874,12 @@ vector<_Tp,_Alloc>::operator=(const vector<_Tp, _Alloc>& __x)
       this->__end_cap_ = this->__begin_ + __xlen;
     }
     else if (size() >= __xlen) {
-      iterator __i(copy(__x.begin(), __x.end(), begin()));
+      iterator __i(std::copy(__x.begin(), __x.end(), begin()));
       _Destroy(__i, end());
     }
     else {
-      copy(__x.begin(), __x.begin() + size(), this->__begin_);
-      uninitialized_copy(__x.begin() + size(), __x.end(), this->__end_);
+      std::copy(__x.begin(), __x.begin() + size(), this->__begin_);
+      std::uninitialized_copy(__x.begin() + size(), __x.end(), this->__end_);
     }
     this->__end_ = this->__begin_ + __xlen;
   }
@@ -902,11 +902,11 @@ void vector<_Tp, _Alloc>::_M_fill_assign(size_t __n, const value_type& __val)
     __tmp.swap(*this);
   }
   else if (__n > size()) {
-    fill(begin(), end(), __val);
-    this->__end_ = uninitialized_fill_n(this->__end_, __n - size(), __val);
+    std::fill(begin(), end(), __val);
+    this->__end_ = std::uninitialized_fill_n(this->__end_, __n - size(), __val);
   }
   else
-    erase(fill_n(begin(), __n, __val), end());
+    erase(std::fill_n(begin(), __n, __val), end());
 }
 
 template <class _Tp, class _Alloc> template <class _InputIter>
@@ -925,25 +925,25 @@ template <class _Tp, class _Alloc> template <class _ForwardIter>
 void
 vector<_Tp, _Alloc>::_M_assign_aux(_ForwardIter __first, _ForwardIter __last,
                                    forward_iterator_tag) {
-  size_type __len = distance(__first, __last);
+  size_type __len = ft::distance(__first, __last);
 
   if (__len > capacity()) {
     pointer __tmp(_M_allocate_and_copy(__len, __first, __last));
     _Destroy(this->__begin_, this->__end_);
-    _M_deallocate(this->__begin_, this->__end_cap_ - this->__begin_);
+    this->__a_.deallocate(this->__begin_, this->__end_cap_ - this->__begin_);
     this->__begin_ = __tmp;
     this->__end_cap_ = this->__end_ = this->__begin_ + __len;
   }
   else if (size() >= __len) {
-    iterator __new_finish(copy(__first, __last, this->__begin_));
+    iterator __new_finish(std::copy(__first, __last, this->__begin_));
     _Destroy(__new_finish, end());
     this->__end_ = __new_finish.base();
   }
   else {
     _ForwardIter __mid = __first;
-    advance(__mid, size());
-    copy(__first, __mid, this->__begin_);
-    this->__end_ = uninitialized_copy(__mid, __last, this->__end_);
+    std::advance(__mid, size());
+    std::copy(__first, __mid, this->__begin_);
+    this->__end_ = std::uninitialized_copy(__mid, __last, this->__end_);
   }
 }
 
@@ -1034,17 +1034,17 @@ void vector<_Tp, _Alloc>::_M_fill_insert(iterator __position, size_type __n,
       const size_type __elems_after = end() - __position;
       iterator __old_finish(this->__end_);
       if (__elems_after > __n) {
-        uninitialized_copy(this->__end_ - __n, this->__end_, this->__end_);
+        std::uninitialized_copy(this->__end_ - __n, this->__end_, this->__end_);
         this->__end_ += __n;
         std::copy_backward(__position, __old_finish - __n, __old_finish);
-        fill(__position, __position + __n, __x_copy);
+        std::fill(__position, __position + __n, __x_copy);
       }
       else {
         std::uninitialized_fill_n(this->__end_, __n - __elems_after, __x_copy);
         this->__end_ += __n - __elems_after;
         std::uninitialized_copy(__position, __old_finish, this->__end_);
         this->__end_ += __elems_after;
-        fill(__position, __old_finish, __x_copy);
+        std::fill(__position, __old_finish, __x_copy);
       }
     }
     else {
@@ -1088,13 +1088,9 @@ vector<_Tp, _Alloc>::_M_range_insert(iterator __pos,
 
 template <class _Tp, class _Alloc> template <class _ForwardIterator>
 void
-vector<_Tp, _Alloc>::_M_range_insert(iterator __position,
-                                     _ForwardIterator __first,
-                                     _ForwardIterator __last,
-                                     forward_iterator_tag)
-{
+vector<_Tp, _Alloc>::_M_range_insert(iterator __position, _ForwardIterator __first, _ForwardIterator __last, forward_iterator_tag) {
   if (__first != __last) {
-    size_type __n = distance(__first, __last);
+    size_type __n = ft::distance(__first, __last);
     if (size_type(this->__end_cap_ - this->__end_) >= __n) {
       const size_type __elems_after = end() - __position;
       iterator __old_finish(this->__end_);
@@ -1102,16 +1098,16 @@ vector<_Tp, _Alloc>::_M_range_insert(iterator __position,
         std::uninitialized_copy(this->__end_ - __n, this->__end_, this->__end_);
         this->__end_ += __n;
         std::copy_backward(__position, __old_finish - __n, __old_finish);
-        copy(__first, __last, __position);
+        std::copy(__first, __last, __position);
       }
       else {
         _ForwardIterator __mid = __first;
-        advance(__mid, __elems_after);
+        std::advance(__mid, __elems_after); // 개발 해야 함
         std::uninitialized_copy(__mid, __last, this->__end_);
         this->__end_ += __n - __elems_after;
         std::uninitialized_copy(__position, __old_finish, this->__end_);
         this->__end_ += __elems_after;
-        copy(__first, __mid, __position);
+        std::copy(__first, __mid, __position);
       }
     }
     else {
@@ -1120,17 +1116,13 @@ vector<_Tp, _Alloc>::_M_range_insert(iterator __position,
       iterator __new_start(this->__a_.allocate(__len));
       iterator __new_finish(__new_start);
       try {
-        __new_finish = std::uninitialized_copy(iterator(this->__begin_),
-					  __position, __new_start);
+        __new_finish = std::uninitialized_copy(iterator(this->__begin_), __position, __new_start);
         __new_finish = std::uninitialized_copy(__first, __last, __new_finish);
-        __new_finish
-          = std::uninitialized_copy(__position, iterator(this->__end_), __new_finish);
+        __new_finish = std::uninitialized_copy(__position, iterator(this->__end_), __new_finish);
       }
       catch(...)
 	{
 	  _Destroy(__new_start,__new_finish);
-	  this->__a_.deallocate(__new_start.base(), __len);
-	//   __throw_exception_again;
 	}
       _Destroy(this->__begin_, this->__end_);
       this->__a_.deallocate(this->__begin_, this->__end_cap_ - this->__begin_);
@@ -1145,3 +1137,4 @@ vector<_Tp, _Alloc>::_M_range_insert(iterator __position,
 }
 
 #endif
+

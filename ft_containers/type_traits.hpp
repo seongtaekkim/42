@@ -62,11 +62,17 @@ struct _is_integral<signed char> : public true_type {};
 template <>
 struct _is_integral<wchar_t> : public true_type {};
 template <>
+struct _is_integral<char16_t> : public true_type {};
+template <>
+struct _is_integral<char32_t> : public true_type {};
+template <>
 struct _is_integral<short> : public true_type {};
 template <>
 struct _is_integral<unsigned short> : public true_type {};
 template <>
 struct _is_integral<int> : public true_type {};
+template <>
+struct _is_integral<const int> : public true_type {};
 template <>
 struct _is_integral<unsigned int> : public true_type {};
 template <>

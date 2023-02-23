@@ -8,7 +8,7 @@
 // #include "type_traits.hpp"
 #include "iterator.hpp"
 #include "algorithm.hpp"
-
+#include "utility.hpp"
 
 namespace ft
 {
@@ -697,17 +697,20 @@ public:
 
 
   iterator erase(iterator __position) {
-    if (__position + 1 != end())
-      copy(__position + 1, end(), __position);
-    --this->__end_;
-    _Destroy(this->__end_);
-    return __position;
+	difference_type __diff = __position - begin();
+  	pointer __pointer = this->__begin_ + __diff;
+
+	this->__a_.destroy(__pointer);
+	std::uninitialized_copy(__pointer + 1, this->__end_, __pointer);
+	this->__end_--;
+	this->__a_.destroy(this->__end_);
+	return (__position);
   }
 
   iterator erase(iterator __first, iterator __last) {
 	if (__first > __last)
 		__throw_length_error("vector: first bigger than last");
-    iterator __i(std::copy(__last, end(), __first));
+    iterator __i(std::uninitialized_copy(__last, end(), __first));
     _Destroy(__i, end());
     this->__end_ = this->__end_ - (__last - __first);
     return __first;

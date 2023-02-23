@@ -451,13 +451,6 @@ public:
   typedef typename _Base::allocator_type				allocator_type;
   allocator_type get_allocator() const { return this->__a_;}
 
-// protected:
-//   using _Base::_M_allocate;
-//   using _Base::_M_deallocate;
-//   using _Base::_M_start;
-//   using _Base::_M_finish;
-//   using _Base::_M_end_of_storage;
-
 protected:
   void _M_insert_aux(iterator __position, const _Tp& __x);
   void _M_insert_aux(iterator __position);
@@ -712,6 +705,8 @@ public:
   }
 
   iterator erase(iterator __first, iterator __last) {
+	if (__first > __last)
+		__throw_length_error("vector: first bigger than last");
     iterator __i(std::copy(__last, end(), __first));
     _Destroy(__i, end());
     this->__end_ = this->__end_ - (__last - __first);
@@ -743,7 +738,6 @@ protected:
     catch(...)
       {
 		this->__a_.deallocate(__result, __n);
-		// __throw_exception_again;
 		throw std::runtime_error("runtime err");
       }
   }

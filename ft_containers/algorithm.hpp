@@ -1,13 +1,9 @@
-
 #ifndef ALGORITHM_HPP
 #define ALGORITHM_HPP
 
 namespace ft
 {
 
-/*
-while 로 변경하기
-*/
 template<typename InIterator1, typename InIterator2>
 bool lexicographical_compare(InIterator1 first1, InIterator1 last1, InIterator2 first2, InIterator2 last2)
 {

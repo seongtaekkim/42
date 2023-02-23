@@ -3,76 +3,14 @@
 #define VECTOR_HPP
 
 
-// #include <memory>
+#include <memory>
 #include <iostream>
-// #include "type_traits.hpp"
 #include "iterator.hpp"
 #include "algorithm.hpp"
 #include "utility.hpp"
 
 namespace ft
 {
-/*
-template <class _Tp, class _Allocator, bool _IsStatic>
-class _Vector_alloc_base {
-public:
-	typedef typename _Alloc_traits<_Tp, _Allocator>::allocator_type allocator_type;
-	allocator_type get_allocator() const { return _M_data_allocator; }
-	_Vector_alloc_base(const allocator_type& __a)
-		: _M_data_allocator(__a), _M_start(0), _M_finish(0), _M_end_of_storage(0)
-	{}
-	
-protected:
-  allocator_type _M_data_allocator;
-  _Tp* _M_start;
-  _Tp* _M_finish;
-  _Tp* _M_end_of_storage;
-
-  _Tp* _M_allocate(size_t __n)
-    { return _M_data_allocator.allocate(__n); }
-  void _M_deallocate(_Tp* __p, size_t __n)
-    { if (__p) _M_data_allocator.deallocate(__p, __n); }
-};
-
-// Specialization for allocators that have the property that we don't
-// actually have to store an allocator object.
-template <class _Tp, class _Allocator>
-class _Vector_alloc_base<_Tp, _Allocator, true> {
-public:
-  typedef typename _Alloc_traits<_Tp, _Allocator>::allocator_type allocator_type;
-  allocator_type get_allocator() const { return allocator_type(); }
-  _Vector_alloc_base(const allocator_type&)
-    : _M_start(0), _M_finish(0), _M_end_of_storage(0)
-  {}
-
-protected:
-  _Tp* _M_start;
-  _Tp* _M_finish;
-  _Tp* _M_end_of_storage;
-
-  typedef typename _Alloc_traits<_Tp, _Allocator>::_Alloc_type _Alloc_type;
-  _Tp* _M_allocate(size_t __n)
-    { return _Alloc_type::allocate(__n); }
-  void _M_deallocate(_Tp* __p, size_t __n)
-    { _Alloc_type::deallocate(__p, __n);}
-};
-
-template <class _Tp, class _Alloc>
-struct _Vector_base : public _Vector_alloc_base<_Tp, _Alloc, _Alloc_traits<_Tp, _Alloc>::_S_instanceless>
-{
-  typedef _Vector_alloc_base<_Tp, _Alloc, _Alloc_traits<_Tp, _Alloc>::_S_instanceless> _Base;
-  typedef typename _Base::allocator_type allocator_type;
-
-  _Vector_base(const allocator_type& __a) : _Base(__a) {}
-  _Vector_base(size_t __n, const allocator_type& __a) : _Base(__a) {
-    _M_start = _M_allocate(__n);
-    _M_finish = _M_start;
-    _M_end_of_storage = _M_start + __n;
-  }
-b 
-  ~_Vector_base() { _M_deallocate(_M_start, _M_end_of_storage - _M_start); }
-};
-*/
 
 template <typename _T, typename _Allocator = std::allocator<_T>()>
 struct __vector_base {
@@ -207,95 +145,6 @@ void __vector_base<_T, _Allocator>::__destruct_storage() throw() {
   __a_.deallocate(__begin_, __capacity());
   __end_ = __begin_ = __end_cap_ = NULL;
 }
-
-
-
-/*
-template<typename _Iterator, typename _Container>
-class __normal_iterator
-{
-protected:
-	_Iterator _M_current;
-	typedef ft::iterator_traits<_Iterator>				__traits_type;
-
-public:
-	typedef _Iterator									iterator_type;
-	typedef typename __traits_type::iterator_category	iterator_category;
-	typedef typename __traits_type::value_type  		value_type;
-	typedef typename __traits_type::difference_type 	difference_type;
-	typedef typename __traits_type::reference 			reference;
-	typedef typename __traits_type::pointer   			pointer;
-
-
-	__normal_iterator() throw()
-	: _M_current(_Iterator()) {}
-
-	__normal_iterator(const _Iterator& __i) throw()
-	: _M_current(__i) {}
-
-	// Allow iterator to const_iterator conversion
-	// template<typename _Iter>
-	// __normal_iterator(const __normal_iterator<_Iter,
-	// 		typename ft::enable_if<(std::__are_same<_Iter
-	// 							, typename _Container::pointer>::__value), _Container>::__type>& __i) throw()
-	// : _M_current(__i.base()) { }
-    // template <typename _U>
-    // __normal_iterator(
-    //   const __normal_iterator<_U>& __u,
-    //   typename enable_if<__is_random_access_iterator<_U>::value>::type* =
-    //       0)  // can copy when the category is random_access
-    //   throw() : __it(__u.base()) {}
-
-	// Forward iterator requirements
-	reference operator*() const throw()
-	{ return *_M_current; }
-
-	pointer operator->() const throw()
-	{ return _M_current; }
-
-	__normal_iterator& operator++() throw()
-	{
-		++_M_current;
-		return *this;
-	}
-
-	__normal_iterator operator++(int) throw()
-	{
-		return __normal_iterator(_M_current++);
-	}
-
-	// Bidirectional iterator requirements
-	__normal_iterator& operator--() throw()
-	{
-		--_M_current;
-		return *this;
-	}
-
-	__normal_iterator operator--(int) throw()
-	{ return __normal_iterator(_M_current--); }
-
-	// Random access iterator requirements
-	reference operator[](difference_type __n) const throw()
-	{ return _M_current[__n]; }
-
-	__normal_iterator& operator+=(difference_type __n) throw()
-	{ _M_current += __n; return *this; }
-
-	__normal_iterator operator+(difference_type __n) const throw()
-	{ return __normal_iterator(_M_current + __n); }
-
-	__normal_iterator& operator-=(difference_type __n) throw()
-	{ _M_current -= __n; return *this; }
-
-	__normal_iterator operator-(difference_type __n) const throw()
-	{ return __normal_iterator(_M_current - __n); }
-
-	const _Iterator& base() const throw()
-	{ return _M_current; }
-};
-
-
-*/
 
 
 
@@ -627,12 +476,9 @@ public:
     else
       _M_insert_aux(end(), __x);
   }
-
-  void swap(vector<_Tp, _Alloc>& __x)
+  void swap(vector& x) 
   {
-    std::swap(this->__begin_, __x.__begin_);
-    std::swap(this->__end_, __x.__end_);
-    std::swap(this->__end_cap_, __x.__end_cap_);
+	 this->__swap_data(x); 
   }
 
   iterator insert(iterator __position, const _Tp& __x)
@@ -645,7 +491,6 @@ public:
     else
       _M_insert_aux(iterator(__position), __x);
     return begin() + __n;
-	
   }
 
   iterator insert(iterator __position)
@@ -700,10 +545,10 @@ public:
 	difference_type __diff = __position - begin();
   	pointer __pointer = this->__begin_ + __diff;
 
-	this->__a_.destroy(__pointer);
+	_Destroy(__pointer);
 	std::uninitialized_copy(__pointer + 1, this->__end_, __pointer);
 	this->__end_--;
-	this->__a_.destroy(this->__end_);
+	_Destroy(this->__end_);
 	return (__position);
   }
 

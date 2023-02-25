@@ -13,8 +13,8 @@ private:
 	std::multiset<int> v;
 	Span(void);
 public:
-	Span(unsigned int n);
-	Span(const Span& s);
+	explicit Span(unsigned int n);
+	explicit  Span(const Span& s);
 	~Span(void);
 	Span& operator=(const Span& s);
 	void addNumber(int num);

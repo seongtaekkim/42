@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string_view>
  
- #include "../alghrithm.hpp"
+ #include "../algorithm.hpp"
 
  /*
  https://woo-dev.tistory.com/20

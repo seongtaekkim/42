@@ -1,6 +1,6 @@
 
-#ifndef ITERATOR
-#define ITERATOR
+#ifndef ITERATOR_HPP
+#define ITERATOR_HPP
 
 #include <cstddef>
 #include <iterator>
@@ -9,8 +9,6 @@
 
 namespace ft {
 
-// tags for iterator_traits
-#if defined(_LIBCPP_ITERATOR) || defined(_STL_ITERATOR_H)
 
 typedef std::input_iterator_tag input_iterator_tag;
 typedef std::output_iterator_tag output_iterator_tag;
@@ -18,25 +16,7 @@ typedef std::forward_iterator_tag forward_iterator_tag;
 typedef std::bidirectional_iterator_tag bidirectional_iterator_tag;
 typedef std::random_access_iterator_tag random_access_iterator_tag;
 
-#else  // !defined(_LIBCPP_ITERATOR) && !defined(_STL_ITERATOR_H)
 
-struct input_iterator_tag {};
-struct output_iterator_tag {};
-struct forward_iterator_tag : input_iterator_tag {};
-struct bidirectional_iterator_tag : forward_iterator_tag {};
-struct random_access_iterator_tag : bidirectional_iterator_tag {};
-
-#endif  // defined(_LIBCPP_ITERATOR) || defined(_STL_ITERATOR_H)
-
-/**
- * @brief base of iterator. common to %iterator classes.
- *
- * @tparam _Category
- * @tparam _T
- * @tparam _Distance
- * @tparam _pointer
- * @tparam _reference
- */
 template <typename _Category, typename _T, typename _Distance = ptrdiff_t,
           typename _pointer = _T *, typename _reference = _T &>
 struct iterator {
@@ -46,8 +26,6 @@ struct iterator {
   typedef _reference reference;
   typedef _Category iterator_category;
 };
-
-// iterator_traits
 
 template <typename _T>
 struct __has_iterator_typedefs {
@@ -192,14 +170,12 @@ class reverse_iterator
   _Iter current;
 
  public:
-  // typedef
   typedef _Iter iterator_type;
   typedef typename iterator_traits<_Iter>::value_type value_type;
   typedef typename iterator_traits<_Iter>::difference_type difference_type;
   typedef typename iterator_traits<_Iter>::reference reference;
   typedef typename iterator_traits<_Iter>::pointer pointer;
 
-  // constructor
   reverse_iterator() : current() {}
   reverse_iterator(_Iter __it) : current(__it) {}
   template <typename _U>
@@ -327,5 +303,5 @@ inline typename iterator_traits<_InputIterator>::difference_type distance(
       typename iterator_traits<_InputIterator>::iterator_category());
 }
 
-}  // namespace ft
+}
 #endif 

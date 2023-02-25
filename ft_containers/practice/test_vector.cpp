@@ -1,5 +1,5 @@
 #include "../vector.hpp"
-// #include <vector>
+#include <vector>
 #include <stdlib.h>
 #define MAX_RAM 4294967296
 #define BUFFER_SIZE 4096
@@ -52,8 +52,16 @@ int main(int argc, char** argv) {
 	{
 		//NORMAL ! :P
 	}
+	std::vector<std::string> vvv;
+	vvv.push_back("a");
+	vvv.push_back("a");
+	vvv.push_back("a");
+	vvv.push_back("a");
+	vvv.push_back("a");
+	std::vector<std::string>::iterator vit = vvv.end();
+	std::cout << *(vit + 22) << std::endl;
 	
-
+	// vvv.erase(vit, vit + 2);
 	// std::vector<std::string> *ptr = new std::vector<std::string>(2);
 	return (0);
 }

@@ -98,30 +98,78 @@ int File::readFile(std::string sep)
                 char *ptr = NULL;
     	        double d = std::strtod(trim(line.substr(pos + 1)).c_str(), &ptr);
                 float f = static_cast<float>(d);
-                // if (f < 1000.0 && f > 0.0)
-                
-                if (_db[line.substr(0, pos)].size() == 0) {
-                    std::list<float> list;
-                    list.push_back(f);
-                    _db[line.substr(0, pos)] = list;
-                    // _db.insert(std::make_pair(line.substr(0, pos), f));
-                } else {
-                    _db[line.substr(0, pos)].push_back(f);
-                }
+                _db[line.substr(0, pos)] = f;
             }
 		}
         this->in.close();
 	}
 
-    DBType::iterator bit = _db.begin();
-    for (DBType::iterator i = bit ; i != _db.end() ; ++i) {
-        std::cout << (*i).first << " : ";
-        std::list<float>::iterator fit = i->second.begin();
-        for (std::list<float>::iterator j = fit ; j != i->second.end() ; ++j) {
-            std::cout << *j << " ";
-        }
-        std::cout << std::endl;
-    }
+    // DBType::iterator bit = _db.begin();
+    // for (DBType::iterator i = bit ; i != _db.end() ; ++i) {
+    //     std::cout << (*i).first << " : ";
+    //     std::list<float>::iterator fit = i->second.begin();
+    //     for (std::list<float>::iterator j = fit ; j != i->second.end() ; ++j) {
+    //         std::cout << *j << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
     std::cout << " size : " << _db.size() << std::endl;
+	return (0); 
+}
+
+
+int File::readFile2(std::string sep, File::DBType db) {
+	this->in.open(this->fileName.c_str());
+	if (errno) // throw 로 변경1
+		return (errno);
+	std::string line;
+	if (this->in.is_open())
+	{
+		while (std::getline(this->in, line))
+		{
+            std::size_t pos = line.find(sep, 0);
+            if (pos == std::string::npos) {
+                continue ;
+            }
+            if (Date::valid(trim(line.substr(0, pos)))) {
+                char *ptr = NULL;
+    	        double d = std::strtod(trim(line.substr(pos + 1)).c_str(), &ptr);
+                float f = static_cast<float>(d);
+                if (f < 1000.0 && f > 0.0) {
+                    // db 에 있있는  데이터보다 크크거거나  작작음음
+                    // DBType::key_compare ret =  db.key_comp();
+                    DBType::iterator bit = db.begin();
+                    DBType::iterator i;
+                    for (i = bit ; i != db.end() ; ++i ) {
+                        if (i->first == trim(line.substr(0, pos))) {
+                            break ;
+                        } else if (i->first > trim(line.substr(0, pos))) {
+                            --i;
+                            break ;
+                        }
+                    }
+                    std::cout << trim(line.substr(0, pos)) << " => " << i->second * f << std::endl;
+                } else {
+                    std::cerr << "Error : out bound ! " << std::endl;
+                }
+                
+                    
+            } else {
+                std::cerr << "Error : invalid date format ! " << std::endl;
+            }
+		}
+        this->in.close();
+	}
+
+    // DBType::iterator bit = _db.begin();
+    // for (DBType::iterator i = bit ; i != _db.end() ; ++i) {
+    //     std::cout << (*i).first << " : ";
+    //     std::list<float>::iterator fit = i->second.begin();
+    //     for (std::list<float>::iterator j = fit ; j != i->second.end() ; ++j) {
+    //         std::cout << *j << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+    // std::cout << " size : " << _db.size() << std::endl;
 	return (0); 
 }

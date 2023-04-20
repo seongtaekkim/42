@@ -29,7 +29,7 @@ public:
 #include <list>
 class File {
 public:
-    typedef std::map<std::string, std::list<float> > DBType;
+    typedef std::map<std::string, float> DBType;
 private:
     DBType _db;
 private:
@@ -40,6 +40,7 @@ public:
 	File(char* name);
 	// int readFile(char* dest);
 	int readFile(std::string sep);
+	int readFile2(std::string sep, DBType db);
 	// int replace();
 	// int saveFile(); 
     DBType db(void) const;

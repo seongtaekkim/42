@@ -33,6 +33,8 @@ public:
 	void merge(int argc, char *sequence[], T& t, K& k, S& time);
 	void mergeSort(std::list<int>& lst);
 	void mergeSort(std::vector<int>& vec);
+	void mergeSort2(std::vector<int>& vec, int start, int end);
+	void Merge3(std::vector<int>& v,int start,int mid,int end);
 };
 
 #endif

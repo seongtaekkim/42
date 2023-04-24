@@ -64,12 +64,20 @@ void MergeSort(vector<int>& v, int start, int end)
 
 	}
 }
-
+#include <sys/time.h>
 
 int main()
 {
 	vector<int> v = { 5,4,3,2,1 };
+		struct timeval start, end;
+	double elapsed;
+
+	gettimeofday(&start, NULL);
 	MergeSort(v, 0, v.size() - 1);
+		gettimeofday(&end, NULL);
+	elapsed = end.tv_usec - start.tv_usec;
+	printf("%lf\n", elapsed / CLOCKS_PER_SEC);
+    double time = elapsed / CLOCKS_PER_SEC;
 	for (auto& e : v)
 	{
 		cout << e;

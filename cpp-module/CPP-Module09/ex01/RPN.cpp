@@ -50,8 +50,6 @@ int	RPN::divide(int nb1, int nb2) {
 }
 
 void	RPN::run(char *av, int i) {
-    
-	std::stack<int>	data;
 	int				tmp;
 	int				j = 0;
 
@@ -62,29 +60,29 @@ void	RPN::run(char *av, int i) {
 
 	while (av[i]) {
 		if (isdigit(av[i])) {
-			data.push(atoi(av + i));
+			this->_data.push(atoi(av + i));
 		} else if (allowedOp(av[i])) {
-			if (data.empty())
+			if (this->_data.empty())
 				throw std::invalid_argument("Error");
-			tmp = data.top();
-			data.pop();
+			tmp = this->_data.top();
+			this->_data.pop();
 			for (FuncSetIter it = _set.begin() ; it != _set.end() ; ++it) {
 				if (it->first == av[i]) {
 					FuncPointer ptr = it->second;
-					if (data.empty())
+					if (this->_data.empty())
 						throw std::invalid_argument("Error");
-					tmp = (this->*ptr)(data.top(), tmp);
+					tmp = (this->*ptr)(this->_data.top(), tmp);
 					break ;
 				}
 			}
 			j = 0;
-			data.pop();
-			data.push(tmp);
+			this->_data.pop();
+			this->_data.push(tmp);
 		}
 		i++;
 	}
-	if (data.size() > 1 || data.size() == 0)
+	if (this->_data.size() > 1 || this->_data.size() == 0)
 		throw std::invalid_argument("Error");
-	std::cout << GRNCOLOR <<  data.top() << ENDCOLOR << std::endl;
+	std::cout << GRNCOLOR <<  this->_data.top() << ENDCOLOR << std::endl;
 	return ;
 }

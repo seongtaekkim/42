@@ -31,6 +31,7 @@ private:
     RPN(const RPN& other);
 	FuncSetIter						_pos;
 	FuncSet							_set;
+	std::stack<int>                 _data;
 public:
     RPN(void);
     ~RPN(void);

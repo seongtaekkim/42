@@ -58,8 +58,8 @@ const std::string File::SEPARATOR_COMMA = ",";
 const std::string File::DB_PATH = "data.csv";
 
 File::File(char* name) {
-    readDB(File::SEPARATOR_COMMA);
     this->_fileName = name;
+    readDB(File::SEPARATOR_COMMA);
 }
 
 File::DBType File::db(void) const {
@@ -103,7 +103,7 @@ int File::readDB(std::string sep) {
 		}
         this->_in.close();
 	} else {
-        throw std::runtime_error("can't open file exception : " + this->_fileName);
+        throw std::runtime_error("can't open file exception : " + File::DB_PATH);
     }
 	return (0); 
 }
@@ -115,6 +115,7 @@ int File::readFile(std::string sep) {
 	std::string line;
     char *ptr = NULL;
     int lineSize = 0;
+    bool isFind = false;
 
 	if (this->_in.is_open()) {
 		while (std::getline(this->_in, line)) {
@@ -137,15 +138,24 @@ int File::readFile(std::string sep) {
                 float f = static_cast<float>(d);
                 DBType::iterator bit = this->_db.begin();
                 DBType::iterator i;
+                isFind = true;
                 for (i = bit ; i != this->_db.end() ; ++i ) {
                     if (i->first == trim(line.substr(0, pos))) {
                         break ;
                     } else if (i->first > trim(line.substr(0, pos))) {
+                        if (i == bit) {
+                            std::cout << REDCOLOR << "Error : too old data ! : " << line << ENDCOLOR << std::endl;
+                            isFind = false;
+                            break ;
+                        }
                         --i;
                         break ;
                     }
                 }
-                std::cout << GRNCOLOR <<  trim(line.substr(0, pos)) << " => " << f << " = " << i->second * f << ENDCOLOR << std::endl;
+                if (i == this->_db.end())
+                    i--;
+                if (isFind == true)
+                    std::cout << GRNCOLOR <<  trim(line.substr(0, pos)) << " => " << f << " = " << i->second * f << ENDCOLOR << std::endl;
 
             } else {
                 if (lineSize == 1)

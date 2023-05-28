@@ -16,6 +16,7 @@ private:
 	std::list<int>      _listSorted;
 
 	std::vector<int>    _vecOG;
+	std::vector<int>    _vecTmp;
 	std::vector<int>    _vecSorted;
 
 	double               _timerList;

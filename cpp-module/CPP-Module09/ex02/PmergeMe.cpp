@@ -11,9 +11,16 @@ PmergeMe::PmergeMe(PmergeMe& input) {
     *this = input;
 }
 
-PmergeMe& PmergeMe::operator=(PmergeMe& input){
-    this->~PmergeMe();
-    new PmergeMe(input);
+PmergeMe& PmergeMe::operator=(PmergeMe& other){
+    if (this != &other) {
+        this->_lstOG = other._lstOG;
+        this->_listSorted = other._listSorted;
+        this->_vecOG = other._vecOG;
+        this->_vecSorted = other._vecSorted;
+        this->_vecTmp = other._vecTmp;
+        this->_timerList = other._timerList;
+        this->_timerVector = other._timerVector;
+    }
     return(*this);
 }
 
@@ -26,15 +33,12 @@ void PmergeMe::merge(int argc, char *sequence[], T& t, K& k, S& time) {
         t.push_back(value);
     }
 	struct timeval start, end;
-	double elapsed;
 
     k = t;
 	gettimeofday(&start, NULL);
     mergeSort(k);
 	gettimeofday(&end, NULL);
-	elapsed = end.tv_usec - start.tv_usec;
-	printf("%lf %lf\n", elapsed, elapsed / CLOCKS_PER_SEC);
-    time = elapsed / CLOCKS_PER_SEC;
+	time = end.tv_usec - start.tv_usec;
 }
 
 void PmergeMe::mergeSort(std::list<int> &lst) {
@@ -73,14 +77,13 @@ void PmergeMe::Merge3(std::vector<int>& v,int start,int mid,int end) {
 	int j = mid + 1;
 	int k = start;
 
-	while (i <= mid && j <= end)
-	{
-		if (this->_vecOG[i] <= this->_vecOG[j]) {
-			v[k] = this->_vecOG[i];
+	while (i <= mid && j <= end) {
+		if (this->_vecTmp[i] <= this->_vecTmp[j]) {
+			v[k] = this->_vecTmp[i];
 			i++;
 		}
 		else {
-			v[k] = this->_vecOG[j];
+			v[k] = this->_vecTmp[j];
 			j++;
 		}
 		k++;
@@ -88,17 +91,13 @@ void PmergeMe::Merge3(std::vector<int>& v,int start,int mid,int end) {
 
 	int entry = (i > mid) ? j:i;
 	int target= (i > mid) ? end : mid;
-	//남아 있는 값들 복사 
-	for (int t = entry; t <= target; ++t)
-	{
-		v[k] = this->_vecOG[t];
+	for (int t = entry; t <= target; ++t) {
+		v[k] = this->_vecTmp[t];
 		k++;
 	}
-	//정렬된 임시 리스트를  원래 리스트에 복사 
 	for (int t = start; t <= end; ++t) {
-		this->_vecOG[t] = v[t];
+		this->_vecTmp[t] = v[t];
 	}
-
 }
 
 void PmergeMe::mergeSort2(std::vector<int>& v, int start, int end) {
@@ -111,7 +110,8 @@ void PmergeMe::mergeSort2(std::vector<int>& v, int start, int end) {
 }
 
 void PmergeMe::mergeSort(std::vector<int> &v) {
-    mergeSort2(v, 0, v.size() );
+    this->_vecTmp = this->_vecOG;
+    mergeSort2(v, 0, v.size()-1);
 }
 
 void PmergeMe::show(void) {
@@ -142,9 +142,49 @@ void PmergeMe::show(void) {
     else
         std::cout << std::endl;
 
+
+
+    std::cout << "Before: ";
+    int counter2 = 0;
+    std::vector<int>::iterator it2 = _vecOG.begin();
+    while (counter2 != 5 && it2 != _vecOG.end()) {
+        std::cout << *it2 << " ";
+        ++it2; 
+        ++counter2;
+    }
+    if (it2 != _vecOG.end())
+        std::cout << " [...]\n";
+    else
+        std::cout << std::endl;
+
+    std::cout << "After: ";
+    int scounter2 = 0;
+    std::vector<int>::iterator sit2 = _vecSorted.begin();
+    while (scounter2 != 5 && sit2 != _vecSorted.end()) {
+        std::cout << *sit2 << " ";
+        ++sit2; 
+        ++scounter2;
+    }
+    if (sit2 != _vecSorted.end())
+        std::cout << " [...]\n";
+    else
+        std::cout << std::endl;
+
+
+    std::list<int>::iterator lit = this->_listSorted.begin();
+    std::vector<int>::iterator vit = this->_vecSorted.begin();
+
+    for (unsigned long i = 0 ; i < _listSorted.size() ; i++) {
+        if (*lit != *vit) {
+            throw std::runtime_error("not matched sorted list, vector");
+        }
+        lit++;
+        vit++;
+    }
+
     std::cout << "Time to process a range of " << _listSorted.size() << " elements with std::list<>: ";
-    std::cout << std::fixed << std::setprecision(5) << _timerList * 1000000 << " us" << std::endl;
+    std::cout << std::fixed << std::setprecision(5) << _timerList << " us" << std::endl;
 
     std::cout << "Time to process a range of " << _vecOG.size() << " elements with std::vector<>: ";
-    std::cout << std::fixed << std::setprecision(5) << _timerVector* 1000000 << " us" << std::endl;
+    std::cout << std::fixed << std::setprecision(5) << _timerVector << " us" << std::endl;
 }

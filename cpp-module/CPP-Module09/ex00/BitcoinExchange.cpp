@@ -121,17 +121,17 @@ int File::readFile(std::string sep) {
             lineSize++;
             std::size_t pos = line.find(sep, 0);
             if (pos == std::string::npos) {
-                std::cout << "Error: bad input => " << line << std::endl;
+                std::cout << REDCOLOR << "Error: bad input => " << line << ENDCOLOR << std::endl;
                 continue ;
             }
             if (Date::valid(trim(line.substr(0, pos)))) {
     	        double d = std::strtod(trim(line.substr(pos + 1)).c_str(), &ptr);
                 if (d > 1000.0) {
-                    std::cout << "Error: too large a number." << std::endl;
+                    std::cout << REDCOLOR << "Error: too large a number." << ENDCOLOR << std::endl;
                     continue ;
                 }
                 if (d < 0.0) {
-                    std::cout << "Error: not a positive number." << std::endl;
+                    std::cout << REDCOLOR << "Error: not a positive number." << ENDCOLOR << std::endl;
                     continue ;
                 }
                 float f = static_cast<float>(d);
@@ -145,12 +145,12 @@ int File::readFile(std::string sep) {
                         break ;
                     }
                 }
-                std::cout << trim(line.substr(0, pos)) << " => " << i->second * f << std::endl;
+                std::cout << GRNCOLOR <<  trim(line.substr(0, pos)) << " => " << f << " = " << i->second * f << ENDCOLOR << std::endl;
 
             } else {
                 if (lineSize == 1)
                     continue;
-                std::cerr << "Error : invalid date format ! " << line << std::endl;
+                std::cout << REDCOLOR << "Error : invalid date format ! " << line << ENDCOLOR << std::endl;
             }
 		}
         this->_in.close();

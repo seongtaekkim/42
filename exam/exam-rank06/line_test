@@ -1,0 +1,1 @@
+printf "hello world\none\ntow\nthree\nfour\n" | nc localhost $1
